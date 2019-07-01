@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>hosp-parent</artifactId>
+        <groupId>hosp.parent</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>hosp-sys</artifactId>
+    <properties>
+        <java.version>1.8</java.version>
+        <java.encoding>UTF-8</java.encoding>
+        <project.build.sourceEncoding>${java.version}</project.build.sourceEncoding>
+        <maven.complier.source>${java.version}</maven.complier.source>
+        <maven.complier.target>${java.version}</maven.complier.target>
+    </properties>
+    <dependencies>
+
+        <dependency>
+            <groupId>${parent.groupId}</groupId>
+            <artifactId>hosp-common</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${parent.groupId}</groupId>
+            <artifactId>hosp-dao</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+
+
+    </dependencies>
+
+</project>

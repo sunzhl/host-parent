@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.hosp.www.dao.mapper.WorkerLogMapper">
+  <resultMap id="BaseResultMap" type="cn.com.hosp.www.dao.entry.WorkerLog">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="log_number" jdbcType="VARCHAR" property="logNumber" />
+    <result column="worker_id" jdbcType="BIGINT" property="workerId" />
+    <result column="worker_name" jdbcType="VARCHAR" property="workerName" />
+    <result column="log_type" jdbcType="BIT" property="logType" />
+    <result column="log_time" jdbcType="TIMESTAMP" property="logTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, log_number, worker_id, worker_name, log_type, log_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from worker_log
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from worker_log
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.com.hosp.www.dao.entry.WorkerLog">
+    insert into worker_log (id, log_number, worker_id, 
+      worker_name, log_type, log_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{logNumber,jdbcType=VARCHAR}, #{workerId,jdbcType=BIGINT}, 
+      #{workerName,jdbcType=VARCHAR}, #{logType,jdbcType=BIT}, #{logTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.com.hosp.www.dao.entry.WorkerLog">
+    insert into worker_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="logNumber != null">
+        log_number,
+      </if>
+      <if test="workerId != null">
+        worker_id,
+      </if>
+      <if test="workerName != null">
+        worker_name,
+      </if>
+      <if test="logType != null">
+        log_type,
+      </if>
+      <if test="logTime != null">
+        log_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="logNumber != null">
+        #{logNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="workerId != null">
+        #{workerId,jdbcType=BIGINT},
+      </if>
+      <if test="workerName != null">
+        #{workerName,jdbcType=VARCHAR},
+      </if>
+      <if test="logType != null">
+        #{logType,jdbcType=BIT},
+      </if>
+      <if test="logTime != null">
+        #{logTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.hosp.www.dao.entry.WorkerLog">
+    update worker_log
+    <set>
+      <if test="logNumber != null">
+        log_number = #{logNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="workerId != null">
+        worker_id = #{workerId,jdbcType=BIGINT},
+      </if>
+      <if test="workerName != null">
+        worker_name = #{workerName,jdbcType=VARCHAR},
+      </if>
+      <if test="logType != null">
+        log_type = #{logType,jdbcType=BIT},
+      </if>
+      <if test="logTime != null">
+        log_time = #{logTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.hosp.www.dao.entry.WorkerLog">
+    update worker_log
+    set log_number = #{logNumber,jdbcType=VARCHAR},
+      worker_id = #{workerId,jdbcType=BIGINT},
+      worker_name = #{workerName,jdbcType=VARCHAR},
+      log_type = #{logType,jdbcType=BIT},
+      log_time = #{logTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

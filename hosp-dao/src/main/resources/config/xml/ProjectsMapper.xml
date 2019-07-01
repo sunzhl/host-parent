@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.hosp.www.dao.mapper.ProjectsMapper">
+  <resultMap id="BaseResultMap" type="cn.com.hosp.www.dao.entry.Projects">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="pro_number" jdbcType="VARCHAR" property="proNumber" />
+    <result column="pro_name" jdbcType="VARCHAR" property="proName" />
+    <result column="contact_name" jdbcType="VARCHAR" property="contactName" />
+    <result column="contact_phone" jdbcType="VARCHAR" property="contactPhone" />
+    <result column="contact_mobile" jdbcType="VARCHAR" property="contactMobile" />
+    <result column="pro_address" jdbcType="VARCHAR" property="proAddress" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="pro_state" jdbcType="BIT" property="proState" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, pro_number, pro_name, contact_name, contact_phone, contact_mobile, pro_address,
+    remark, create_time, pro_state
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from projects
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="queryAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from projects
+  </select>
+
+  <select id="queryByParam" parameterType="cn.com.hosp.www.dao.entry.Projects" resultMap="BaseResultMap">
+
+    select
+    <include refid="Base_Column_List"/>
+    from projects
+    <where>
+      <if test="proNumber != null">
+          and pro_number = #{proNumber,jdbcType=VARCHAR}
+      </if>
+      <if test="proName != null">
+        and pro_name = #{proName,jdbcType=VARCHAR}
+      </if>
+      <if test="contactName != null">
+        and contact_name = #{contactName,jdbcType=VARCHAR}
+      </if>
+      <if test="createTime != null">
+        and create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="proState != null">
+        and pro_state = #{proState,jdbcType=BIT}
+      </if>
+    </where>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from projects
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insert" parameterType="cn.com.hosp.www.dao.entry.Projects">
+    insert into projects (id, pro_number, pro_name, 
+      contact_name, contact_phone, contact_mobile, 
+      pro_address, remark, create_time, pro_state
+      )
+    values (#{id,jdbcType=BIGINT}, #{proNumber,jdbcType=VARCHAR}, #{proName,jdbcType=VARCHAR}, 
+      #{contactName,jdbcType=VARCHAR}, #{contactPhone,jdbcType=VARCHAR}, #{contactMobile,jdbcType=VARCHAR}, 
+      #{proAddress,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{proState,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.com.hosp.www.dao.entry.Projects">
+    insert into projects
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="proNumber != null">
+        pro_number,
+      </if>
+      <if test="proName != null">
+        pro_name,
+      </if>
+      <if test="contactName != null">
+        contact_name,
+      </if>
+      <if test="contactPhone != null">
+        contact_phone,
+      </if>
+      <if test="contactMobile != null">
+        contact_mobile,
+      </if>
+      <if test="proAddress != null">
+        pro_address,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="createTime != null">
+        create_time
+      </if>
+      <if test="proState != null">
+        pro_state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="proNumber != null">
+        #{proNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="proName != null">
+        #{proName,jdbcType=VARCHAR},
+      </if>
+      <if test="contactName != null">
+        #{contactName,jdbcType=VARCHAR},
+      </if>
+      <if test="contactPhone != null">
+        #{contactPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="contactMobile != null">
+        #{contactMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="proAddress != null">
+        #{proAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="proState != null">
+        #{proState,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.hosp.www.dao.entry.Projects">
+    update projects
+    <set>
+      <if test="proNumber != null">
+        pro_number = #{proNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="proName != null">
+        pro_name = #{proName,jdbcType=VARCHAR},
+      </if>
+      <if test="contactName != null">
+        contact_name = #{contactName,jdbcType=VARCHAR},
+      </if>
+      <if test="contactPhone != null">
+        contact_phone = #{contactPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="contactMobile != null">
+        contact_mobile = #{contactMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="proAddress != null">
+        pro_address = #{proAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="proState != null">
+        pro_state = #{proState,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.hosp.www.dao.entry.Projects">
+    update projects
+    set pro_number = #{proNumber,jdbcType=VARCHAR},
+      pro_name = #{proName,jdbcType=VARCHAR},
+      contact_name = #{contactName,jdbcType=VARCHAR},
+      contact_phone = #{contactPhone,jdbcType=VARCHAR},
+      contact_mobile = #{contactMobile,jdbcType=VARCHAR},
+      pro_address = #{proAddress,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      pro_state = #{proState,jdbcType=BIT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+
+
+
+</mapper>

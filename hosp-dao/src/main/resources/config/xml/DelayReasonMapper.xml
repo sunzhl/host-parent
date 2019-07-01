@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.hosp.www.dao.mapper.DelayReasonMapper">
+  <resultMap id="BaseResultMap" type="cn.com.hosp.www.dao.entry.DelayReason">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="delay_code" jdbcType="VARCHAR" property="delayCode" />
+    <result column="delay_name" jdbcType="VARCHAR" property="delayName" />
+    <result column="pro_id" jdbcType="BIGINT" property="proId" />
+    <result column="pro_number" jdbcType="VARCHAR" property="proNumber" />
+    <result column="pro_name" jdbcType="VARCHAR" property="proName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, delay_code, delay_name, pro_id, pro_number, pro_name, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from delay_reason
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from delay_reason
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.com.hosp.www.dao.entry.DelayReason">
+    insert into delay_reason (id, delay_code, delay_name, 
+      pro_id, pro_number, pro_name, 
+      create_time)
+    values (#{id,jdbcType=BIGINT}, #{delayCode,jdbcType=VARCHAR}, #{delayName,jdbcType=VARCHAR}, 
+      #{proId,jdbcType=BIGINT}, #{proNumber,jdbcType=VARCHAR}, #{proName,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.com.hosp.www.dao.entry.DelayReason">
+    insert into delay_reason
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="delayCode != null">
+        delay_code,
+      </if>
+      <if test="delayName != null">
+        delay_name,
+      </if>
+      <if test="proId != null">
+        pro_id,
+      </if>
+      <if test="proNumber != null">
+        pro_number,
+      </if>
+      <if test="proName != null">
+        pro_name,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="delayCode != null">
+        #{delayCode,jdbcType=VARCHAR},
+      </if>
+      <if test="delayName != null">
+        #{delayName,jdbcType=VARCHAR},
+      </if>
+      <if test="proId != null">
+        #{proId,jdbcType=BIGINT},
+      </if>
+      <if test="proNumber != null">
+        #{proNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="proName != null">
+        #{proName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.hosp.www.dao.entry.DelayReason">
+    update delay_reason
+    <set>
+      <if test="delayCode != null">
+        delay_code = #{delayCode,jdbcType=VARCHAR},
+      </if>
+      <if test="delayName != null">
+        delay_name = #{delayName,jdbcType=VARCHAR},
+      </if>
+      <if test="proId != null">
+        pro_id = #{proId,jdbcType=BIGINT},
+      </if>
+      <if test="proNumber != null">
+        pro_number = #{proNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="proName != null">
+        pro_name = #{proName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.hosp.www.dao.entry.DelayReason">
+    update delay_reason
+    set delay_code = #{delayCode,jdbcType=VARCHAR},
+      delay_name = #{delayName,jdbcType=VARCHAR},
+      pro_id = #{proId,jdbcType=BIGINT},
+      pro_number = #{proNumber,jdbcType=VARCHAR},
+      pro_name = #{proName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

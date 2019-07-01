@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>cc835977-ee27-4a5f-b541-f1fbd210394b.SCHEMA:hospital</OriginalElement>
+  <nodes>
+    <node x="0.0" y="0.0">cc835977-ee27-4a5f-b541-f1fbd210394b.TABLE:hospital.transport_task</node>
+    <node x="638.0" y="773.0">cc835977-ee27-4a5f-b541-f1fbd210394b.TABLE:hospital.projects</node>
+    <node x="1196.0" y="773.0">cc835977-ee27-4a5f-b541-f1fbd210394b.TABLE:hospital.task_operation_record</node>
+    <node x="0.0" y="1162.0">cc835977-ee27-4a5f-b541-f1fbd210394b.TABLE:hospital.patient_info</node>
+    <node x="0.0" y="773.0">cc835977-ee27-4a5f-b541-f1fbd210394b.TABLE:hospital.task_type</node>
+    <node x="963.0" y="0.0">cc835977-ee27-4a5f-b541-f1fbd210394b.TABLE:hospital.medical_care</node>
+    <node x="246.0" y="1407.0">cc835977-ee27-4a5f-b541-f1fbd210394b.TABLE:hospital.sys_role</node>
+    <node x="286.0" y="1162.0">cc835977-ee27-4a5f-b541-f1fbd210394b.TABLE:hospital.delay_reason</node>
+    <node x="1006.0" y="1407.0">cc835977-ee27-4a5f-b541-f1fbd210394b.TABLE:hospital.dict_sex</node>
+    <node x="919.0" y="773.0">cc835977-ee27-4a5f-b541-f1fbd210394b.TABLE:hospital.structures</node>
+    <node x="562.0" y="1162.0">cc835977-ee27-4a5f-b541-f1fbd210394b.TABLE:hospital.cancel_reason</node>
+    <node x="0.0" y="1407.0">cc835977-ee27-4a5f-b541-f1fbd210394b.TABLE:hospital.sys_users</node>
+    <node x="495.0" y="1407.0">cc835977-ee27-4a5f-b541-f1fbd210394b.TABLE:hospital.dict_state</node>
+    <node x="650.0" y="0.0">cc835977-ee27-4a5f-b541-f1fbd210394b.TABLE:hospital.space_info</node>
+    <node x="1137.0" y="1162.0">cc835977-ee27-4a5f-b541-f1fbd210394b.TABLE:hospital.work_tools</node>
+    <node x="838.0" y="1162.0">cc835977-ee27-4a5f-b541-f1fbd210394b.TABLE:hospital.worker_log</node>
+    <node x="757.0" y="1407.0">cc835977-ee27-4a5f-b541-f1fbd210394b.TABLE:hospital.sys_users_role</node>
+    <node x="362.0" y="773.0">cc835977-ee27-4a5f-b541-f1fbd210394b.TABLE:hospital.transport_time_code</node>
+    <node x="343.0" y="0.0">cc835977-ee27-4a5f-b541-f1fbd210394b.TABLE:hospital.worker_info</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="Hierarchic Group" zoom="0.6674360573923892" x="685.3586316478177" y="421.24077016543606" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Key columns</Category>
+    <Category>Columns</Category>
+  </Categories>
+</Diagram>
+

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.hosp.www.dao.mapper.DictSexMapper">
+  <resultMap id="BaseResultMap" type="cn.com.hosp.www.dao.entry.DictSex">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="sex_number" jdbcType="BIT" property="sexNumber" />
+    <result column="sex_name" jdbcType="CHAR" property="sexName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, sex_number, sex_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dict_sex
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from dict_sex
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.com.hosp.www.dao.entry.DictSex">
+    insert into dict_sex (id, sex_number, sex_name
+      )
+    values (#{id,jdbcType=BIGINT}, #{sexNumber,jdbcType=BIT}, #{sexName,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.com.hosp.www.dao.entry.DictSex">
+    insert into dict_sex
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="sexNumber != null">
+        sex_number,
+      </if>
+      <if test="sexName != null">
+        sex_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="sexNumber != null">
+        #{sexNumber,jdbcType=BIT},
+      </if>
+      <if test="sexName != null">
+        #{sexName,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.hosp.www.dao.entry.DictSex">
+    update dict_sex
+    <set>
+      <if test="sexNumber != null">
+        sex_number = #{sexNumber,jdbcType=BIT},
+      </if>
+      <if test="sexName != null">
+        sex_name = #{sexName,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.hosp.www.dao.entry.DictSex">
+    update dict_sex
+    set sex_number = #{sexNumber,jdbcType=BIT},
+      sex_name = #{sexName,jdbcType=CHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

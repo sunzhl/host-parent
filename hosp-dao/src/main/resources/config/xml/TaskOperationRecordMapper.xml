@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.hosp.www.dao.mapper.TaskOperationRecordMapper">
+  <resultMap id="BaseResultMap" type="cn.com.hosp.www.dao.entry.TaskOperationRecord">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="rec_number" jdbcType="VARCHAR" property="recNumber" />
+    <result column="task_number" jdbcType="VARCHAR" property="taskNumber" />
+    <result column="operation_id" jdbcType="BIGINT" property="operationId" />
+    <result column="operation_man" jdbcType="VARCHAR" property="operationMan" />
+    <result column="operation_time" jdbcType="TIMESTAMP" property="operationTime" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, rec_number, task_number, operation_id, operation_man, operation_time, remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from task_operation_record
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from task_operation_record
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.com.hosp.www.dao.entry.TaskOperationRecord">
+    insert into task_operation_record (id, rec_number, task_number, 
+      operation_id, operation_man, operation_time, 
+      remark)
+    values (#{id,jdbcType=BIGINT}, #{recNumber,jdbcType=VARCHAR}, #{taskNumber,jdbcType=VARCHAR}, 
+      #{operationId,jdbcType=BIGINT}, #{operationMan,jdbcType=VARCHAR}, #{operationTime,jdbcType=TIMESTAMP}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.com.hosp.www.dao.entry.TaskOperationRecord">
+    insert into task_operation_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="recNumber != null">
+        rec_number,
+      </if>
+      <if test="taskNumber != null">
+        task_number,
+      </if>
+      <if test="operationId != null">
+        operation_id,
+      </if>
+      <if test="operationMan != null">
+        operation_man,
+      </if>
+      <if test="operationTime != null">
+        operation_time,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="recNumber != null">
+        #{recNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="taskNumber != null">
+        #{taskNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="operationId != null">
+        #{operationId,jdbcType=BIGINT},
+      </if>
+      <if test="operationMan != null">
+        #{operationMan,jdbcType=VARCHAR},
+      </if>
+      <if test="operationTime != null">
+        #{operationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.hosp.www.dao.entry.TaskOperationRecord">
+    update task_operation_record
+    <set>
+      <if test="recNumber != null">
+        rec_number = #{recNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="taskNumber != null">
+        task_number = #{taskNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="operationId != null">
+        operation_id = #{operationId,jdbcType=BIGINT},
+      </if>
+      <if test="operationMan != null">
+        operation_man = #{operationMan,jdbcType=VARCHAR},
+      </if>
+      <if test="operationTime != null">
+        operation_time = #{operationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.hosp.www.dao.entry.TaskOperationRecord">
+    update task_operation_record
+    set rec_number = #{recNumber,jdbcType=VARCHAR},
+      task_number = #{taskNumber,jdbcType=VARCHAR},
+      operation_id = #{operationId,jdbcType=BIGINT},
+      operation_man = #{operationMan,jdbcType=VARCHAR},
+      operation_time = #{operationTime,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

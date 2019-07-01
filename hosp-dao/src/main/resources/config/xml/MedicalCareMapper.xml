@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.hosp.www.dao.mapper.MedicalCareMapper">
+  <resultMap id="BaseResultMap" type="cn.com.hosp.www.dao.entry.MedicalCare">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="medical_number" jdbcType="VARCHAR" property="medicalNumber" />
+    <result column="medical_name" jdbcType="VARCHAR" property="medicalName" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="space_id" jdbcType="BIGINT" property="spaceId" />
+    <result column="space_code" jdbcType="VARCHAR" property="spaceCode" />
+    <result column="space_name" jdbcType="VARCHAR" property="spaceName" />
+    <result column="pro_id" jdbcType="BIGINT" property="proId" />
+    <result column="pro_number" jdbcType="VARCHAR" property="proNumber" />
+    <result column="pro_name" jdbcType="VARCHAR" property="proName" />
+    <result column="receive_msg" jdbcType="BIT" property="receiveMsg" />
+    <result column="state" jdbcType="BIT" property="state" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.com.hosp.www.dao.entry.MedicalCare">
+    <result column="medical_sex" jdbcType="BINARY" property="medicalSex" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, medical_number, medical_name, mobile, telephone, space_id, space_code, space_name, 
+    pro_id, pro_number, pro_name, receive_msg, state, remark
+  </sql>
+  <sql id="Blob_Column_List">
+    medical_sex
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from medical_care
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from medical_care
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.com.hosp.www.dao.entry.MedicalCare">
+    insert into medical_care (id, medical_number, medical_name, 
+      mobile, telephone, space_id, 
+      space_code, space_name, pro_id, 
+      pro_number, pro_name, receive_msg, 
+      state, remark, medical_sex
+      )
+    values (#{id,jdbcType=BIGINT}, #{medicalNumber,jdbcType=VARCHAR}, #{medicalName,jdbcType=VARCHAR}, 
+      #{mobile,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, #{spaceId,jdbcType=BIGINT}, 
+      #{spaceCode,jdbcType=VARCHAR}, #{spaceName,jdbcType=VARCHAR}, #{proId,jdbcType=BIGINT}, 
+      #{proNumber,jdbcType=VARCHAR}, #{proName,jdbcType=VARCHAR}, #{receiveMsg,jdbcType=BIT}, 
+      #{state,jdbcType=BIT}, #{remark,jdbcType=VARCHAR}, #{medicalSex,jdbcType=BINARY}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.com.hosp.www.dao.entry.MedicalCare">
+    insert into medical_care
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="medicalNumber != null">
+        medical_number,
+      </if>
+      <if test="medicalName != null">
+        medical_name,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+      <if test="telephone != null">
+        telephone,
+      </if>
+      <if test="spaceId != null">
+        space_id,
+      </if>
+      <if test="spaceCode != null">
+        space_code,
+      </if>
+      <if test="spaceName != null">
+        space_name,
+      </if>
+      <if test="proId != null">
+        pro_id,
+      </if>
+      <if test="proNumber != null">
+        pro_number,
+      </if>
+      <if test="proName != null">
+        pro_name,
+      </if>
+      <if test="receiveMsg != null">
+        receive_msg,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="medicalSex != null">
+        medical_sex,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="medicalNumber != null">
+        #{medicalNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="medicalName != null">
+        #{medicalName,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null">
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="spaceId != null">
+        #{spaceId,jdbcType=BIGINT},
+      </if>
+      <if test="spaceCode != null">
+        #{spaceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="spaceName != null">
+        #{spaceName,jdbcType=VARCHAR},
+      </if>
+      <if test="proId != null">
+        #{proId,jdbcType=BIGINT},
+      </if>
+      <if test="proNumber != null">
+        #{proNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="proName != null">
+        #{proName,jdbcType=VARCHAR},
+      </if>
+      <if test="receiveMsg != null">
+        #{receiveMsg,jdbcType=BIT},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=BIT},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="medicalSex != null">
+        #{medicalSex,jdbcType=BINARY},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.hosp.www.dao.entry.MedicalCare">
+    update medical_care
+    <set>
+      <if test="medicalNumber != null">
+        medical_number = #{medicalNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="medicalName != null">
+        medical_name = #{medicalName,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null">
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="spaceId != null">
+        space_id = #{spaceId,jdbcType=BIGINT},
+      </if>
+      <if test="spaceCode != null">
+        space_code = #{spaceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="spaceName != null">
+        space_name = #{spaceName,jdbcType=VARCHAR},
+      </if>
+      <if test="proId != null">
+        pro_id = #{proId,jdbcType=BIGINT},
+      </if>
+      <if test="proNumber != null">
+        pro_number = #{proNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="proName != null">
+        pro_name = #{proName,jdbcType=VARCHAR},
+      </if>
+      <if test="receiveMsg != null">
+        receive_msg = #{receiveMsg,jdbcType=BIT},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=BIT},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="medicalSex != null">
+        medical_sex = #{medicalSex,jdbcType=BINARY},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.com.hosp.www.dao.entry.MedicalCare">
+    update medical_care
+    set medical_number = #{medicalNumber,jdbcType=VARCHAR},
+      medical_name = #{medicalName,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      space_id = #{spaceId,jdbcType=BIGINT},
+      space_code = #{spaceCode,jdbcType=VARCHAR},
+      space_name = #{spaceName,jdbcType=VARCHAR},
+      pro_id = #{proId,jdbcType=BIGINT},
+      pro_number = #{proNumber,jdbcType=VARCHAR},
+      pro_name = #{proName,jdbcType=VARCHAR},
+      receive_msg = #{receiveMsg,jdbcType=BIT},
+      state = #{state,jdbcType=BIT},
+      remark = #{remark,jdbcType=VARCHAR},
+      medical_sex = #{medicalSex,jdbcType=BINARY}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.hosp.www.dao.entry.MedicalCare">
+    update medical_care
+    set medical_number = #{medicalNumber,jdbcType=VARCHAR},
+      medical_name = #{medicalName,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      space_id = #{spaceId,jdbcType=BIGINT},
+      space_code = #{spaceCode,jdbcType=VARCHAR},
+      space_name = #{spaceName,jdbcType=VARCHAR},
+      pro_id = #{proId,jdbcType=BIGINT},
+      pro_number = #{proNumber,jdbcType=VARCHAR},
+      pro_name = #{proName,jdbcType=VARCHAR},
+      receive_msg = #{receiveMsg,jdbcType=BIT},
+      state = #{state,jdbcType=BIT},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
