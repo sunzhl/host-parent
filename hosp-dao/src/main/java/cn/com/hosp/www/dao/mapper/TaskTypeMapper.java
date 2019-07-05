@@ -2,17 +2,10 @@ package cn.com.hosp.www.dao.mapper;
 
 
 import cn.com.hosp.www.dao.entry.TaskType;
+import cn.com.hosp.www.dao.mapper.base.BaseMapper;
+import org.springframework.stereotype.Component;
 
-public interface TaskTypeMapper {
-    int deleteByPrimaryKey(Long id);
+@Component
+public interface TaskTypeMapper extends BaseMapper<TaskType> {
 
-    int insert(TaskType record);
-
-    int insertSelective(TaskType record);
-
-    TaskType selectByPrimaryKey(Long id);
-
-    int updateByPrimaryKeySelective(TaskType record);
-
-    int updateByPrimaryKey(TaskType record);
 }

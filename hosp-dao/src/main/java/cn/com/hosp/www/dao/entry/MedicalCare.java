@@ -31,7 +31,7 @@ public class MedicalCare implements Serializable {
 
     private String remark;
 
-    private byte[] medicalSex;
+    private Short medicalSex;
 
     private static final long serialVersionUID = 1L;
 
@@ -147,11 +147,11 @@ public class MedicalCare implements Serializable {
         this.remark = remark == null ? null : remark.trim();
     }
 
-    public byte[] getMedicalSex() {
+    public Short getMedicalSex() {
         return medicalSex;
     }
 
-    public void setMedicalSex(byte[] medicalSex) {
+    public void setMedicalSex(Short medicalSex) {
         this.medicalSex = medicalSex;
     }
 }

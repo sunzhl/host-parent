@@ -1,377 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.com.hosp.www.dao.mapper.TransportTaskMapper">
-  <resultMap id="BaseResultMap" type="cn.com.hosp.www.dao.entry.TransportTask">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="task_number" jdbcType="VARCHAR" property="taskNumber" />
-    <result column="task_name" jdbcType="VARCHAR" property="taskName" />
-    <result column="create_id" jdbcType="BIGINT" property="createId" />
-    <result column="create_name" jdbcType="VARCHAR" property="createName" />
-    <result column="task_type_id" jdbcType="BIGINT" property="taskTypeId" />
-    <result column="task_type_name" jdbcType="VARCHAR" property="taskTypeName" />
-    <result column="set_out_place_id" jdbcType="BIGINT" property="setOutPlaceId" />
-    <result column="set_out_place_name" jdbcType="VARCHAR" property="setOutPlaceName" />
-    <result column="destination_id" jdbcType="BIGINT" property="destinationId" />
-    <result column="destination_name" jdbcType="VARCHAR" property="destinationName" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="patient_number" jdbcType="VARCHAR" property="patientNumber" />
-    <result column="plan_start_time" jdbcType="TIMESTAMP" property="planStartTime" />
-    <result column="plan_end_time" jdbcType="TIMESTAMP" property="planEndTime" />
-    <result column="priority" jdbcType="BIT" property="priority" />
-    <result column="tool_id" jdbcType="BIGINT" property="toolId" />
-    <result column="tool_name" jdbcType="VARCHAR" property="toolName" />
-    <result column="worker_id" jdbcType="BIGINT" property="workerId" />
-    <result column="worker_name" jdbcType="VARCHAR" property="workerName" />
-    <result column="actual_count" jdbcType="INTEGER" property="actualCount" />
-    <result column="state" jdbcType="BIT" property="state" />
-    <result column="cancel_reason" jdbcType="VARCHAR" property="cancelReason" />
-    <result column="delay_reason" jdbcType="VARCHAR" property="delayReason" />
-    <result column="task_desc" jdbcType="VARCHAR" property="taskDesc" />
-    <result column="task_remark" jdbcType="VARCHAR" property="taskRemark" />
-    <result column="pro_id" jdbcType="BIGINT" property="proId" />
-    <result column="pro_number" jdbcType="VARCHAR" property="proNumber" />
-    <result column="pro_name" jdbcType="VARCHAR" property="proName" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, task_number, task_name, create_id, create_name, task_type_id, task_type_name, 
-    set_out_place_id, set_out_place_name, destination_id, destination_name, create_time, 
-    patient_number, plan_start_time, plan_end_time, priority, tool_id, tool_name, worker_id, 
-    worker_name, actual_count, state, cancel_reason, delay_reason, task_desc, task_remark, 
-    pro_id, pro_number, pro_name
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from transport_task
-    where id = #{id,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from transport_task
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
-  <insert id="insert" parameterType="cn.com.hosp.www.dao.entry.TransportTask">
-    insert into transport_task (id, task_number, task_name, 
-      create_id, create_name, task_type_id, 
-      task_type_name, set_out_place_id, set_out_place_name, 
-      destination_id, destination_name, create_time, 
-      patient_number, plan_start_time, plan_end_time, 
-      priority, tool_id, tool_name, 
-      worker_id, worker_name, actual_count, 
-      state, cancel_reason, delay_reason, 
-      task_desc, task_remark, pro_id, 
-      pro_number, pro_name)
-    values (#{id,jdbcType=BIGINT}, #{taskNumber,jdbcType=VARCHAR}, #{taskName,jdbcType=VARCHAR}, 
-      #{createId,jdbcType=BIGINT}, #{createName,jdbcType=VARCHAR}, #{taskTypeId,jdbcType=BIGINT}, 
-      #{taskTypeName,jdbcType=VARCHAR}, #{setOutPlaceId,jdbcType=BIGINT}, #{setOutPlaceName,jdbcType=VARCHAR}, 
-      #{destinationId,jdbcType=BIGINT}, #{destinationName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{patientNumber,jdbcType=VARCHAR}, #{planStartTime,jdbcType=TIMESTAMP}, #{planEndTime,jdbcType=TIMESTAMP}, 
-      #{priority,jdbcType=BIT}, #{toolId,jdbcType=BIGINT}, #{toolName,jdbcType=VARCHAR}, 
-      #{workerId,jdbcType=BIGINT}, #{workerName,jdbcType=VARCHAR}, #{actualCount,jdbcType=INTEGER}, 
-      #{state,jdbcType=BIT}, #{cancelReason,jdbcType=VARCHAR}, #{delayReason,jdbcType=VARCHAR}, 
-      #{taskDesc,jdbcType=VARCHAR}, #{taskRemark,jdbcType=VARCHAR}, #{proId,jdbcType=BIGINT}, 
-      #{proNumber,jdbcType=VARCHAR}, #{proName,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="cn.com.hosp.www.dao.entry.TransportTask">
-    insert into transport_task
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="taskNumber != null">
-        task_number,
-      </if>
-      <if test="taskName != null">
-        task_name,
-      </if>
-      <if test="createId != null">
-        create_id,
-      </if>
-      <if test="createName != null">
-        create_name,
-      </if>
-      <if test="taskTypeId != null">
-        task_type_id,
-      </if>
-      <if test="taskTypeName != null">
-        task_type_name,
-      </if>
-      <if test="setOutPlaceId != null">
-        set_out_place_id,
-      </if>
-      <if test="setOutPlaceName != null">
-        set_out_place_name,
-      </if>
-      <if test="destinationId != null">
-        destination_id,
-      </if>
-      <if test="destinationName != null">
-        destination_name,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="patientNumber != null">
-        patient_number,
-      </if>
-      <if test="planStartTime != null">
-        plan_start_time,
-      </if>
-      <if test="planEndTime != null">
-        plan_end_time,
-      </if>
-      <if test="priority != null">
-        priority,
-      </if>
-      <if test="toolId != null">
-        tool_id,
-      </if>
-      <if test="toolName != null">
-        tool_name,
-      </if>
-      <if test="workerId != null">
-        worker_id,
-      </if>
-      <if test="workerName != null">
-        worker_name,
-      </if>
-      <if test="actualCount != null">
-        actual_count,
-      </if>
-      <if test="state != null">
-        state,
-      </if>
-      <if test="cancelReason != null">
-        cancel_reason,
-      </if>
-      <if test="delayReason != null">
-        delay_reason,
-      </if>
-      <if test="taskDesc != null">
-        task_desc,
-      </if>
-      <if test="taskRemark != null">
-        task_remark,
-      </if>
-      <if test="proId != null">
-        pro_id,
-      </if>
-      <if test="proNumber != null">
-        pro_number,
-      </if>
-      <if test="proName != null">
-        pro_name,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=BIGINT},
-      </if>
-      <if test="taskNumber != null">
-        #{taskNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="taskName != null">
-        #{taskName,jdbcType=VARCHAR},
-      </if>
-      <if test="createId != null">
-        #{createId,jdbcType=BIGINT},
-      </if>
-      <if test="createName != null">
-        #{createName,jdbcType=VARCHAR},
-      </if>
-      <if test="taskTypeId != null">
-        #{taskTypeId,jdbcType=BIGINT},
-      </if>
-      <if test="taskTypeName != null">
-        #{taskTypeName,jdbcType=VARCHAR},
-      </if>
-      <if test="setOutPlaceId != null">
-        #{setOutPlaceId,jdbcType=BIGINT},
-      </if>
-      <if test="setOutPlaceName != null">
-        #{setOutPlaceName,jdbcType=VARCHAR},
-      </if>
-      <if test="destinationId != null">
-        #{destinationId,jdbcType=BIGINT},
-      </if>
-      <if test="destinationName != null">
-        #{destinationName,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="patientNumber != null">
-        #{patientNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="planStartTime != null">
-        #{planStartTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="planEndTime != null">
-        #{planEndTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="priority != null">
-        #{priority,jdbcType=BIT},
-      </if>
-      <if test="toolId != null">
-        #{toolId,jdbcType=BIGINT},
-      </if>
-      <if test="toolName != null">
-        #{toolName,jdbcType=VARCHAR},
-      </if>
-      <if test="workerId != null">
-        #{workerId,jdbcType=BIGINT},
-      </if>
-      <if test="workerName != null">
-        #{workerName,jdbcType=VARCHAR},
-      </if>
-      <if test="actualCount != null">
-        #{actualCount,jdbcType=INTEGER},
-      </if>
-      <if test="state != null">
-        #{state,jdbcType=BIT},
-      </if>
-      <if test="cancelReason != null">
-        #{cancelReason,jdbcType=VARCHAR},
-      </if>
-      <if test="delayReason != null">
-        #{delayReason,jdbcType=VARCHAR},
-      </if>
-      <if test="taskDesc != null">
-        #{taskDesc,jdbcType=VARCHAR},
-      </if>
-      <if test="taskRemark != null">
-        #{taskRemark,jdbcType=VARCHAR},
-      </if>
-      <if test="proId != null">
-        #{proId,jdbcType=BIGINT},
-      </if>
-      <if test="proNumber != null">
-        #{proNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="proName != null">
-        #{proName,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.com.hosp.www.dao.entry.TransportTask">
-    update transport_task
-    <set>
-      <if test="taskNumber != null">
-        task_number = #{taskNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="taskName != null">
-        task_name = #{taskName,jdbcType=VARCHAR},
-      </if>
-      <if test="createId != null">
-        create_id = #{createId,jdbcType=BIGINT},
-      </if>
-      <if test="createName != null">
-        create_name = #{createName,jdbcType=VARCHAR},
-      </if>
-      <if test="taskTypeId != null">
-        task_type_id = #{taskTypeId,jdbcType=BIGINT},
-      </if>
-      <if test="taskTypeName != null">
-        task_type_name = #{taskTypeName,jdbcType=VARCHAR},
-      </if>
-      <if test="setOutPlaceId != null">
-        set_out_place_id = #{setOutPlaceId,jdbcType=BIGINT},
-      </if>
-      <if test="setOutPlaceName != null">
-        set_out_place_name = #{setOutPlaceName,jdbcType=VARCHAR},
-      </if>
-      <if test="destinationId != null">
-        destination_id = #{destinationId,jdbcType=BIGINT},
-      </if>
-      <if test="destinationName != null">
-        destination_name = #{destinationName,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="patientNumber != null">
-        patient_number = #{patientNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="planStartTime != null">
-        plan_start_time = #{planStartTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="planEndTime != null">
-        plan_end_time = #{planEndTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="priority != null">
-        priority = #{priority,jdbcType=BIT},
-      </if>
-      <if test="toolId != null">
-        tool_id = #{toolId,jdbcType=BIGINT},
-      </if>
-      <if test="toolName != null">
-        tool_name = #{toolName,jdbcType=VARCHAR},
-      </if>
-      <if test="workerId != null">
-        worker_id = #{workerId,jdbcType=BIGINT},
-      </if>
-      <if test="workerName != null">
-        worker_name = #{workerName,jdbcType=VARCHAR},
-      </if>
-      <if test="actualCount != null">
-        actual_count = #{actualCount,jdbcType=INTEGER},
-      </if>
-      <if test="state != null">
-        state = #{state,jdbcType=BIT},
-      </if>
-      <if test="cancelReason != null">
-        cancel_reason = #{cancelReason,jdbcType=VARCHAR},
-      </if>
-      <if test="delayReason != null">
-        delay_reason = #{delayReason,jdbcType=VARCHAR},
-      </if>
-      <if test="taskDesc != null">
-        task_desc = #{taskDesc,jdbcType=VARCHAR},
-      </if>
-      <if test="taskRemark != null">
-        task_remark = #{taskRemark,jdbcType=VARCHAR},
-      </if>
-      <if test="proId != null">
-        pro_id = #{proId,jdbcType=BIGINT},
-      </if>
-      <if test="proNumber != null">
-        pro_number = #{proNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="proName != null">
-        pro_name = #{proName,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="cn.com.hosp.www.dao.entry.TransportTask">
-    update transport_task
-    set task_number = #{taskNumber,jdbcType=VARCHAR},
-      task_name = #{taskName,jdbcType=VARCHAR},
-      create_id = #{createId,jdbcType=BIGINT},
-      create_name = #{createName,jdbcType=VARCHAR},
-      task_type_id = #{taskTypeId,jdbcType=BIGINT},
-      task_type_name = #{taskTypeName,jdbcType=VARCHAR},
-      set_out_place_id = #{setOutPlaceId,jdbcType=BIGINT},
-      set_out_place_name = #{setOutPlaceName,jdbcType=VARCHAR},
-      destination_id = #{destinationId,jdbcType=BIGINT},
-      destination_name = #{destinationName,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      patient_number = #{patientNumber,jdbcType=VARCHAR},
-      plan_start_time = #{planStartTime,jdbcType=TIMESTAMP},
-      plan_end_time = #{planEndTime,jdbcType=TIMESTAMP},
-      priority = #{priority,jdbcType=BIT},
-      tool_id = #{toolId,jdbcType=BIGINT},
-      tool_name = #{toolName,jdbcType=VARCHAR},
-      worker_id = #{workerId,jdbcType=BIGINT},
-      worker_name = #{workerName,jdbcType=VARCHAR},
-      actual_count = #{actualCount,jdbcType=INTEGER},
-      state = #{state,jdbcType=BIT},
-      cancel_reason = #{cancelReason,jdbcType=VARCHAR},
-      delay_reason = #{delayReason,jdbcType=VARCHAR},
-      task_desc = #{taskDesc,jdbcType=VARCHAR},
-      task_remark = #{taskRemark,jdbcType=VARCHAR},
-      pro_id = #{proId,jdbcType=BIGINT},
-      pro_number = #{proNumber,jdbcType=VARCHAR},
-      pro_name = #{proName,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
+    <resultMap id="BaseResultMap" type="cn.com.hosp.www.dao.dto.TransportPatient">
+        <id column="id"                    jdbcType="BIGINT"    property="id"/>
+        <result column="task_name"         jdbcType="VARCHAR"   property="taskName"/>
+        <result column="create_name"       jdbcType="VARCHAR" property="createName"/>
+        <result column="create_time"       jdbcType="TIMESTAMP" property="createTime" javaType="java.time.LocalDateTime"/>
+        <result column="task_type_name"    jdbcType="VARCHAR" property="taskTypeName"/>
+        <result column="set_out_place_name" jdbcType="VARCHAR" property="setOutPlaceName"/>
+        <result column="destination_name"   jdbcType="VARCHAR" property="destinationName"/>
+        <result column="plan_start_time"    jdbcType="TIMESTAMP" property="planStartTime" javaType="java.time.LocalDateTime"/>
+        <result column="finish_time"        jdbcType="INTEGER" property="finishTime"/>
+        <result column="book_time"          jdbcType="INTEGER" property="bookTime"/>
+        <result column="worker_name"        jdbcType="VARCHAR" property="workerName"/>
+        <result column="worker_id"          jdbcType="BIGINT"  property="workerId"/>
+        <result column="priority"           jdbcType="TINYINT" property="priority"/>
+        <result column="state"              jdbcType="TINYINT" property="state"/>
+        <result column="pro_id"             jdbcType="BIGINT"  property="proId"/>
+        <result column="pro_number"         jdbcType="VARCHAR" property="proNumber"/>
+        <result column="pro_name"           jdbcType="VARCHAR" property="proName"/>
+        <result column="tool_name"          jdbcType="VARCHAR" property="toolName"/>
+        <result column="patient_name"       jdbcType="VARCHAR" property="patientName"/>
+        <result column="pid"                jdbcType="BIGINT"  property="pid"/>
+        <result column="age"                jdbcType="TINYINT" property="age"/>
+        <result column="bed_number"         jdbcType="VARCHAR" property="bedNumber"/>
+        <result column="number"             jdbcType="INTEGER" property="number"/>
+        <result column="sex"                jdbcType="TINYINT" property="sex"/>
+    </resultMap>
+
+    <select id="queryByPage" parameterType="map" resultMap="BaseResultMap">
+        select t.id, t.task_name, t.create_name, t.create_time,
+        t.task_type_name, t.set_out_place_name, t.destination_name,
+        t.plan_start_time, t.finish_time, t.book_time, t.worker_name, t.worker_id,
+        t.priority, t.state, t.pro_id, t.pro_number,t.pro_name, t.tool_name,
+        p.patient_name, p.id as pid, p.age, p.bed_number, p.number,p.sex
+        from transport_task as t
+        left join patient_info as p on t.id = p.task_id
+        <where>
+            <if test="proId != null">
+                t.pro_id = #{proId, jdbcType=BIGINT}
+            </if>
+            <if test="states != null">
+                and t.state in
+                <foreach item="item" collection="states" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        limit #{start, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER}
+    </select>
+    
+    <select id="queryCount" parameterType="map" resultType="int">
+        select count(id) from transport_task
+        <where>
+            <if test="proId != null">
+                pro_id = #{proId, jdbcType=BIGINT}
+            </if>
+            <if test="states != null and states.size() &gt; 0">
+                and state in
+                <foreach item="item" collection="states" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
 </mapper>

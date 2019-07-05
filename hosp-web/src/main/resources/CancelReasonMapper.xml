@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.hosp.www.dao.mapper.CancelReasonMapper">
+  <resultMap id="BaseResultMap" type="cn.com.hosp.www.dao.entry.CancelReason">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="cancel_code" jdbcType="VARCHAR" property="cancelCode" />
+    <result column="cancel_name" jdbcType="VARCHAR" property="cancelName" />
+    <result column="pro_id" jdbcType="BIGINT" property="proId" />
+    <result column="pro_number" jdbcType="VARCHAR" property="proNumber" />
+    <result column="pro_name" jdbcType="VARCHAR" property="proName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, cancel_code, cancel_name, pro_id, pro_number, pro_name, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cancel_reason
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from cancel_reason
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.com.hosp.www.dao.entry.CancelReason">
+    insert into cancel_reason (id, cancel_code, cancel_name, 
+      pro_id, pro_number, pro_name, 
+      create_time)
+    values (#{id,jdbcType=BIGINT}, #{cancelCode,jdbcType=VARCHAR}, #{cancelName,jdbcType=VARCHAR}, 
+      #{proId,jdbcType=BIGINT}, #{proNumber,jdbcType=VARCHAR}, #{proName,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.com.hosp.www.dao.entry.CancelReason">
+    insert into cancel_reason
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="cancelCode != null">
+        cancel_code,
+      </if>
+      <if test="cancelName != null">
+        cancel_name,
+      </if>
+      <if test="proId != null">
+        pro_id,
+      </if>
+      <if test="proNumber != null">
+        pro_number,
+      </if>
+      <if test="proName != null">
+        pro_name,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="cancelCode != null">
+        #{cancelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cancelName != null">
+        #{cancelName,jdbcType=VARCHAR},
+      </if>
+      <if test="proId != null">
+        #{proId,jdbcType=BIGINT},
+      </if>
+      <if test="proNumber != null">
+        #{proNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="proName != null">
+        #{proName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.hosp.www.dao.entry.CancelReason">
+    update cancel_reason
+    <set>
+      <if test="cancelCode != null">
+        cancel_code = #{cancelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cancelName != null">
+        cancel_name = #{cancelName,jdbcType=VARCHAR},
+      </if>
+      <if test="proId != null">
+        pro_id = #{proId,jdbcType=BIGINT},
+      </if>
+      <if test="proNumber != null">
+        pro_number = #{proNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="proName != null">
+        pro_name = #{proName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.hosp.www.dao.entry.CancelReason">
+    update cancel_reason
+    set cancel_code = #{cancelCode,jdbcType=VARCHAR},
+      cancel_name = #{cancelName,jdbcType=VARCHAR},
+      pro_id = #{proId,jdbcType=BIGINT},
+      pro_number = #{proNumber,jdbcType=VARCHAR},
+      pro_name = #{proName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

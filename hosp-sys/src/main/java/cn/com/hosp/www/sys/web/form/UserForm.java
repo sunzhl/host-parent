@@ -71,7 +71,7 @@ public class UserForm {
 
     private String remark;
 
-    private String sex;
+    private Short sex;
 
     private Long spaceId;
 
@@ -276,11 +276,11 @@ public class UserForm {
         this.remark = remark;
     }
 
-    public String getSex() {
+    public Short getSex() {
         return sex;
     }
 
-    public void setSex(String sex) {
+    public void setSex(Short sex) {
         this.sex = sex;
     }
 

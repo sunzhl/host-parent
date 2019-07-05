@@ -2,19 +2,10 @@ package cn.com.hosp.www.dao.mapper;
 
 
 import cn.com.hosp.www.dao.entry.MedicalCare;
+import cn.com.hosp.www.dao.mapper.base.BaseMapper;
+import org.springframework.stereotype.Component;
 
-public interface MedicalCareMapper {
-    int deleteByPrimaryKey(Long id);
+@Component
+public interface MedicalCareMapper extends BaseMapper<MedicalCare> {
 
-    int insert(MedicalCare record);
-
-    int insertSelective(MedicalCare record);
-
-    MedicalCare selectByPrimaryKey(Long id);
-
-    int updateByPrimaryKeySelective(MedicalCare record);
-
-    int updateByPrimaryKeyWithBLOBs(MedicalCare record);
-
-    int updateByPrimaryKey(MedicalCare record);
 }

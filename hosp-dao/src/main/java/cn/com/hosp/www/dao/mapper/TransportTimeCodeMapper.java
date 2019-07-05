@@ -2,17 +2,10 @@ package cn.com.hosp.www.dao.mapper;
 
 
 import cn.com.hosp.www.dao.entry.TransportTimeCode;
+import cn.com.hosp.www.dao.mapper.base.BaseMapper;
+import org.springframework.stereotype.Component;
 
-public interface TransportTimeCodeMapper {
-    int deleteByPrimaryKey(Long id);
+@Component
+public interface TransportTimeCodeMapper extends BaseMapper<TransportTimeCode> {
 
-    int insert(TransportTimeCode record);
-
-    int insertSelective(TransportTimeCode record);
-
-    TransportTimeCode selectByPrimaryKey(Long id);
-
-    int updateByPrimaryKeySelective(TransportTimeCode record);
-
-    int updateByPrimaryKey(TransportTimeCode record);
 }
