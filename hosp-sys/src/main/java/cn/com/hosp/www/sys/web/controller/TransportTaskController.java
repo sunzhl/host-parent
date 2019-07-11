@@ -1,20 +1,23 @@
 package cn.com.hosp.www.sys.web.controller;
 
 import cn.com.hosp.www.common.annotation.Log;
+import cn.com.hosp.www.common.result.Page;
 import cn.com.hosp.www.common.result.Result;
 import cn.com.hosp.www.common.utils.BeanUtils;
 import cn.com.hosp.www.common.utils.CollectionUtils;
 import cn.com.hosp.www.common.utils.StringUtils;
-import cn.com.hosp.www.common.utils.UUIDUtils;
 import cn.com.hosp.www.dao.entry.TransportTask;
+import cn.com.hosp.www.dao.entry.WorkerInfo;
 import cn.com.hosp.www.sys.service.TransportTaskService;
 import cn.com.hosp.www.sys.web.form.PageForm;
 import cn.com.hosp.www.sys.web.form.TaskForm;
-import com.github.pagehelper.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -29,7 +32,7 @@ import java.util.stream.Stream;
  * @Version 1.0
  */
 
-@RestController
+@Controller
 @RequestMapping("/task")
 @Slf4j
 public class TransportTaskController {
@@ -57,7 +60,10 @@ public class TransportTaskController {
     @PutMapping("/changeState/{id}/{uid}/{state}")
     @ResponseBody
     @Log
-    public Result updateState(@PathVariable("id") Long id, @PathVariable("uid") long uid, @PathVariable("state") int state){
+    public Result updateState(@PathVariable("id") Long id,
+                              @PathVariable("uid") long uid,
+                              @PathVariable("state") int state,
+                              ModelMap modelMap){
         TransportTask task = new TransportTask();
         task.setId(id);
         task.setState((short) state);
@@ -77,9 +83,17 @@ public class TransportTaskController {
     @PutMapping("/assign/{id}/{uid}/{rid}")
     @ResponseBody
     @Log
-    public Result assign(@PathVariable("id") long id, @PathVariable("uid") long uid, @PathVariable("rid") long rid){
+    public Result assign(@PathVariable("id") long id,
+                         @PathVariable("uid") long uid,
+                         @PathVariable("rid") long rid){
+        return transportTaskService.assignOrObtain(id, uid, rid, (short) 1);
+    }
 
-        return Result.success();
+    @PutMapping("/obtain/{id}/{uid}")
+    @ResponseBody
+    public Result obtain(@PathVariable("id") long id,
+                         @PathVariable("uid") long uid){
+        return transportTaskService.assignOrObtain(id, 0, uid, (short) 2);
     }
 
     /**
@@ -93,7 +107,8 @@ public class TransportTaskController {
     @ResponseBody
     public Result queryByPage(@PathVariable("proId") long proId,
                            @PathVariable("state") int state,
-                           @RequestBody PageForm pageForm){
+                           @RequestBody PageForm pageForm,
+                           ModelMap modelMap){
 
         TransportTask task = new TransportTask();
         if(state != -1){
@@ -137,6 +152,29 @@ public class TransportTaskController {
         params.put("proId", proId);
         return Result.success().withData(transportTaskService.queryByPage(params));
     }
+
+
+
+    @GetMapping("/home")
+    public String home(HttpServletRequest request, ModelMap modelMap){
+        TransportTask task = new TransportTask();
+        Object userInfo = request.getSession().getAttribute("user_info");
+        if(userInfo instanceof WorkerInfo){
+           WorkerInfo workerInfo = (WorkerInfo) userInfo;
+           task.setProId(workerInfo.getProId());
+        }
+        task.setProId(1L);
+        Long aLong = transportTaskService.countByCondition(task);
+        modelMap.put("totalRow", aLong);
+        PageForm form = new PageForm();
+        form.setPageSize(20);
+        form.setPageNum(1);
+        Page<TransportTask> taskPage = transportTaskService.listByCondition(task, form);
+        modelMap.put("data", taskPage.getList());
+        modelMap.put("userInfo", userInfo);
+        return "/home";
+    }
+
 
 
 }

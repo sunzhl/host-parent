@@ -55,7 +55,8 @@ public class HospUserDetailsService implements UserDetailsService {
         List<SysRole> sysRoles = sysRoleMapper.selectByUserId(user.getId());
         Collection<GrantedAuthority> grantedAuthorities = new LinkedList<>();
         if(sysRoles != null && sysRoles.size() > 0){
-            grantedAuthorities = sysRoles.stream().map(sysRole -> new SimpleGrantedAuthority(sysRole.getRoleCode())).collect(Collectors.toList());
+            grantedAuthorities = sysRoles.stream().map(sysRole -> new SimpleGrantedAuthority("ROLE_" + sysRole.getRoleCode()))
+                    .collect(Collectors.toList());
         }
         return new HospUserDetails(user, grantedAuthorities, type);
     }

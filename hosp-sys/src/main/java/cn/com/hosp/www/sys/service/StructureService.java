@@ -1,6 +1,7 @@
 package cn.com.hosp.www.sys.service;
 
 import cn.com.hosp.www.dao.entry.Structures;
+import cn.com.hosp.www.sys.service.base.BaseService;
 import cn.com.hosp.www.sys.vo.ReturnCode;
 import org.apache.ibatis.annotations.Param;
 
@@ -15,9 +16,8 @@ import java.util.List;
  * @Version 1.0
  */
 
-public interface StructureService {
+public interface StructureService extends BaseService<Structures> {
 
-    ReturnCode save(@NotNull Structures structures);
 
     Structures selectOneById(@Param("id") @NotNull Long id);
 

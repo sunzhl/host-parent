@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <title>智能后勤管理系统</title>
+    <link rel="stylesheet" th:href="@{../../bootstrap/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{../../bootstrap/css/bootstrap-grid.min.css}" />
+    <link rel="stylesheet" th:href="@{../../bootstrap/css/index.css}" />
+    <!--<link rel="stylesheet" th:href="@{../../bootstrap/css/leftmenu.css}" />-->
+    <script type="text/javascript" th:src="@{../../bootstrap/js/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{../../bootstrap/js/bootstrap.min.js}"></script>
+</head>
+<body>
+
+<div style="margin-top: 2px;">
+    <!-- 引入导航数据 -->
+    <div th:replace="header::[header_navbar]"></div>
+
+    <div class="tab-content">
+        <div class="row">
+            <div class="col-md-2">
+              <div th:include="init/leftmenu::init_left_menu"></div>
+            </div>
+            <div class="col-md-10">
+               <div id="trans_type_div" class="init_content" th:include="init/transporttype::trans_type"></div>
+               <div id="structure_div" style="display: none;" class="init_content" th:include="init/structure::struct_fragment"></div>
+               <div id="space_div" style="display: none;" class="init_content" th:include="init/space::space_fragment"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#init_page').tab('show');
+    })
+
+</script>
+
+</body>
+</html>

@@ -2,17 +2,10 @@ package cn.com.hosp.www.dao.mapper;
 
 
 import cn.com.hosp.www.dao.entry.WorkerLog;
+import cn.com.hosp.www.dao.mapper.base.BaseMapper;
+import org.springframework.stereotype.Component;
 
-public interface WorkerLogMapper {
-    int deleteByPrimaryKey(Long id);
+@Component
+public interface WorkerLogMapper  extends BaseMapper<WorkerLog> {
 
-    int insert(WorkerLog record);
-
-    int insertSelective(WorkerLog record);
-
-    WorkerLog selectByPrimaryKey(Long id);
-
-    int updateByPrimaryKeySelective(WorkerLog record);
-
-    int updateByPrimaryKey(WorkerLog record);
 }

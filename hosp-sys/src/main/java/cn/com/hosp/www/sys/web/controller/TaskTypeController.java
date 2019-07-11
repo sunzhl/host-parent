@@ -2,6 +2,7 @@ package cn.com.hosp.www.sys.web.controller;
 
 import cn.com.hosp.www.common.result.Result;
 import cn.com.hosp.www.common.utils.CollectionUtils;
+import cn.com.hosp.www.common.utils.UUIDUtils;
 import cn.com.hosp.www.dao.entry.TaskType;
 import cn.com.hosp.www.sys.service.TaskTypeService;
 import cn.com.hosp.www.sys.web.form.PageForm;
@@ -30,7 +31,7 @@ public class TaskTypeController {
     @PostMapping("/add")
     @ResponseBody
     public Result save(@RequestBody TaskType taskType){
-
+        taskType.setTypeNumber(UUIDUtils.uuid());
         return Result.success().withData(taskTypeService.save(taskType));
     }
 
@@ -48,17 +49,24 @@ public class TaskTypeController {
         return Result.success().withData(taskTypeService.deleteById(id));
     }
 
-    @GetMapping("/query/{proId}")
+    @GetMapping("/queryPage/{currentPage}")
     @ResponseBody
-    public Result query(@PathVariable("proId") long proId, @RequestBody PageForm form){
+    public Result query(@PathVariable("currentPage") int currentPage,
+                        @RequestParam(required = false) Integer pageSize){
         TaskType info = new TaskType();
-        info.setProId(proId);
-        Long aLong = taskTypeService.countByCondition(info);
-        Map<String, Object> res = CollectionUtils.newMap();
-        if(aLong != null && aLong > 0){
-            res.put("list", taskTypeService.listByCondition(info, form));
-        }
-        res.put("total", aLong);
-        return Result.success().withData(res);
+        PageForm form = new PageForm();
+        form.setPageNum(currentPage);
+        form.setPageSize(pageSize);
+        return Result.success().withData(taskTypeService.listByCondition(info, form));
     }
+
+    @GetMapping("/query")
+    public Result query(TaskType taskType){
+        TaskType task = taskType;
+        if(task == null){
+            task = new TaskType();
+        }
+        return Result.success().withData(taskTypeService.listByCondition(task));
+    }
+
 }

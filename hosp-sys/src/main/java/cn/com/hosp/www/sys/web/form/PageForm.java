@@ -1,6 +1,8 @@
 package cn.com.hosp.www.sys.web.form;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -14,8 +16,14 @@ import javax.validation.constraints.Size;
  */
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class PageForm {
+
+    private static final int DEFAULT_SIZE = 20;
+
     @NotNull
+
     private Integer pageNum;
 
     @NotNull
@@ -31,6 +39,9 @@ public class PageForm {
     }
 
     public Integer getPageSize() {
+        if(pageSize == null || pageSize == 0){
+            return DEFAULT_SIZE;
+        }
         return pageSize;
     }
 

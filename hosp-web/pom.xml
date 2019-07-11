@@ -6,6 +6,7 @@
         <artifactId>hosp-parent</artifactId>
         <groupId>hosp.parent</groupId>
         <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <groupId>hosp.parent</groupId>
     <artifactId>hosp-web</artifactId>
@@ -24,13 +25,8 @@
     <dependencies>
         <dependency>
             <groupId>${parent.groupId}</groupId>
-            <artifactId>hosp-common</artifactId>
-            <version>${parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${parent.groupId}</groupId>
-            <artifactId>hosp-dao</artifactId>
-            <version>${parent.version}</version>
+            <artifactId>hosp-sys</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

@@ -2,9 +2,11 @@ package cn.com.hosp.www.sys.web.controller;
 
 import cn.com.hosp.www.common.result.Result;
 import cn.com.hosp.www.common.utils.CollectionUtils;
+import cn.com.hosp.www.common.utils.UUIDUtils;
 import cn.com.hosp.www.dao.entry.SpaceInfo;
 import cn.com.hosp.www.sys.service.SpaceInfoService;
 import cn.com.hosp.www.sys.web.form.PageForm;
+import jdk.nashorn.internal.objects.annotations.Getter;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +33,7 @@ public class SpaceController {
     @PostMapping("/add")
     @ResponseBody
     public Result save(@RequestBody SpaceInfo spaceInfo){
-
+       spaceInfo.setSpaceCode(UUIDUtils.uuid());
        return Result.success().withData(spaceInfoService.save(spaceInfo));
     }
 
@@ -49,19 +51,26 @@ public class SpaceController {
          return Result.success().withData(spaceInfoService.deleteById(id));
     }
 
-    @GetMapping("/query/{proId}")
+    @GetMapping("/queryPage/{currentPage}")
     @ResponseBody
-    public Result query(@PathVariable("proId") long proId, @RequestBody PageForm form){
+    public Result query(@PathVariable("currentPage") int currentPage,
+                        @RequestParam(required = false) Integer pageSize){
 
         SpaceInfo info = new SpaceInfo();
-        info.setProId(proId);
-        Long aLong = spaceInfoService.countByCondition(info);
-        Map<String, Object> res = CollectionUtils.newMap();
-        if(aLong != null && aLong > 0){
-           res.put("list", spaceInfoService.listByCondition(info, form));
+//        info.setProId(proId);
+        PageForm form = new PageForm(currentPage, pageSize);
+        return Result.success().withData(spaceInfoService.listByCondition(info, form));
+    }
+
+
+    @GetMapping("/query")
+    @ResponseBody
+    public Result query(SpaceInfo spaceInfo){
+        SpaceInfo info = spaceInfo;
+        if(info == null){
+            info = new SpaceInfo();
         }
-        res.put("total", aLong);
-        return Result.success().withData(res);
+        return Result.success().withData(spaceInfoService.listByCondition(info));
     }
 
 }

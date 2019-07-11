@@ -50,9 +50,9 @@ public abstract class SqlProviderSupport {
      */
     protected TableInfo tableInfo(Object entity, ProviderContext context) {
         TableInfo info = tableCache.get(context.getMapperType());
-        if (info != null) {
-            return info;
-        }
+//        if (info != null) {
+//            return info;
+//        }
 
         Class<?> entityClass = entityType(context);
         //获取不含有@NoColumn注解的fields

@@ -2,17 +2,10 @@ package cn.com.hosp.www.dao.mapper;
 
 
 import cn.com.hosp.www.dao.entry.TaskOperationRecord;
+import cn.com.hosp.www.dao.mapper.base.BaseMapper;
+import org.springframework.stereotype.Component;
 
-public interface TaskOperationRecordMapper {
-    int deleteByPrimaryKey(Long id);
+@Component
+public interface TaskOperationRecordMapper extends BaseMapper<TaskOperationRecord> {
 
-    int insert(TaskOperationRecord record);
-
-    int insertSelective(TaskOperationRecord record);
-
-    TaskOperationRecord selectByPrimaryKey(Long id);
-
-    int updateByPrimaryKeySelective(TaskOperationRecord record);
-
-    int updateByPrimaryKey(TaskOperationRecord record);
 }

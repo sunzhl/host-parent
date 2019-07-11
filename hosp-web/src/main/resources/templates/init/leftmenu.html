@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <title>左侧菜单</title>
+    <link rel="stylesheet" th:href="@{../../bootstrap/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{../../bootstrap/css/bootstrap-grid.min.css}" />
+    <link rel="stylesheet" th:href="@{../../bootstrap/css/index.css}" />
+    <link rel="stylesheet" th:href="@{../../bootstrap/css/leftmenu.css}" />
+    <script type="text/javascript" th:src="@{../../bootstrap/js/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{../../bootstrap/js/bootstrap.min.js}"></script>
+</head>
+<body>
+
+  <div th:fragment="init_left_menu" class="container">
+      <div class="panel-group" id="panelContainer">
+          <div class="panel panel-default">
+              <div id="header1" class="panel-heading" data-toggle="collapse" data-target="#sub1" data-parent="#panelContainer">
+                  <i class="glyphicon glyphicon-user"></i>
+                  <a href="#">人员设置</a>
+                  <span class="glyphicon glyphicon-triangle-right pull-right"></span>
+              </div>
+              <div id="sub1" class="collapse panel-collapse">
+                  <div class="panel-body">
+                      <ul class="nav left-menu-nav">
+                          <li>
+                              <a href="#"><i class="glyphicon glyphicon-user"></i>医护人员</a>
+                          </li>
+                          <li>
+                              <a href="#"><i class="glyphicon glyphicon-user"></i>运送人员</a>
+                          </li>
+                          <li>
+                              <a href="#">添加栏目3</a>
+                          </li>
+                          <li>
+                              <a href="#">添加栏目4</a>
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+          <div class="panel panel-default">
+              <div id="header2" class="panel-heading" data-toggle="collapse" data-target="#sub2" data-parent="#panelContainer">
+                  <i class="glyphicon glyphicon-leaf"></i>
+                  <a href="#">参数设置</a>
+                  <span class="glyphicon glyphicon-triangle-right pull-right"></span>
+              </div>
+              <div id="sub2" class="collapse panel-collapse">
+                  <div class="panel-body">
+                      <ul class="nav left-menu-nav">
+                          <li><a href="#trans_type_div" aria-controls="init" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-plane"></i>运送类型</a></li>
+                          <li><a href="#">运送工具</a></li>
+                          <li><a href="#">时间代码</a></li>
+                          <li><a href="#">取消原因</a></li>
+                          <li><a href="#">延迟原因</a></li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+          <div class="panel panel-default">
+              <div id="header3" class="panel-heading" data-toggle="collapse" data-target="#sub3" data-parent="#panelContainer">
+                  <i class="glyphicon glyphicon-leaf"></i>
+                  <a href="#">空间设置</a>
+                  <span class="glyphicon glyphicon-triangle-right pull-right"></span>
+              </div>
+              <div id="sub3" class="collapse panel-collapse">
+                  <div class="panel-body">
+                      <ul class="nav left-menu-nav">
+                          <li><a href="#structure_div" aria-controls="init" role="tab" data-toggle="tab">建筑</a></li>
+                          <li><a href="#space_div">空间代码</a></li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <script>
+          $(function() {
+              $(".panel-heading").on("click", function(e) {
+                  var idLength = e.currentTarget.id.length;
+                  var index = e.currentTarget.id.substr(idLength - 1, idLength);
+                  $("#sub" + index).on('hidden.bs.collapse', function() {
+                      $(e.currentTarget).find("span").removeClass("glyphicon glyphicon-triangle-bottom");
+                      $(e.currentTarget).find("span").addClass("glyphicon glyphicon-triangle-right");
+                  })
+                  $("#sub" + index).on('shown.bs.collapse', function() {
+                      $(e.currentTarget).find("span").removeClass("glyphicon glyphicon-triangle-right");
+                      $(e.currentTarget).find("span").addClass("glyphicon glyphicon-triangle-bottom");
+                  })
+              })
+
+              $(".panel-body > .nav > li > a").on("click", function(e) {
+                  //alert(e.currentTarget.textContent);
+                  $('.init_content').hide();
+                  //var id = e.currentTarget.href;
+                  var id = $(this).attr('href');
+                  $(id).show();
+              });
+          });
+      </script>
+  </div>
+</body>
+</html>

@@ -1,13 +1,13 @@
 package cn.com.hosp.www.sys.service.impl;
 
+import cn.com.hosp.www.common.result.Result;
 import cn.com.hosp.www.common.utils.BeanUtils;
 import cn.com.hosp.www.common.utils.CollectionUtils;
 import cn.com.hosp.www.common.utils.UUIDUtils;
 import cn.com.hosp.www.dao.dto.TransportPatient;
-import cn.com.hosp.www.dao.entry.PatientInfo;
-import cn.com.hosp.www.dao.entry.TransportTask;
-import cn.com.hosp.www.dao.mapper.PatientInfoMapper;
-import cn.com.hosp.www.dao.mapper.TransportTaskMapper;
+import cn.com.hosp.www.dao.entry.*;
+import cn.com.hosp.www.dao.mapper.*;
+import cn.com.hosp.www.sys.service.TaskOperationRecordService;
 import cn.com.hosp.www.sys.service.TransportTaskService;
 import cn.com.hosp.www.sys.service.base.impl.BaseServiceImpl;
 import cn.com.hosp.www.sys.web.form.TaskForm;
@@ -37,6 +37,14 @@ public class TransportTaskServiceImpl extends BaseServiceImpl<TransportTaskMappe
     @Autowired
     private TransportTaskMapper transportTaskMapper;
 
+    @Autowired
+    private WorkerInfoMapper workerInfoMapper;
+    @Autowired
+    private WorkerTaskMapper workerTaskMapper;
+
+    @Autowired
+    private TaskOperationRecordService recordService;
+
     @Override
     @Transactional
     public long save(TaskForm form) {
@@ -51,6 +59,8 @@ public class TransportTaskServiceImpl extends BaseServiceImpl<TransportTaskMappe
             patientInfo.setPatientNumber(patientNumber);
             task.setPatientNumber(patientNumber);
         }
+        task.setTaskName("");
+        task.setProNumber("0000000000");
         task = super.save(task);
         if(null != patientInfo){
             patientInfo.setTaskId(task.getId());
@@ -70,5 +80,26 @@ public class TransportTaskServiceImpl extends BaseServiceImpl<TransportTaskMappe
         result.put("list", transportPatients);
         result.put("total", totalRow);
         return result;
+    }
+
+    @Override
+    @Transactional
+    public Result assignOrObtain(long id, long uid, long rid, short getType) {
+        WorkerInfo workerInfo = workerInfoMapper.selectByPrimaryKey(rid);
+        if(workerInfo == null){
+           return Result.error("客户信息不存在");
+        }
+        int i = transportTaskMapper.assign(id, rid, workerInfo.getWorkerName(), getType);
+        if(i > 0){
+            workerTaskMapper.update(rid, getType);
+             if(getType == 1){
+                 recordService.save(id, uid, "分派任务");
+             }else{
+                 recordService.save(id, workerInfo, "自主获取任务");
+             }
+            return Result.success();
+        }else {
+            return  Result.error("任务已被分派或已被获取");
+        }
     }
 }

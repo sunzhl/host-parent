@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <title>建筑物数据</title>
+    <link rel="stylesheet" th:href="@{../../bootstrap/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{../../bootstrap/css/bootstrap-grid.min.css}" />
+    <link rel="stylesheet" th:href="@{../../bootstrap/css/index.css}" />
+    <!--<link rel="stylesheet" th:href="@{../../bootstrap/css/leftmenu.css}" />-->
+    <script type="text/javascript" th:src="@{../../bootstrap/js/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{../../bootstrap/js/bootstrap.min.js}"></script>
+</head>
+<body>
+
+  <div th:fragment="struct_fragment" class="container">
+      <div style="height: 30px; margin-bottom: 10px; margin-top: -5px;">
+          <div class="headerLine"></div>
+          <div class="headerLabel">建筑物</div>
+          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#structureModal">添加建筑物</button>
+      </div>
+      <table class="table table-striped">
+          <thead>
+          <tr>
+              <th>序号</th>
+              <th>建筑物名称</th>
+              <th>描述</th>
+              <th>所属院区</th>
+              <th>所属项目</th>
+              <th>操作</th>
+          </tr>
+          </thead>
+          <tbody id="structure_tbody">
+
+          </tbody>
+      </table>
+
+
+
+
+      <!-- 模态框（Modal） -->
+      <div class="modal" id="structureModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+          <div class="modal-dialog" style="width: 800px;">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                      <h4 class="modal-title" id="myModalLabel">添加运送类型</h4>
+                  </div>
+                  <div class="modal-body">
+                      <form id="structure_form" role="form" class="form-inline" method="post" th:action="@{/task/add}" onsubmit="">
+                          <div class="container">
+                              <div class="addTitle">
+                                  <div class="leftImg"></div>
+                                  <span>基本信息</span>
+                              </div>
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="structName" class="control-label col-md-4 text-nowrap text-right">名称：</label>
+                                      <input id="structName" type="text" style="width: 200px;" required class="col-md-8 form-control"/>
+                                  </div>
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="serial" class="control-label col-md-4 text-nowrap text-right">序号：</label>
+                                      <input id="serial" type="number" style="width: 200px;" required class="col-md-8 form-control"/>
+                                  </div>
+                              </div>
+
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="structArea" class="control-label text-right text-nowrap col-md-4">所属院区：</label>
+                                      <input id="structArea" style="width: 200px;" class="form-control col-md-8" type="text"/>
+                                  </div>
+
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="remark" class="control-label text-right text-nowrap col-md-4">描述：</label>
+                                      <input id="remark" style="width: 200px;" class="form-control col-md-8" type="text" />
+                                  </div>
+                              </div>
+                              <div class="addTitle">
+                                  <div class="leftImg"></div>
+                                  <span>系统信息</span>
+                              </div>
+
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="struct_project" class="control-label text-right text-nowrap col-md-4">所属项目：</label>
+                                      <select id="struct_project" style="width: 200px;" class="form-control col-md-8">
+                                          <option value="1-空军总医院">空军总医院</option>
+                                      </select>
+                                  </div>
+                              </div>
+                          </div>
+                      </form>
+                  </div>
+                  <div class="modal-footer align-content-center">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                      <button type="button" id="struct_submit" class="btn btn-primary">提交更改</button>
+                  </div>
+              </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+
+       <!--   <div id="myAlert" class="alert alert-success" aria-hidden="true">
+              <a href="#" class="close" data-dismiss="alert">&times;</a>
+              <strong>成功！</strong>保存成功。
+          </div>
+          <div id="myAlert2" class="alert alert-warning" aria-hidden="true">
+              <a href="#" class="close" data-dismiss="alert">&times;</a>
+              <strong>警告！</strong>保存失败。
+          </div>-->
+
+      </div>
+
+      <script type="text/javascript">
+
+          $(function () {
+
+               queryStructure();
+
+              $('#struct_submit').click(function () {
+
+                   var postData = {
+                       'structName': $('#structName').val(),
+                       'serial': $('#serial').val(),
+                       'structArea': $('#structArea').val(),
+                       'remark': $('#remark').val()
+                   };
+
+                  var porject = $('#struct_project').val();
+                  postData['proId'] = porject.split('-')[0];
+                  postData['proName'] = porject.split('-')[1];
+
+                  var sendData = JSON.stringify(postData);
+                  
+                  $.ajax({
+                      type: 'POST',
+                      dataType: 'json',
+                      contentType: "application/json;charset=utf-8",
+                      url: '../../structure/add',
+                      data: sendData,
+                      success: function (data) {
+                          if(data['success'] == true){
+                              alert('保存成功');
+                              $('#structure_form')[0].reset();
+                              $('#structureModal').modal('hide');
+                              queryStructure();
+                          }else{
+                              //$('#myAlert2').alert();
+                              alert('保存失败');
+                          }
+                      },
+                      error: function () {
+                          alert('保存失败');
+                      }
+
+                  });
+
+              });
+          });
+
+
+          function queryStructure() {
+              $.get('../../structure/queryByPage/1', function(res, status){
+                  console.log(res + '===' + status);
+                  if(res['success'] === true){
+                      var transType = res['data']['list'];
+                      if(transType != null && transType){
+                          var html = [];
+                          $.each(transType, function (index, type) {
+                              html.push('<tr><td>' + type['serial'] + '</td>');
+                              html.push('<td>' + type['structName'] + '</td>');
+                              html.push('<td>' + type['remark'] + '</td>');
+                              html.push('<td>' + type['structArea'] + '</td>');
+                              html.push('<td>' + type['proName'] + '</td>');
+                              html.push('<td><button type="button" class="btn btn-default">编辑</button>' +
+                                  '<button type="button" value="'+ type['id'] +'" style="margin-left: 10px;" class="btn btn-default">删除</button></td></tr>');
+                          });
+                          $('#structure_tbody').html(html.join(''));
+                      }
+                  }
+              });
+          }
+
+      </script>
+
+  </div>
+
+</body>
+</html>

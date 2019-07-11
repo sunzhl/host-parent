@@ -27,13 +27,9 @@ public class SpaceInfo implements Serializable {
 
     private Long proId;
 
-    private String proNumber;
-
     private String proName;
 
     private Long structId;
-
-    private String structNumber;
 
     private String structName;
 

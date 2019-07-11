@@ -1,24 +1,3 @@
-private String id;
-private String taskName;
-private String createName;
-private String createTime;
-private String taskTypeName;
-private String setOutPlaceName;
-private String destinationName;
-private String planStartTime;
-private String finishTime;
-private String bookTime;
-private String workerName;
-private String workerId;
-private String priority;
-private String state;
-private String proId;
-private String proNumber;
-private String proName;
-private String toolName;
-private String patientName;
-private String pid;
-private String age;
-private String bedNumber;
-private String number;
-private String sex;
+{"toolName":"担架",
+"proId": 1,
+"proName": "空军总医院"}

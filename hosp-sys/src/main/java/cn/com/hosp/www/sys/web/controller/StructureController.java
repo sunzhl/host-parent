@@ -1,10 +1,12 @@
 package cn.com.hosp.www.sys.web.controller;
 
 import cn.com.hosp.www.common.exception.HospException;
+import cn.com.hosp.www.common.result.Result;
 import cn.com.hosp.www.dao.entry.Structures;
 import cn.com.hosp.www.sys.service.StructureService;
 import cn.com.hosp.www.sys.vo.ResponseData;
 import cn.com.hosp.www.sys.vo.ReturnCode;
+import cn.com.hosp.www.sys.web.form.PageForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,52 +34,37 @@ public class StructureController {
 
     @PostMapping("/add")
     @ResponseBody
-    public ReturnCode save(@RequestBody @Valid Structures structure){
-        return structureService.save(structure);
+    public Result save(@RequestBody @Valid Structures structure){
+        return Result.success().withData(structureService.save(structure));
     }
 
 
-    @GetMapping("/queryAll")
+    @GetMapping("/queryByPage/{currentPage}")
     @ResponseBody
-    public ResponseData<List<Structures>> queryAll(){
-       return this.query((Structures)null);
+    public Result queryAll(@PathVariable("currentPage") int currentPage,
+                           @RequestParam(required = false) Integer pageSize){
+        PageForm pageForm = new PageForm();
+        pageForm.setPageNum(currentPage);
+        pageForm.setPageSize(pageSize);
+        return Result.success().withData(structureService.listByCondition(new Structures(), pageForm));
     }
 
 
     @GetMapping("/querySome")
     @ResponseBody
-    public ResponseData<List<Structures>> query(@RequestBody Structures structure){
+    public Result query(Structures structure){
         Structures structure1 = structure;
         if(structure1 == null){
            structure1 = new Structures();
         }
         List<Structures> structures = structureService.selectAllByParam(structure1);
-        ResponseData<List<Structures>> data = new ResponseData();
-        data.setData(structures);
-        if(structures != null && structures.size() > 0){
-           data.setSuccess("查询成功");
-        }else{
-            data.setSuccess("未查询到记录!");
-        }
-        return  data;
+        return Result.success().withData(structures);
     }
 
     @GetMapping("/query/{id}")
     @ResponseBody
-    public ResponseData<Structures> query(@PathVariable("id") Long id){
-        if(id == null){
-            throw new HospException("查询条件不能为空!");
-        }
-        Structures structures = new Structures();
-        structures.setId(id);
-        ResponseData<List<Structures>> query = query(structures);
-        ResponseData<Structures> result = new ResponseData<>();
-        List<Structures> data = query.getData();
-        if(data != null && data.size() > 0){
-            result.setData(data.get(0));
-        }
-        result.setReturnCode(query.getReturnCode());
-        return result;
+    public Result query(@PathVariable("id") Long id){
+        return Result.success().withData(structureService.getById(id));
     }
 
 }

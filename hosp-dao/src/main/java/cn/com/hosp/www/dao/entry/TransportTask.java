@@ -73,6 +73,8 @@ public class TransportTask implements Serializable {
 
     private String proName;
 
+    private Short  getType;
+
     @NoColumn
     private static final long serialVersionUID = 1L;
 

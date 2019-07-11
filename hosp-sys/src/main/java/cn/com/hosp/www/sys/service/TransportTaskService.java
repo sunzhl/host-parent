@@ -23,4 +23,17 @@ public interface TransportTaskService extends BaseService<TransportTask> {
     Map<String, Object> queryByPage(Map<String, Object> param);
 
 
+    /**
+     * 领取或者分派任务
+     * @param id  任务ID
+     * @param uid 分配者ID 如果领取此值为0
+     * @param rid 接受者ID,领取这ID
+     * @param getType 类型 1-分派，2-领取
+     * @return
+     */
+    Result assignOrObtain(long id, long uid, long rid, short getType);
+
+
+
+
 }

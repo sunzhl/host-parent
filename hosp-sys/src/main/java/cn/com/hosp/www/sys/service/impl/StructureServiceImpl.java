@@ -1,10 +1,12 @@
 package cn.com.hosp.www.sys.service.impl;
 
+import cn.com.hosp.www.common.utils.UUIDUtils;
 import cn.com.hosp.www.dao.entry.Projects;
 import cn.com.hosp.www.dao.entry.Structures;
 import cn.com.hosp.www.dao.mapper.ProjectsMapper;
 import cn.com.hosp.www.dao.mapper.StructuresMapper;
 import cn.com.hosp.www.sys.service.StructureService;
+import cn.com.hosp.www.sys.service.base.impl.BaseServiceImpl;
 import cn.com.hosp.www.sys.vo.ReturnCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +26,7 @@ import java.util.List;
  */
 
 @Service
-public class StructureServiceImpl implements StructureService {
+public class StructureServiceImpl extends BaseServiceImpl<StructuresMapper, Structures> implements StructureService {
     private static final Logger LOGGER = LoggerFactory.getLogger(StructureServiceImpl.class);
 
     @Autowired
@@ -35,27 +37,18 @@ public class StructureServiceImpl implements StructureService {
 
     @Override
     @Transactional
-    public ReturnCode save(@NotNull Structures structures) {
-        ReturnCode returnCode = new ReturnCode();
+    public Structures save(@NotNull Structures structures) {
+        /*ReturnCode returnCode = new ReturnCode();
         Projects projects = projectsMapper.selectByPrimaryKey(structures.getProId());
         if(null == projects){
            returnCode.setType("E");
            returnCode.setMessage("关联的项目[" + structures.getProId() + "], 不存在");
-           return returnCode;
+           return null;
         }
-        structures.setProName(projects.getProName());
-        structures.setProNumber(projects.getProNumber());
-        int i = structuresMapper.insert(structures);
-        if(i == 1){
-            returnCode.setType(ReturnCode.Type.S.getValue());
-            returnCode.setMessage("保存成功");
-            returnCode.setCode(String.valueOf(i));
-        }else{
-            returnCode.setCode("0");
-            returnCode.setMessage("保存失败!");
-            returnCode.setType(ReturnCode.Type.E.getValue());
-        }
-        return returnCode;
+        structures.setProName(projects.getProName());*/
+        structures.setStructNumber(UUIDUtils.uuid());
+        structuresMapper.insert(structures);
+        return structures;
     }
 
     @Override

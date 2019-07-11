@@ -1,6 +1,7 @@
 package cn.com.hosp.www.sys.security.entity;
 
 import cn.com.hosp.www.dao.entry.SysUsers;
+import cn.com.hosp.www.dao.entry.WorkerInfo;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -19,6 +20,8 @@ public class HospUserDetails implements UserDetails {
     public static final byte MOBLIE = (byte)1;
 
     private SysUsers user;
+
+    private WorkerInfo workerInfo;
 
     private byte type;
 
@@ -99,5 +102,13 @@ public class HospUserDetails implements UserDetails {
 
     public void setGrantedAuthorities(Collection<GrantedAuthority> grantedAuthorities) {
         this.grantedAuthorities = grantedAuthorities;
+    }
+
+    public WorkerInfo getWorkerInfo() {
+        return workerInfo;
+    }
+
+    public void setWorkerInfo(WorkerInfo workerInfo) {
+        this.workerInfo = workerInfo;
     }
 }

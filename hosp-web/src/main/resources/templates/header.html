@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>页头导航数据信息</title>
+</head>
+<body>
+
+ <div th:fragment="header_navbar">
+     <nav class="navbar navbar-default" role="navigation">
+         <div class="container-fluid">
+             <div class="navbar-header">
+                 <a class="navbar-brand" href="#">智能后勤系统</a>
+             </div>
+             <div>
+                 <ul id="navbar-ul" class="nav nav-pills navbar-left">
+                     <li role="presentation" class="active"><a href="#task/home" aria-controls="init" role="tab" data-toggle="tab">中央运送</a></li>
+                     <li role="presentation"><a href="#second" data-toggle="tab">运送管理</a></li>
+                     <li role="presentation"><a href="#">数据报表</a></li>
+                     <li role="presentation"><a href="#">可视化中心</a></li>
+                     <li role="presentation" id="init_page"><a href="#init" role="tab" aria-controls="init" data-toggle="tab">初始化</a></li>
+                     <li role="presentation"><a href="#">设置</a></li>
+                 </ul>
+                 <span class="navbar-text navbar-right"><a>注销</a></span>
+                 <span class="navbar-text navbar-right">|</span>
+                 <span class="navbar-text navbar-right"><a>项目经理</a></span>
+                 <span class="navbar-text navbar-right"><a>妇幼医院</a></span>
+                 <span class="glyphicon glyphicon-map-marker navbar-text navbar-right " style="color: rgb(255, 140, 60);"></span>
+             </div>
+         </div>
+     </nav>
+
+     <script type="text/javascript">
+         $(function () {
+             $('#navbar-ul li').click(function (e) {
+                 e.preventDefault();
+                 $(this).tab('show');
+                 var host = window.location.host;
+                 var protocol = window.location.protocol;
+                 console.log('请求路径为：' + protocol + host);
+                 // if(href.indexOf('/') > 0){
+                 //    href = href.substring(0, href.indexOf('/'))
+                 // }
+                 var href = protocol + '//' + host;
+                 var path = $(this).children('a').attr('href').replace('#', '/');
+                 window.location.href = href + path;
+             });
+         });
+     </script>
+ </div>
+
+</body>
+</html>

@@ -2,6 +2,7 @@ package cn.com.hosp.www.sys.web.controller;
 
 
 import cn.com.hosp.www.common.result.Result;
+import cn.com.hosp.www.dao.entry.WorkerInfo;
 import cn.com.hosp.www.sys.service.MedicalCareService;
 import cn.com.hosp.www.sys.service.UserService;
 import cn.com.hosp.www.sys.web.form.UserForm;
@@ -43,6 +44,15 @@ public class UserController {
         return Result.success();
     }
 
+
+    @GetMapping("/query")
+    @ResponseBody
+    public Result query(WorkerInfo workerInfo){
+        if(workerInfo == null){
+            workerInfo = new WorkerInfo();
+        }
+        return Result.success().withData(userService.listByCondition(workerInfo));
+    }
 
 
 }

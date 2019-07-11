@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <title>医护人员信息</title>
+    <link rel="stylesheet" th:href="@{../../bootstrap/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{../../bootstrap/css/bootstrap-grid.min.css}" />
+    <link rel="stylesheet" th:href="@{../../bootstrap/css/index.css}" />
+    <!--<link rel="stylesheet" th:href="@{../../bootstrap/css/leftmenu.css}" />-->
+    <script type="text/javascript" th:src="@{../../bootstrap/js/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{../../bootstrap/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{../../bootstrap/js/server.js}"></script>
+</head>
+<body>
+
+  <div th:fragment="trans_type" class="container">
+      <div style="height: 30px; margin-bottom: 10px; margin-top: -5px;">
+          <div class="headerLine"></div>
+          <div class="headerLabel">医护人员</div>
+          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">添加医护人员</button>
+      </div>
+      <table class="table table-striped">
+          <thead>
+          <tr>
+              <th>类型名称</th>
+              <th>父类型</th>
+              <th>时间代码</th>
+              <th>默认地址</th>
+              <th>所属项目</th>
+              <th>操作</th>
+          </tr>
+          </thead>
+          <tbody id="trans_type_tbody">
+          <!--<tr th:each="info:${data}">
+              <td th:text="${#temporals.format(info.createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+              <td th:text="${#temporals.format(info.planStartTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+              <td th:text="${info.state}"></td>
+              <td th:text="${info.workerName}"></td>
+              <td th:text="${info.setOutPlaceName}"></td>
+              <td th:text="${info.destinationName}"></td>
+              <td th:text="${info.taskTypeName}"></td>
+              <td ></td>
+              <td th:text="${info.createName}"></td>
+              <td th:text="${info.taskDesc}"></td>
+              <td th:text="${info.finishTime}"></td>
+              <td th:text="${info.finishTime}"></td>
+              <td th:text="${info.delayReason}"></td>
+              <td > 编辑</td>
+              <td >取消|延迟</td>
+          </tr>-->
+          </tbody>
+      </table>
+
+
+
+
+      <!-- 模态框（Modal） -->
+      <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+          <div class="modal-dialog" style="width: 800px;">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                      <h4 class="modal-title" id="myModalLabel">添加运送类型</h4>
+                  </div>
+                  <div class="modal-body">
+                      <form id="addTaskForm" role="form" class="form-inline" method="post" th:action="@{/task/add}" onsubmit="">
+                          <div class="container">
+                              <div class="addTitle">
+                                  <div class="leftImg"></div>
+                                  <span>基本信息</span>
+                              </div>
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="parentId" class="control-label col-md-4 text-nowrap text-right">父类型：</label>
+                                      <select id="parentId" style="width: 200px;" class="col-md-8 form-control">
+
+                                      </select>
+                                  </div>
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="transType" class="control-label col-md-4 text-nowrap text-right">运送类型名称：</label>
+                                      <input id="transType" type="text" style="width: 200px;" required class="col-md-8 form-control"/>
+                                  </div>
+                              </div>
+
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="destination" class="control-label text-right text-nowrap col-md-4">默认目的地：</label>
+                                      <select id="destination" style="width: 200px;" class="form-control col-md-8">
+                                          <option value="1">特一</option>
+                                          <option value="1">特一</option>
+                                          <option value="1">特一</option>
+                                      </select>
+                                  </div>
+
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="grade" class="control-label text-right text-nowrap col-md-4">运送等级：</label>
+                                      <select id="grade" style="width: 200px;" class="form-control col-md-8">
+                                          <option value="1">特一</option>
+                                          <option value="2">特二</option>
+                                          <option value="3">特三</option>
+                                      </select>
+                                  </div>
+                              </div>
+
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="planStartTime" class="control-label text-right text-nowrap col-md-4"
+                                             >时间代码：</label>
+                                      <select id="planStartTime" style="width: 200px;" class="form-control col-md-8">
+                                          <option value="1">特一</option>
+                                          <option value="1">特一</option>
+                                          <option value="1">特一</option>
+                                      </select>
+                                  </div>
+
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="urgentTime" class="control-label text-right text-nowrap col-md-4"
+                                             style="padding-left: 0px;">紧急提醒时间(分)：</label>
+                                      <input id="urgentTime" type="number" style="width: 200px;" required class="col-md-8 form-control"/>
+                                  </div>
+                              </div>
+
+                              <div class="addTitle">
+                                  <div class="leftImg"></div>
+                                  <span>系统信息</span>
+                              </div>
+
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="project" class="control-label text-right text-nowrap col-md-4">所属项目：</label>
+                                      <select id="project" style="width: 200px;" class="form-control col-md-8">
+                                          <option value="1-空军总医院">空军总医院</option>
+                                      </select>
+                                  </div>
+                              </div>
+                          </div>
+                      </form>
+                  </div>
+                  <div class="modal-footer align-content-center">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                      <button type="button" id="submit" class="btn btn-primary">提交更改</button>
+                  </div>
+              </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+
+       <!--   <div id="myAlert" class="alert alert-success" aria-hidden="true">
+              <a href="#" class="close" data-dismiss="alert">&times;</a>
+              <strong>成功！</strong>保存成功。
+          </div>
+          <div id="myAlert2" class="alert alert-warning" aria-hidden="true">
+              <a href="#" class="close" data-dismiss="alert">&times;</a>
+              <strong>警告！</strong>保存失败。
+          </div>-->
+
+      </div>
+
+      <script type="text/javascript">
+
+          $(function () {
+
+               queryTransType();
+
+              $('#submit').click(function () {
+
+                   var postData = {
+                       'typeName': $('#transType').val(),
+                       'defaultDest': $('#destination').val(),
+                       'transTimeCodeId': $('#planStartTime').val(),
+                       'grade': $('#grade').val(),
+                       'urgentTime': $('#urgentTime').val()
+                   };
+
+                  var parentId = $('#parentId').val();
+                  if('' !== parentId){
+                      postData['parentId'] = parentId;
+                  }
+                  var porject = $('#project').val();
+                  postData['proId'] = porject.split('-')[0];
+                  postData['proName'] = porject.split('-')[1];
+
+                  var sendData = JSON.stringify(postData);
+                  
+                  $.ajax({
+                      type: 'POST',
+                      dataType: 'json',
+                      contentType: "application/json;charset=utf-8",
+                      url: '../../type/add',
+                      data: sendData,
+                      success: function (data) {
+                          if(data['success'] == true){
+                              alert('保存成功');
+                              $('#addTaskForm')[0].reset();
+                              $('#myModal').modal('hide');
+                              queryTransType();
+                          }else{
+                              //$('#myAlert2').alert();
+                              alert('保存失败');
+                          }
+                      },
+                      error: function () {
+                          alert('保存失败');
+                      }
+
+                  });
+
+              });
+          });
+
+
+          function queryTransType() {
+              $.get('../../type/queryPage/1', function(res, status){
+                  console.log(res + '===' + status);
+                  if(res['success'] === true){
+                      var transType = res['data']['list'];
+                      if(transType != null && transType){
+                          var html = [];
+                          $.each(transType, function (index, type) {
+                              html.push('<tr><td>' + type['typeName'] + '</td>');
+                              html.push('<td>' + (type['parentId'] === 0? '': type['parentId'] ) + '</td>');
+                              html.push('<td>' + type['transTimeCodeId'] + '</td>');
+                              html.push('<td>' + type['defaultDest'] + '</td>');
+                              html.push('<td>' + type['proName'] + '</td>');
+                              html.push('<td><button type="button" class="btn btn-default">编辑</button>' +
+                                  '<button type="button" value="'+ type['id'] +'" style="margin-left: 10px;" class="btn btn-default">删除</button></td></tr>');
+                          });
+                          $('#trans_type_tbody').html(html.join(''));
+                      }
+                  }
+              });
+          }
+
+      </script>
+
+  </div>
+
+</body>
+</html>

@@ -2,14 +2,8 @@ package cn.com.hosp.www.sys.service.impl;
 
 import cn.com.hosp.www.common.exception.HospException;
 import cn.com.hosp.www.common.utils.MD5Util;
-import cn.com.hosp.www.dao.entry.Projects;
-import cn.com.hosp.www.dao.entry.Structures;
-import cn.com.hosp.www.dao.entry.SysUsers;
-import cn.com.hosp.www.dao.entry.WorkerInfo;
-import cn.com.hosp.www.dao.mapper.ProjectsMapper;
-import cn.com.hosp.www.dao.mapper.StructuresMapper;
-import cn.com.hosp.www.dao.mapper.SysUsersMapper;
-import cn.com.hosp.www.dao.mapper.WorkerInfoMapper;
+import cn.com.hosp.www.dao.entry.*;
+import cn.com.hosp.www.dao.mapper.*;
 import cn.com.hosp.www.sys.service.UserService;
 import cn.com.hosp.www.sys.service.base.impl.BaseServiceImpl;
 import cn.com.hosp.www.sys.web.form.UserForm;
@@ -32,6 +26,9 @@ public class UserServiceImpl extends BaseServiceImpl<WorkerInfoMapper, WorkerInf
     private ProjectsMapper projectsMapper;
     @Autowired
     private StructuresMapper structuresMapper;
+
+    @Autowired
+    private WorkerTaskMapper workerTaskMapper;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -64,6 +61,17 @@ public class UserServiceImpl extends BaseServiceImpl<WorkerInfoMapper, WorkerInf
         users.setUserType((short)1);
         users.setPassword(passwordEncoder.encode(userForm.getPassword()));
         sysUsersMapper.insert(users);
-        return  super.save(workerInfo);
+        WorkerInfo save = super.save(workerInfo);
+
+        WorkerTask workerTask = new WorkerTask();
+        workerTask.setWorkerId(save.getId());
+        workerTaskMapper.insert(workerTask);
+        return  save;
+    }
+
+    @Override
+    public int updateStateByUserName(WorkerInfo workerInfo) {
+        workerInfoMapper.updateState(workerInfo);
+        return 0;
     }
 }

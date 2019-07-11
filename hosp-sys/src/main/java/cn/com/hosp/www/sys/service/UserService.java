@@ -10,5 +10,6 @@ public interface UserService extends BaseService<WorkerInfo> {
 
     WorkerInfo save(UserForm userForm);
 
+    int updateStateByUserName(WorkerInfo workerInfo);
 
 }

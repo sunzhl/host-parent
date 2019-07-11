@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <title>空间代码</title>
+    <link rel="stylesheet" th:href="@{../../bootstrap/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{../../bootstrap/css/bootstrap-grid.min.css}" />
+    <link rel="stylesheet" th:href="@{../../bootstrap/css/index.css}" />
+    <!--<link rel="stylesheet" th:href="@{../../bootstrap/css/leftmenu.css}" />-->
+    <script type="text/javascript" th:src="@{../../bootstrap/js/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{../../bootstrap/js/bootstrap.min.js}"></script>
+</head>
+<body>
+
+  <div th:fragment="space_fragment" class="container">
+      <div style="height: 30px; margin-bottom: 10px; margin-top: -5px;">
+          <div class="headerLine"></div>
+          <div class="headerLabel">建筑物</div>
+          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#space_modal">添加建筑物</button>
+      </div>
+      <table class="table table-striped">
+          <thead>
+          <tr>
+              <th>空间名称</th>
+              <th>楼层</th>
+              <th>描述</th>
+              <th>角色</th>
+              <th>所属建筑</th>
+              <th>所属项目</th>
+              <th>操作</th>
+          </tr>
+          </thead>
+          <tbody id="space_tbody">
+
+          </tbody>
+      </table>
+
+
+
+
+      <!-- 模态框（Modal） -->
+      <div class="modal" id="space_modal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+          <div class="modal-dialog" style="width: 800px;">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                      <h4 class="modal-title" id="myModalLabel">添加空间代码</h4>
+                  </div>
+                  <div class="modal-body">
+                      <form id="space_form" role="form" class="form-inline" method="post" th:action="@{/task/add}" onsubmit="">
+                          <div class="container">
+                              <div class="addTitle">
+                                  <div class="leftImg"></div>
+                                  <span>基本信息</span>
+                              </div>
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="spaceName" class="control-label col-md-4 text-nowrap text-right">名称：</label>
+                                      <input id="spaceName" type="text" style="width: 200px;" required class="col-md-8 form-control"/>
+                                  </div>
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="floor" class="control-label col-md-4 text-nowrap text-right">楼层：</label>
+                                      <input id="floor" type="number" style="width: 200px;" required class="col-md-8 form-control"/>
+                                  </div>
+                              </div>
+
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="struct_info" class="control-label text-right text-nowrap col-md-4">所在建筑：</label>
+                                      <select id="struct_info" style="width: 200px;" class="form-control col-md-8">
+                                      </select>
+                                  </div>
+
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="space_remark" class="control-label text-right text-nowrap col-md-4">描述：</label>
+                                      <input id="space_remark" style="width: 200px;" class="form-control col-md-8" type="text" />
+                                  </div>
+                              </div>
+
+                              <div class="addTitle">
+                                  <div class="leftImg"></div>
+                                  <span>运送信息</span>
+                              </div>
+
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="role_info" class="control-label text-right text-nowrap col-md-4">角色：</label>
+                                      <select id="role_info" style="width: 200px;" class="form-control col-md-8">
+                                          <option value="1-未知">未知</option>
+                                          <option value="2-受益科室">受益科室</option>
+                                          <option value="3-检查科室">检查科室</option>
+                                      </select>
+                                  </div>
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="wonGroup" class="control-label text-right text-nowrap col-md-4">分组：</label>
+                                      <input id="wonGroup" style="width: 200px;" class="form-control col-md-8" />
+                                  </div>
+                              </div>
+
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="jobType" class="control-label text-right text-nowrap col-md-4">自主任务终点：</label>
+                                      <input id="jobType" style="width: 200px;" class="form-control col-md-8" type="checkbox" />
+
+                                  </div>
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="end_type" class="control-label text-right text-nowrap col-md-4">终点类型：</label>
+                                      <select id="end_type" style="width: 200px;" class="form-control col-md-8" >
+                                      </select>
+                                  </div>
+                              </div>
+
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="batchJobStart" class="control-label text-right text-nowrap col-md-4">自主任务终点：</label>
+                                      <input id="batchJobStart" style="width: 200px;" class="form-control col-md-8"  type="checkbox"/>
+                                  </div>
+
+                              </div>
+
+                              <div class="addTitle">
+                                  <div class="leftImg"></div>
+                                  <span>系统信息</span>
+                              </div>
+
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="space_project" class="control-label text-right text-nowrap col-md-4">所属项目：</label>
+                                      <select id="space_project" style="width: 200px;" class="form-control col-md-8">
+                                          <option value="1-空军总医院">空军总医院</option>
+                                      </select>
+                                  </div>
+                              </div>
+                          </div>
+                      </form>
+                  </div>
+                  <div class="modal-footer align-content-center">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                      <button type="button" id="space_submit" class="btn btn-primary">提交更改</button>
+                  </div>
+              </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+
+       <!--   <div id="myAlert" class="alert alert-success" aria-hidden="true">
+              <a href="#" class="close" data-dismiss="alert">&times;</a>
+              <strong>成功！</strong>保存成功。
+          </div>
+          <div id="myAlert2" class="alert alert-warning" aria-hidden="true">
+              <a href="#" class="close" data-dismiss="alert">&times;</a>
+              <strong>警告！</strong>保存失败。
+          </div>-->
+
+      </div>
+
+      <script type="text/javascript">
+
+          $(function () {
+
+              querySpace();
+
+              $('#space_submit').click(function () {
+
+                  var roleInfo = $('#role_info').val().split('-');
+                  var strutInfo = $('#struct_info').val().split('-');
+
+                   var postData = {
+                       'spaceName': $('#spaceName').val(),
+                       'floor': $('#floor').val(),
+                       'wonGroup': $('#wonGroup').val(),
+                       'roleId': roleInfo[0],
+                       'roleName': roleInfo[1],
+                       'structId': strutInfo[0],
+                       'structName': strutInfo[1],
+                       'remark': $('#space_remark').val(),
+                       'jobType': $('#jobType').is(':checked')? 1: 0,
+                       'batchJobStart': $('#batchJobStart').is(':checked')? 1: 0
+                   };
+
+                  var porject = $('#space_project').val();
+                  postData['proId'] = porject.split('-')[0];
+                  postData['proName'] = porject.split('-')[1];
+
+                  var sendData = JSON.stringify(postData);
+                  
+                  $.ajax({
+                      type: 'POST',
+                      dataType: 'json',
+                      contentType: "application/json;charset=utf-8",
+                      url: '../../space/add',
+                      data: sendData,
+                      success: function (data) {
+                          if(data['success'] == true){
+                              alert('保存成功');
+                              $('#space_form')[0].reset();
+                              $('#space_modal').modal('hide');
+                              querySpace();
+                          }else{
+                              //$('#myAlert2').alert();
+                              alert('保存失败');
+                          }
+                      },
+                      error: function () {
+                          alert('保存失败');
+                      }
+
+                  });
+
+              });
+
+
+              $('#space_modal').on('shown.bs.modal', function () {
+                  selectStructs([[${userInfo.proId}]]);
+              })
+
+          });
+
+
+          function querySpace() {
+              $.get('../../space/queryPage/1', function(res, status){
+                  console.log(res + '===' + status);
+                  if(res['success'] === true){
+                      var transType = res['data']['list'];
+                      if(transType != null && transType){
+                          var html = [];
+                          $.each(transType, function (index, type) {
+                              html.push('<tr><td>' + type['spaceName'] + '</td>');
+                              html.push('<td>' + type['floor'] + '</td>');
+                              html.push('<td>' + type['remark'] + '</td>');
+                              html.push('<td>' + type['roleName'] + '</td>');
+                              html.push('<td>' + type['structName'] + '</td>');
+                              html.push('<td>' + type['proName'] + '</td>');
+                              html.push('<td><button type="button" class="btn btn-default">编辑</button>' +
+                                  '<button type="button" value="'+ type['id'] +'" style="margin-left: 10px;" class="btn btn-default">删除</button></td></tr>');
+                          });
+                          $('#space_tbody').html(html.join(''));
+                      }
+                  }
+              });
+          }
+
+          function selectStructs(proId) {
+
+              $.ajax({
+                  type: 'GET',
+                  dataType: 'json',
+                  url: '../../structure/querySome',
+                  contentType: "application/json;charset=utf-8",
+                  data: {'proId': proId},
+                  success: function(res){
+                      if(res['success'] === true){
+                          var transType = res['data'];
+                          if(transType != null && transType){
+                              var html = [];
+                              $.each(transType, function (index, type) {
+                                  var val = type['id'] + '-' + type['structName'];
+                                  html.push('<option value="' + val + '">' + type['structName'] + '</option>');
+                              });
+                              $('#struct_info').html(html.join(''));
+                          }
+                      }
+                  }
+              });
+
+
+          }
+
+      </script>
+
+  </div>
+
+</body>
+</html>
