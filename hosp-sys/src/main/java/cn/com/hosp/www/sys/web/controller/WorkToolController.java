@@ -1,9 +1,7 @@
 package cn.com.hosp.www.sys.web.controller;
 
 import cn.com.hosp.www.common.result.Result;
-import cn.com.hosp.www.common.utils.CollectionUtils;
-import cn.com.hosp.www.common.utils.UUIDUtils;
-import cn.com.hosp.www.dao.entry.SpaceInfo;
+
 import cn.com.hosp.www.dao.entry.WorkTools;
 import cn.com.hosp.www.sys.service.WorkToolService;
 import cn.com.hosp.www.sys.web.form.PageForm;
@@ -14,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Map;
 
 /**
  * @ClassName WorkToolController
@@ -44,7 +41,8 @@ public class WorkToolController {
         workTools.setToolName(workToolForm.getToolName());
         workTools.setProId(workToolForm.getProId());
         workTools.setProName(workToolForm.getProName());
-        workTools.setToolCode(UUIDUtils.uuid());
+        workTools.setToolCode(workToolForm.getToolCode());
+        ///workTools.setToolCode(UUIDUtils.uuid());
         return Result.success().withData(workToolService.save(workTools));
     }
 
@@ -89,5 +87,13 @@ public class WorkToolController {
         }
         return Result.success().withData(workToolService.listByCondition(tools));
     }
+
+
+    @GetMapping("/query/{id}")
+    @ResponseBody
+    public Result query(@PathVariable("id") Long id){
+        return Result.success().withData(workToolService.getById(id));
+    }
+
 
 }

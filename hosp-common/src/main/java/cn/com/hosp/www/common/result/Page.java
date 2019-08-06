@@ -18,13 +18,25 @@ public class Page<T> implements Serializable {
 
     private List<T> list;
 
+    private Integer currentPage; //当前页
+
+    private Integer pageSize;  //页面大小
+
+    private Long pageCount; //总页数
+
+    private Integer currentPageCount; //当前页条数
+
     private Page(Long total, List<T> list) {
         this.total = total;
         this.list = list;
+        currentPageCount = list.size();
     }
 
-    public static <T> Page<T> with(Long total, List<T> data) {
-        return new Page<>(total, data);
+    public static <T> Page<T> with(Long total, List<T> data, Integer currentPage, Integer pageSize) {
+        Page<T> tPage = new Page<>(total, data);
+        tPage.setPageSize(pageSize);
+        tPage.setCurrentPage(currentPage);
+        return tPage;
     }
 
     public static <T> Page<T> empty() {
@@ -47,4 +59,38 @@ public class Page<T> implements Serializable {
         this.total = total;
     }
 
+    public Integer getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(Integer currentPage) {
+        this.currentPage = currentPage;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public Long getPageCount() {
+
+        pageCount = (total % pageSize == 0)? total / pageSize: total / pageSize + 1;
+
+        return pageCount;
+    }
+
+    public void setPageCount(Long pageCount) {
+        this.pageCount = pageCount;
+    }
+
+    public Integer getCurrentPageCount() {
+        return currentPageCount;
+    }
+
+    public void setCurrentPageCount(Integer currentPageCount) {
+        this.currentPageCount = currentPageCount;
+    }
 }

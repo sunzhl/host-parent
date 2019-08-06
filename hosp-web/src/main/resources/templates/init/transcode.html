@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <title>左侧菜单</title>
+    <link rel="stylesheet" th:href="@{../../bootstrap/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{../../bootstrap/css/bootstrap-grid.min.css}" />
+    <link rel="stylesheet" th:href="@{../../bootstrap/css/index.css}" />
+    <!--<link rel="stylesheet" th:href="@{../../bootstrap/css/leftmenu.css}" />-->
+    <script type="text/javascript" th:src="@{../../bootstrap/js/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{../../bootstrap/js/bootstrap.min.js}"></script>
+</head>
+<body>
+
+  <div th:fragment="trans_code_fragment" class="container">
+      <div style="height: 30px; margin-bottom: 10px; margin-top: -5px;">
+          <div class="headerLine"></div>
+          <div class="headerLabel">时间代码</div>
+          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#trans_code_modal">添加时间代码</button>
+      </div>
+      <table class="table table-bordered table-hover" id="trans_code__table">
+          <thead>
+          <tr>
+              <th>编码</th>
+              <th>名称</th>
+              <th>所属项目</th>
+              <th>预约</th>
+              <th>标准</th>
+              <th>警告</th>
+              <th>危急</th>
+              <th>生效时间</th>
+              <th>操作</th>
+          </tr>
+          </thead>
+          <tbody id="trans_code__tbody">
+
+          </tbody>
+          <tfoot id="trans_code__tfoot">
+          <tr>
+              <td id="trans_code__page" colspan="9" style="text-align: right"></td>
+          </tr>
+          </tfoot>
+      </table>
+
+
+
+
+      <!-- 模态框（Modal） -->
+      <div class="modal" id="trans_code_modal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+          <div class="modal-dialog" style="width: 800px;">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                      <h4 class="modal-title" id="myModalLabel">编辑时间代码</h4>
+                  </div>
+                  <div class="modal-body">
+                      <form id="trans_code_form" role="form" class="form-inline" method="post" th:action="@{/task/add}" onsubmit="">
+                          <div class="container">
+                              <div class="addTitle">
+                                  <div class="leftImg"></div>
+                                  <span>基本信息</span>
+                              </div>
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="trans_code_remark" class="control-label col-md-4 text-nowrap text-right">名称<i>*</i></label>
+                                      <input id="trans_code_remark" type="text" style="width: 200px;" required class="col-md-8 form-control"/>
+                                  </div>
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="trans_code_project" class="control-label text-right text-nowrap col-md-4">所属项目<i>*</i></label>
+                                      <select id="trans_code_project" style="width: 200px;" class="form-control col-md-8">
+                                          <option value="1">空军总医院</option>
+                                      </select>
+                                  </div>
+                              </div>
+
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="trans_code_code" class="control-label text-right text-nowrap col-md-4">编码<i>*</i></label>
+                                      <input id="trans_code_code" type="text" style="width: 200px;"  class="col-md-8 form-control"/>
+                                  </div>
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="effectiveTime" class="control-label text-right text-nowrap col-md-4">开始生效时间<i>*</i></label>
+                                      <div class="input-group date col-md-8">
+                                          <input type='text' class="form-control" id="effectiveTime" onclick="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss'})"/>
+                                          <span class="input-group-addon">
+                                      <span class="glyphicon glyphicon-calendar" onclick="WdatePicker({el:'effectiveTime',dateFmt: 'yyyy-MM-dd HH:mm:ss'})"></span>
+                                    </span>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="addTitle">
+                                  <div class="leftImg"></div>
+                                  <span>时间规则</span>
+                              </div>
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="reserveTime" class="control-label text-right text-nowrap col-md-4">预约<i>*</i></label>
+                                      <input id="reserveTime" type="number" style="width: 200px;" class="form-control col-md-8" />
+                                  </div>
+
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="standardTime" class="control-label text-right text-nowrap col-md-4">标准<i>*</i></label>
+                                      <input type="text" id="standardTime" style="width: 200px;" class="form-control col-md-8"/>
+                                  </div>
+                              </div>
+
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="warnTime" class="control-label text-right text-nowrap col-md-4">警告<i>*</i></label>
+                                      <input id="warnTime"  style="width: 200px;" class="form-control col-md-8">
+                                  </div>
+
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="criticalTime" class="control-label text-right text-nowrap col-md-4">危急<i>*</i></label>
+                                      <input type="text" id="criticalTime" style="width: 200px;" class="form-control col-md-8"/>
+                                  </div>
+                              </div>
+                          </div>
+                      </form>
+                  </div>
+                  <div class="modal-footer align-content-center">
+                      <input type="hidden" id="trans_code_id"/>
+                      <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                      <button type="button" id="trans_code_submit" class="btn btn-primary">提交更改</button>
+                  </div>
+              </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+
+       <!--   <div id="myAlert" class="alert alert-success" aria-hidden="true">
+              <a href="#" class="close" data-dismiss="alert">&times;</a>
+              <strong>成功！</strong>保存成功。
+          </div>
+          <div id="myAlert2" class="alert alert-warning" aria-hidden="true">
+              <a href="#" class="close" data-dismiss="alert">&times;</a>
+              <strong>警告！</strong>保存失败。
+          </div>-->
+
+      </div>
+
+      <div style="display: none">
+          <textarea id="trans_time_code_temp">
+              {#foreach $T as rec}
+          <tr>
+            <td>{$T.rec.timeCode}</td>
+            <td>{$T.rec.codeName}</td>
+            <td >{$T.rec.proName}</td>
+            <td>{$T.rec.reserveTime}</td>
+            <td >{$T.rec.standardTime}</td>
+            <td >{$T.rec.warnTime}</td>
+            <td >{$T.rec.criticalTime}</td>
+            <td >{$T.rec.effectiveTime}</td>
+            <td >
+                <button type="button" value="{$T.rec.id}" class="btn btn-primary btn-xs trans_code_edit">编辑</button>
+                <button type="button" value="{$T.rec.id}" class="btn btn-danger btn-xs trans_code_delete">删除</button>
+            </td>
+
+        </tr>
+       {#/for}
+
+          </textarea>
+      </div>
+
+      <script type="text/javascript" th:src="@{../../bootstrap/js/transcode.js}"></script>
+
+  </div>
+
+</body>
+</html>

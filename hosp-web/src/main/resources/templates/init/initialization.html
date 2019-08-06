@@ -7,10 +7,27 @@
     <title>智能后勤管理系统</title>
     <link rel="stylesheet" th:href="@{../../bootstrap/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{../../bootstrap/css/bootstrap-grid.min.css}" />
+    <link rel="stylesheet" th:href="@{../../bootstrap/css/bootstrap-table.css}">
+    <link rel="stylesheet" th:href="@{../../bootstrap/css/bootstrap-select.min.css}" />
     <link rel="stylesheet" th:href="@{../../bootstrap/css/index.css}" />
     <!--<link rel="stylesheet" th:href="@{../../bootstrap/css/leftmenu.css}" />-->
     <script type="text/javascript" th:src="@{../../bootstrap/js/jquery.js}"></script>
     <script type="text/javascript" th:src="@{../../bootstrap/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{../../bootstrap/js/moment-with-locales.min.js}"></script>
+    <script type="text/javascript" th:src="@{../../bootstrap/js/bootstrap-datetimepicker.min.js}"></script>
+    <script type="text/javascript" th:src="@{../../bootstrap/js/locales/bootstrap-datetimepicker.zh-CN.js}"></script>
+    <script type="text/javascript" th:src="@{../../bootstrap/js/bootstrap-select.min.js}"></script>
+    <script type="text/javascript" th:src="@{../../bootstrap/js/jtemplates.js}"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script type="text/javascript" th:src="@{../../bootstrap/js/bootstrap-table.js}"></script>
+    <!-- Latest compiled and minified Locales -->
+    <script type="text/javascript" th:src="@{../../bootstrap/js/bootstrap-table-zh-Ch.js}"></script>
+    <script type="text/javascript" th:src="@{../../datepicker/My97DatePicker/WdatePicker.js}"></script>
+    <script type="text/javascript" th:src="@{../../bootstrap/js/server.js}"></script>
+    <script type="text/javascript" th:src="@{../../bootstrap/js/settings.js}"></script>
+
+
+
 </head>
 <body>
 
@@ -27,8 +44,19 @@
                <div id="trans_type_div" class="init_content" th:include="init/transporttype::trans_type"></div>
                <div id="structure_div" style="display: none;" class="init_content" th:include="init/structure::struct_fragment"></div>
                <div id="space_div" style="display: none;" class="init_content" th:include="init/space::space_fragment"></div>
+               <div id="medical_div" style="display: none;" class="init_content" th:include="init/medicalcare::madical_fragment"></div>
+               <div id="worker_div" style="display: none;" class="init_content" th:include="init/workerinfo::worker_fragment"></div>
+               <div id="trans_tool_div" style="display: none;" class="init_content" th:include="init/transtool::trans_tool_fragment"></div>
+               <div id="cancel_reason_div" style="display: none;" class="init_content" th:include="init/cancelreason::cancel_reason_fragment"></div>
+               <div id="delay_reason_div" style="display: none;" class="init_content" th:include="init/delayreason::delay_reason_fragment"></div>
+               <div id="trans_code_div" style="display: none;" class="init_content" th:include="init/transcode::trans_code_fragment"></div>
+               <div id="circle_setting_div" style="display: none;" class="init_content" th:include="init/circlesetting::circle_setting_fragment"></div>
             </div>
         </div>
+    </div>
+    <div style="display: none">
+        <input type="hidden" th:value="${userInfo.id}" id="current_worker_id" />
+        <input type="hidden" th:value="${userInfo.proId}" id="current_pro_id" />
     </div>
 </div>
 

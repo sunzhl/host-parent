@@ -1,8 +1,11 @@
 package cn.com.hosp.www.sys.web.controller;
 
 import cn.com.hosp.www.common.exception.HospException;
+import cn.com.hosp.www.common.result.Result;
+import cn.com.hosp.www.dao.entry.ProjectUser;
 import cn.com.hosp.www.dao.entry.Projects;
 import cn.com.hosp.www.sys.service.ProjectService;
+import cn.com.hosp.www.sys.service.ProjectUserService;
 import cn.com.hosp.www.sys.vo.ReturnCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +35,9 @@ public class ProjectController {
 
     @Autowired
     private ProjectService projectService;
+
+    @Autowired
+    private ProjectUserService projectUserService;
 
     @PostMapping("/save")
     @ResponseBody
@@ -93,5 +99,13 @@ public class ProjectController {
         return result;
     }
 
+
+    @GetMapping("/up/{uid}")
+    @ResponseBody
+    public Result queryProject(@PathVariable("uid") Long uid){
+        ProjectUser projectUser = new ProjectUser();
+        projectUser.setUserId(uid);
+        return Result.success().withData(projectUserService.listByCondition(projectUser));
+    }
 
 }

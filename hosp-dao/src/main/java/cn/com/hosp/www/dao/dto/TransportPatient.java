@@ -1,6 +1,8 @@
 package cn.com.hosp.www.dao.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 
 import java.io.Serializable;
@@ -26,10 +28,15 @@ public class TransportPatient implements Serializable {
     private Long id;
     private String taskName;
     private String createName;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
     private String taskTypeName;
     private String setOutPlaceName;
     private String destinationName;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime planStartTime;
     private Integer finishTime;
     private Integer bookTime;
@@ -41,6 +48,9 @@ public class TransportPatient implements Serializable {
     private String proNumber;
     private String proName;
     private String toolName;
+    private String cancelReason;
+    private String delayReason;
+    private String taskDesc;
     private String patientName;
     private Long pid;
     private Integer age;

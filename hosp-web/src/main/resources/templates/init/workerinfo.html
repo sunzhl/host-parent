@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <title>工作人员信息</title>
+    <link rel="stylesheet" th:href="@{../../bootstrap/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{../../bootstrap/css/bootstrap-grid.min.css}" />
+    <link rel="stylesheet" th:href="@{../../bootstrap/css/index.css}" />
+    <!--<link rel="stylesheet" th:href="@{../../bootstrap/css/leftmenu.css}" />-->
+    <script type="text/javascript" th:src="@{../../bootstrap/js/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{../../bootstrap/js/bootstrap.min.js}"></script>
+
+</head>
+<body>
+
+  <div th:fragment="worker_fragment" class="container">
+      <div style="height: 30px; margin-bottom: 10px; margin-top: -5px;">
+          <div class="headerLine"></div>
+          <div class="headerLabel">工作人员</div>
+          <select style="width: 200px;" class="selectpicker" id="worker_state_select">
+              <option value="">所有在职</option>
+              <option value="1">在岗</option>
+              <option value="0">离岗</option>
+              <option value="2">已离职</option>
+          </select>
+          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#worker_modal">添加工作人员</button>
+      </div>
+      <table class="table table-hover table-bordered">
+          <thead>
+          <tr>
+              <th>姓名</th>
+              <th>登录账号</th>
+              <th>手机号</th>
+              <th>状态</th>
+              <th>所属项目</th>
+              <th>操作</th>
+          </tr>
+          </thead>
+          <tbody id="worker_tbody">
+
+          </tbody>
+          <tfoot id="worker_tfoot">
+          <tr>
+              <td id="worker_page" colspan="6" style="text-align: right"></td>
+          </tr>
+          </tfoot>
+      </table>
+
+
+
+
+      <!-- 模态框（Modal） -->
+      <div class="modal" id="worker_modal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+          <div class="modal-dialog" style="width: 800px;">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                      <h4 class="modal-title" id="myModalLabel">添加工作人员</h4>
+                  </div>
+                  <div class="modal-body">
+                      <form id="worker_form" role="form" class="form-inline" method="post" th:action="@{/task/add}" onsubmit="">
+                          <div class="container">
+                              <div class="addTitle">
+                                  <div class="leftImg"></div>
+                                  <span>个人信息</span>
+                              </div>
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="worker_name" class="control-label text-right text-nowrap col-md-4">姓名：</label>
+                                      <input id="worker_name" style="width: 200px;" class="form-control col-md-8" required />
+
+                                  </div>
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="worker_account" class="control-label text-right text-nowrap col-md-4">账号：</label>
+                                      <input id="worker_account" style="width: 200px;" class="form-control col-md-8" required />
+
+                                  </div>
+                              </div>
+
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="worker_pwd"  class="control-label text-right text-nowrap col-md-4">密码：</label>
+                                      <input id="worker_pwd"   class="form-control col-md-8" type="password" required/>
+                                  </div>
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="worker_project"  class="control-label text-right text-nowrap col-md-4">项目：</label>
+                                      <select id="worker_project" style="width: 200px;" class="form-control col-md-8">
+                                          <option value="1">空军总医院</option>
+                                      </select>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="worker_idNo"  class="control-label text-right text-nowrap col-md-4">身份证号：</label>
+                                      <input id="worker_idNo"   class="form-control col-md-8" type="text" />
+                                  </div>
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="worker_birth"  class="control-label text-right text-nowrap col-md-4">生日：</label>
+                                      <div class="input-group date col-md-8" id="datetimepicker3">
+                                          <input type='text' class="form-control" id="worker_birth" onclick="WdatePicker()" />
+                                          <span class="input-group-addon">
+                                      <span class="glyphicon glyphicon-calendar" onclick="WdatePicker({el:'worker_birth'})"></span>
+                                    </span>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="worker_intime"  class="control-label text-right text-nowrap col-md-4">入职时间：</label>
+                                      <div class="input-group date col-md-8" id="datetimepicker4">
+                                          <input type='text' class="form-control" id="worker_intime"  onclick="WdatePicker()"/>
+                                          <span class="input-group-addon">
+                                      <span class="glyphicon glyphicon-calendar"  onclick="WdatePicker({el: 'worker_intime'})"></span>
+                                    </span>
+                                      </div>
+                                  </div>
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="worker_rsno"  class="control-label text-right text-nowrap col-md-4">人事处编码：</label>
+                                      <input id="worker_rsno"   class="form-control col-md-8" type="text"/>
+                                  </div>
+                              </div>
+                              <div class="addTitle">
+                                  <div class="leftImg"></div>
+                                  <span>联系方式</span>
+                              </div>
+
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="worker_mobile" class="control-label text-right text-nowrap col-md-4"
+                                             style="padding-left: 0px;">手机：</label>
+                                      <input id="worker_mobile" type="text" style="width: 200px;"  class="col-md-8 form-control"/>
+                                  </div>
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="worker_phone" class="control-label text-right text-nowrap col-md-4"
+                                      >联系电话：</label>
+                                      <input id="worker_phone" type="text" style="width: 200px;"  class="col-md-8 form-control"/>
+                                  </div>
+                              </div>
+                                  <div class="row">
+                                      <div class="form-group addTaskForm col-md-6">
+                                          <label for="worker_phone1" class="control-label text-right text-nowrap col-md-4"
+                                                 style="padding-left: 0px;">紧急联系方式：</label>
+                                          <input id="worker_phone1" type="text" style="width: 200px;" required class="col-md-8 form-control"/>
+                                      </div>
+                              </div>
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="worker_province" class="control-label text-right text-nowrap col-md-4"
+                                             style="padding-left: 0px;">省：</label>
+                                      <input id="worker_province" type="text" style="width: 200px;"  class="col-md-8 form-control"/>
+                                  </div>
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="worker_city" class="control-label text-right text-nowrap col-md-4"
+                                      >市：</label>
+                                      <input id="worker_city" type="text" style="width: 200px;"  class="col-md-8 form-control"/>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="worker_address" class="control-label text-right text-nowrap col-md-4">地址：</label>
+                                      <input id="worker_address"  class="form-control col-md-8" type="text" />
+                                  </div>
+                              </div>
+                              <div class="addTitle">
+                                  <div class="leftImg"></div>
+                                  <span>工作信息</span>
+                              </div>
+
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="worker_group" class="control-label text-right text-nowrap col-md-4"
+                                             style="padding-left: 0px;">工作组：</label>
+                                      <select id="worker_group" type="text" style="width: 200px;"  class="col-md-8 form-control">
+                                         <option value="1">项目经理</option>
+                                         <option value="2">运送员</option>
+                                      </select>
+                                  </div>
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="worker_job" class="control-label text-right text-nowrap col-md-4"
+                                      >岗位：</label>
+                                      <input id="worker_job" type="text" style="width: 200px;"  class="col-md-8 form-control"/>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="worker_struct" class="control-label text-right text-nowrap col-md-4"
+                                             style="padding-left: 0px;">责任建筑：</label>
+                                      <select id="worker_struct" style="width: 200px;" class="form-control col-md-8">
+                                      </select>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="worker_loop_time" class="control-label text-right text-nowrap col-md-4"
+                                             style="padding-left: 0px;">循环组循环时间（单位：分）：</label>
+                                      <input id="worker_loop_time" type="number" style="width: 200px;"  class="col-md-8 form-control"/>
+                                  </div>
+                              </div>
+                          </div>
+                          <input type="hidden" id="worker_id" />
+                      </form>
+                  </div>
+                  <div class="modal-footer align-content-center">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                      <button type="button" id="worker_submit" class="btn btn-primary">提交更改</button>
+                  </div>
+              </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+
+       <!--   <div id="myAlert" class="alert alert-success" aria-hidden="true">
+              <a href="#" class="close" data-dismiss="alert">&times;</a>
+              <strong>成功！</strong>保存成功。
+          </div>
+          <div id="myAlert2" class="alert alert-warning" aria-hidden="true">
+              <a href="#" class="close" data-dismiss="alert">&times;</a>
+              <strong>警告！</strong>保存失败。
+          </div>-->
+
+      </div>
+
+      <script type="text/javascript">
+
+          $(function () {
+              queryWorkerInfos();
+              publicQueryProject('worker_project',  $('#current_worker_id').val());
+              $('#worker_submit').click(function () {
+                   var postData = {
+                       'workerNumber': $('#worker_account').val(),
+                       'workerName': $('#worker_name').val(),
+                       'password': $('#worker_pwd').val(),
+                       'idCardNo': $('#worker_idNo').val(),
+                       'birthday': $('#worker_birth').val(),
+                       'phone': $('#worker_phone').val(),
+                       'mobile': $('#worker_mobile').val(),
+                       'urgentPhone': $('#worker_phone1').val(),
+                       'job': $('#worker_job').val(),
+                       'loopTime': $('#worker_loop_time').val(),
+                       'proId': $('#worker_project').val(),
+                       'proName': $('#worker_project').opTxt(),
+                       'structId': $('#worker_struct').val(),
+                       'structName': $('#worker_struct').opTxt(),
+                       'province': $('#worker_province').val(),
+                       'city': $('#worker_city').val(),
+                       'address': $('#worker_address').val(),
+                       'personnelNumber': $('#worker_rsno').val(),
+                       'remark': $('#medical_remark').val(),
+                       'workerGroup': $('#worker_group').val(),
+                       'joinTime': $('#worker_intime').val(),
+                       'id': $('#worker_id').val()
+                   };
+
+                   if('' === $('#worker_id').val()){
+                       $.sendPost('../../worker/add', postData, workerInfoSaveOrUpdate);
+                   }else {
+                       $.put('../../worker/update', postData, workerInfoSaveOrUpdate);
+                   }
+
+              });
+
+
+              $('#worker_modal').on('shown.bs.modal', function () {
+                  //queryWorkSpaces([[${userInfo.proId}]]);
+
+              }).on('hide.bs.modal', function () {
+                  $('#worker_form')[0].reset();
+                  $('#worker_id').val('');
+              });
+
+              $('#worker_project').unbind('change').change(function () {
+                  var val = $(this).val();
+                  if(val === ''){
+                      $('#worker_struct').html('');
+                  }else{
+                      selectworkerStructs(val, 0);
+                  }
+              });
+
+              $('#worker_state_select').unbind('change').change(function () {
+                  queryWorkerInfos(1);
+              });
+              
+          });
+
+          function workerInfoSaveOrUpdate(data, status) {
+              if(status && data['success']){
+                  alert('保存成功');
+                  $('#worker_form')[0].reset();
+                  $('#worker_modal').modal('hide');
+                  queryWorkerInfos();
+              }else{
+                  alert('保存失败');
+              }
+          }
+
+          function queryWorkerInfos(currentPage) {
+              currentPage = currentPage || 1;
+              var state = $('#worker_state_select').val();
+              var data = null;
+              if(state !== ''){
+                  data = {'state': state};
+              }
+              $.sendGet('../../worker/queryByPage/' + currentPage + '/20', data, function(res, status){
+                  console.log(res + '===' + status);
+                  if(res['success'] === true){
+                      var transType = res['data']['list'];
+                      if(transType != null && transType){
+                          var html = [];
+                          $.each(transType, function (index, type) {
+                              html.push('<tr><td>' + type['workerName'] + '</td>');
+                              html.push('<td>' + type['workerNumber'] + '</td>');
+                              html.push('<td>' + type['mobile'] + '</td>');
+                              if(type['state'] == 0){
+                                  html.push('<td>离岗</td>');
+                              }else if(type['state'] == 1){
+                                  html.push('<td>在岗</td>');
+                              }else if (type['state'] == 2){
+                                  html.push('<td>已离职</td>');
+                              }else {
+                                  html.push('<td>' + type['state'] + '</td>');
+                              }
+
+                              html.push('<td>' + type['proName'] + '</td>');
+                              html.push('<td><button type="button" value="'+ type['id'] +'" class="btn btn-primary btn-xs workerinfo_edit">编辑</button>');
+                              if (type['state'] != 2){
+                                  html.push('<button type="button" value="'+ type['id'] +'" style="margin-left: 10px;" class="btn btn-warning btn-xs workerinfo_quit">离职</button>');
+                              }
+                              //html.push('<button type="button" value="'+ type['id'] +'" style="margin-left: 10px;" class="btn btn-danger btn-xs workerinfo_delete">删除</button>');
+                              html.push('</td></tr>')
+                          });
+                          $('#worker_tbody').html(html.join(''));
+                          getMyMindMapPage(currentPage, res['data']['pageCount'], 'worker_page', queryWorkerInfos);
+                          $('.workerinfo_edit').unbind('click').click(workerInfoEdit);
+                          $('.workerinfo_delete').unbind('click').click(workerInfoDeleted);
+                          $('.workerinfo_quit').unbind('click').click(workerQuit);
+                      }
+                  }
+              });
+          }
+
+          function workerQuit() {
+              if(confirm('请确认此员工是否离职')){
+                  var attr = $(this).attr('value');
+                  $.put('../../worker/update/', {'id':attr, 'state': 2}, function (res, status) {
+                      if(res['success'] && status){
+                          alert('操作成功');
+                          queryWorkerInfos(1);
+                      }else{
+                          alert('操作失败');
+                      }
+                  } );
+              }
+          }
+          
+          function workerInfoEdit() {
+              var attr = $(this).attr('value');
+              $.sendGet('../../worker/query/' + attr, null, function (res, status) {
+                  if(res['success'] && status){
+                      var data = res['data'];
+                           $('#worker_account').val(data['workerNumber']);
+                           $('#worker_name').val(data['workerName']);
+                          //'password': $('#worker_pwd').val(),
+                           $('#worker_idNo').val(data['idCardNo']);
+                           $('#worker_birth').val(data['birthday']);
+                           $('#worker_phone').val(data['phone']);
+                           $('#worker_mobile').val(data['mobile']);
+                           $('#worker_phone1').val(data['urgentPhone']);
+                           $('#worker_job').val(data['job']);
+                           $('#worker_loop_time').val(data['loopTime']);
+                           $('#worker_province').val(data['province']);
+                           $('#worker_city').val(data['city']);
+                           $('#worker_address').val(data['address']);
+                           $('#worker_rsno').val(data['personnelNumber']);
+                           $('#medical_remark').val(data['remark']);
+                           $('#worker_group').val(data['workerGroup']);
+                           $('#worker_intime').val(data['joinTime']);
+                           $('#worker_modal').modal('show');
+                           $('#worker_project').val(data['proId']);
+                           selectworkerStructs(data['proId'], data['structId']);
+                           $('#worker_id').val(data['id']);
+                  }
+              });
+          }
+          
+          function workerInfoDeleted() {
+              if(confirm('确认是否删除')){
+                  var attr = $(this).attr('value');
+                  $.delete('../../worker/delete/' + attr, null, function (res, status) {
+                      if(res['success'] && status){
+                          alert('删除成功');
+                          queryWorkerInfos(1);
+                      }else{
+                          alert('删除失败');
+                      }
+                  } );
+              }
+          }
+          
+          function queryWorkSpaces(proId) {
+              $.sendGet('../../space/query', {proId: proId}, function (res, status) {
+                  if(status && res['success']){
+                      var transType = res['data'];
+                      if(transType != null && transType){
+                          var html = ['<option value="">--请选择--</option>'];
+                          $.each(transType, function (index, type) {
+                              var val = type['id'] + '-' + type['spaceName'];
+                              html.push('<option value="' + val + '">' + type['spaceName'] + '</option>');
+                          });
+                          $('#medical_space').html(html.join(''));
+                      }
+                  }
+              });
+          }
+
+
+          function selectworkerStructs(proId, defValue) {
+              $.sendGet(
+                  '../../structure/querySome',
+                  {'proId': proId},
+                  function(res, status){
+                      if(res['success'] && status){
+                          var transType = res['data'];
+                          if(transType != null && transType){
+                              var html = ['<option value="0">--请选择--</option>'];
+                              $.each(transType, function (index, type) {
+                                  var val = type['id']; // + '-' + type['structName'];
+                                  html.push('<option value="' + val + '">' + type['structName'] + '</option>');
+                              });
+                              $('#worker_struct').html(html.join(''));
+                              if(null != defValue){
+                                 $('#worker_struct').val(defValue);
+                              }
+                          }
+                      }
+                  }
+              );
+          }
+
+      </script>
+
+  </div>
+
+</body>
+</html>

@@ -24,7 +24,12 @@ import java.util.Date;
 @Setter
 public class TaskForm {
 
+    private Long id;
+
+    private Long pid;
+
     private String taskNumber;
+
 
     @NotBlank(message = "任务名称不能为空")
     private String taskName;
@@ -56,7 +61,7 @@ public class TaskForm {
 
     private Integer bookTime;
 
-    private short priority;
+    private Short priority;
 
     private Long toolId;
 
@@ -68,7 +73,7 @@ public class TaskForm {
 
     private Integer actualCount;
 
-    private short state;
+    private Short state;
 
     private String cancelReason;
 
@@ -88,10 +93,14 @@ public class TaskForm {
 
     private String bedNumber;
 
-    private short sex;
+    private Short sex;
 
     private Integer age;
 
     private String number;
+
+    private int updateType;
+
+    private Long operationId;
 
 }

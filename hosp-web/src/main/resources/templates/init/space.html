@@ -18,9 +18,9 @@
       <div style="height: 30px; margin-bottom: 10px; margin-top: -5px;">
           <div class="headerLine"></div>
           <div class="headerLabel">建筑物</div>
-          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#space_modal">添加建筑物</button>
+          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#space_modal">添加空间代码</button>
       </div>
-      <table class="table table-striped">
+      <table class="table table-bordered table-hover">
           <thead>
           <tr>
               <th>空间名称</th>
@@ -35,6 +35,11 @@
           <tbody id="space_tbody">
 
           </tbody>
+          <tfoot id="space_tool_tfoot">
+          <tr>
+              <td id="space_tool_page" colspan="7" style="text-align: right"></td>
+          </tr>
+          </tfoot>
       </table>
 
 
@@ -88,9 +93,9 @@
                                   <div class="form-group addTaskForm col-md-6">
                                       <label for="role_info" class="control-label text-right text-nowrap col-md-4">角色：</label>
                                       <select id="role_info" style="width: 200px;" class="form-control col-md-8">
-                                          <option value="1-未知">未知</option>
-                                          <option value="2-受益科室">受益科室</option>
-                                          <option value="3-检查科室">检查科室</option>
+                                          <option value="1">未知</option>
+                                          <option value="2">受益科室</option>
+                                          <option value="3">检查科室</option>
                                       </select>
                                   </div>
                                   <div class="form-group addTaskForm col-md-6">
@@ -102,7 +107,7 @@
                               <div class="row">
                                   <div class="form-group addTaskForm col-md-6">
                                       <label for="jobType" class="control-label text-right text-nowrap col-md-4">自主任务终点：</label>
-                                      <input id="jobType" style="width: 200px;" class="form-control col-md-8" type="checkbox" />
+                                      <input id="jobType"  class="form-control col-md-8" type="checkbox" />
 
                                   </div>
                                   <div class="form-group addTaskForm col-md-6">
@@ -115,7 +120,7 @@
                               <div class="row">
                                   <div class="form-group addTaskForm col-md-6">
                                       <label for="batchJobStart" class="control-label text-right text-nowrap col-md-4">自主任务终点：</label>
-                                      <input id="batchJobStart" style="width: 200px;" class="form-control col-md-8"  type="checkbox"/>
+                                      <input id="batchJobStart"  class="form-control col-md-8"  type="checkbox"/>
                                   </div>
 
                               </div>
@@ -129,11 +134,12 @@
                                   <div class="form-group addTaskForm col-md-6">
                                       <label for="space_project" class="control-label text-right text-nowrap col-md-4">所属项目：</label>
                                       <select id="space_project" style="width: 200px;" class="form-control col-md-8">
-                                          <option value="1-空军总医院">空军总医院</option>
+                                          <option value="1">空军总医院</option>
                                       </select>
                                   </div>
                               </div>
                           </div>
+                          <input type="hidden" id="space_id"  />
                       </form>
                   </div>
                   <div class="modal-footer align-content-center">
@@ -157,68 +163,62 @@
       <script type="text/javascript">
 
           $(function () {
-
               querySpace();
-
+              publicQueryProject('space_project',  $('#current_worker_id').val());
               $('#space_submit').click(function () {
-
-                  var roleInfo = $('#role_info').val().split('-');
-                  var strutInfo = $('#struct_info').val().split('-');
-
                    var postData = {
                        'spaceName': $('#spaceName').val(),
                        'floor': $('#floor').val(),
                        'wonGroup': $('#wonGroup').val(),
-                       'roleId': roleInfo[0],
-                       'roleName': roleInfo[1],
-                       'structId': strutInfo[0],
-                       'structName': strutInfo[1],
+                       'roleId': $('#role_info').val(),
+                       'roleName': $('#role_info').opTxt(),
+                       'structId': $('#struct_info').val(),
+                       'structName': $('#struct_info').opTxt(),
+                       'proId': $('#space_project').val(),
+                       'proName': $('#space_project').opTxt(),
                        'remark': $('#space_remark').val(),
                        'jobType': $('#jobType').is(':checked')? 1: 0,
-                       'batchJobStart': $('#batchJobStart').is(':checked')? 1: 0
+                       'batchJobStart': $('#batchJobStart').is(':checked')? 1: 0,
+                       'id': $('#space_id').val()
                    };
 
-                  var porject = $('#space_project').val();
-                  postData['proId'] = porject.split('-')[0];
-                  postData['proName'] = porject.split('-')[1];
-
-                  var sendData = JSON.stringify(postData);
-                  
-                  $.ajax({
-                      type: 'POST',
-                      dataType: 'json',
-                      contentType: "application/json;charset=utf-8",
-                      url: '../../space/add',
-                      data: sendData,
-                      success: function (data) {
-                          if(data['success'] == true){
-                              alert('保存成功');
-                              $('#space_form')[0].reset();
-                              $('#space_modal').modal('hide');
-                              querySpace();
-                          }else{
-                              //$('#myAlert2').alert();
-                              alert('保存失败');
-                          }
-                      },
-                      error: function () {
-                          alert('保存失败');
-                      }
-
-                  });
+                  if('' !== $('#space_id').val()){
+                      $.put('../../space/update', postData, saveOrUpdateSpace)
+                  }else{
+                      $.sendPost('../../space/add', postData, saveOrUpdateSpace);
+                  }
 
               });
 
 
               $('#space_modal').on('shown.bs.modal', function () {
                   selectStructs([[${userInfo.proId}]]);
+              }).on('hide.bs.modal', function () {
+                  $('#space_form')[0].reset();
               })
+
+              $('#space_project').change(function () {
+                  var val = $(this).val();
+                  selectStructs(val);
+              });
 
           });
 
+          function saveOrUpdateSpace(data, status) {
+              if(status && data['success']){
+                  alert('操作成功');
+                  $('#space_form')[0].reset();
+                  $('#space_id').val('');
+                  $('#space_modal').modal('hide');
+                  querySpace();
+              }else{
+                  alert('操作失败');
+              }
+          }
 
-          function querySpace() {
-              $.get('../../space/queryPage/1', function(res, status){
+          function querySpace(currentPage) {
+              currentPage = currentPage || 1;
+              $.get('../../space/queryPage/' + currentPage, function(res, status){
                   console.log(res + '===' + status);
                   if(res['success'] === true){
                       var transType = res['data']['list'];
@@ -231,39 +231,75 @@
                               html.push('<td>' + type['roleName'] + '</td>');
                               html.push('<td>' + type['structName'] + '</td>');
                               html.push('<td>' + type['proName'] + '</td>');
-                              html.push('<td><button type="button" class="btn btn-default">编辑</button>' +
-                                  '<button type="button" value="'+ type['id'] +'" style="margin-left: 10px;" class="btn btn-default">删除</button></td></tr>');
+                              html.push('<td><button type="button" value="' + type['id'] + '" class="btn btn-xs btn-primary space_edit">编辑</button>' +
+                                  '<button type="button" value="'+ type['id'] +'" style="margin-left: 10px;" class="btn btn-xs btn-danger space_delete">删除</button></td></tr>');
                           });
                           $('#space_tbody').html(html.join(''));
+                          getMyMindMapPage(currentPage, res['data']['pageCount'], 'space_tool_page', querySpace);
+
+                          $('.space_delete').unbind('click').click(deleteSpace);
+                          $('.space_edit').unbind('click').click(editSpace);
                       }
                   }
               });
           }
 
-          function selectStructs(proId) {
+          function editSpace() {
 
-              $.ajax({
-                  type: 'GET',
-                  dataType: 'json',
-                  url: '../../structure/querySome',
-                  contentType: "application/json;charset=utf-8",
-                  data: {'proId': proId},
-                  success: function(res){
-                      if(res['success'] === true){
+              var attr = $(this).attr('value');
+
+              $.sendGet('../../space/query/' + attr, null, function (res, status) {
+
+                  if(res['success'] && status){
+                      var data = res['data'];
+                       $('#spaceName').val(data['spaceName']);
+                       $('#floor').val(data['floor']);
+                       $('#wonGroup').val(data['wonGroup']);
+                       $('#role_info').val(data['roleId']);
+                       $('#space_project').val(data['proId']);
+                       $('#space_remark').val(data['remark']);
+                       $('#jobType').prop('checked', data['jobType'] == 1);
+                       $('#batchJobStart').prop('checked', data['batchJobStart'] == 1);
+                       $('#space_modal').modal('show');
+                       $('#struct_info').val(data['structId']);
+                       $('#space_id').val(data['id']);
+                  }
+              });
+
+          }
+          
+          function deleteSpace() {
+              if(confirm('确认是否删除')){
+                  var attr = $(this).attr('value');
+                  $.delete('../../space/delete/' + attr, null, function (res, status) {
+                      if(res['success'] && status){
+                          alert('删除成功');
+                          querySpace(1);
+                      }else{
+                          alert('删除失败');
+                      }
+                  } );
+              }
+          }
+
+          function selectStructs(proId) {
+              $.sendGet(
+                  '../../structure/querySome',
+                  {'proId': proId},
+                  function(res, status){
+                      if(res['success'] && status){
                           var transType = res['data'];
                           if(transType != null && transType){
                               var html = [];
                               $.each(transType, function (index, type) {
-                                  var val = type['id'] + '-' + type['structName'];
+                                  var val = type['id']; // + '-' + type['structName'];
                                   html.push('<option value="' + val + '">' + type['structName'] + '</option>');
                               });
                               $('#struct_info').html(html.join(''));
                           }
                       }
                   }
-              });
-
-
+              );
           }
 
       </script>

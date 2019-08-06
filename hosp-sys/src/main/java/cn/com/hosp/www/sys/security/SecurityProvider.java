@@ -1,6 +1,7 @@
 package cn.com.hosp.www.sys.security;
 
 import cn.com.hosp.www.common.exception.HospException;
+import cn.com.hosp.www.common.utils.MD5Util;
 import cn.com.hosp.www.common.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,18 @@ public class SecurityProvider implements AuthenticationProvider {
         if(null == userDetails){
             throw new UsernameNotFoundException("用户名不存在!");
         }
-        if(!encoder.matches((CharSequence) token.getCredentials(), userDetails.getPassword())){
+
+        String password = "";
+
+        try {
+            password = MD5Util.encodeByMD5((String) token.getCredentials());
+        } catch (Exception e) {
+           // e.printStackTrace();
+            log.error("用户[{}]登录失败", userDetails.getUsername(), e.getMessage(), e);
+            throw new HospException("密码错误");
+        }
+
+        if(!encoder.matches(password, userDetails.getPassword())){
             throw new HospException("密码错误!");
         }
         return new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());

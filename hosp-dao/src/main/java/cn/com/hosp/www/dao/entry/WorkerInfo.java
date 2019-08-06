@@ -1,9 +1,11 @@
 package cn.com.hosp.www.dao.entry;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -15,12 +17,16 @@ import java.util.Date;
 public class WorkerInfo implements Serializable {
     private Long id;
 
+    private Long userId;
+
     private String workerNumber;
 
     private String workerName;
 
     private String idCardNo;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
 
     private Short sex;
@@ -33,24 +39,23 @@ public class WorkerInfo implements Serializable {
 
     private String urgentPhone;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date joinTime;
 
     private String job;
+
+    private Long workerGroup;
 
     private Integer loopTime;
 
     private Long proId;
 
-    private String proNumber;
-
     private String proName;
 
     private Long structId;
 
-    private String structNumber;
-
     private String structName;
-
 
     private String province;
 
@@ -63,6 +68,8 @@ public class WorkerInfo implements Serializable {
     private String remark;
 
     private Short state;
+
+    private Short isDeleted;
 
     private static final long serialVersionUID = 1L;
 

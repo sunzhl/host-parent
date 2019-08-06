@@ -61,4 +61,13 @@ public class MD5Util {
         return HEXI_CHAR[d1] + HEXI_CHAR[d2];
     }
 
+
+    public static void main(String[] args) {
+        try {
+            System.out.println(MD5Util.encodeByMD5("123456"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

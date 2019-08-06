@@ -19,7 +19,7 @@ public class PatientInfo implements Serializable {
 
     private String bedNumber;
 
-    private short sex;
+    private Short sex;
 
     private Integer age;
 

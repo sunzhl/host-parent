@@ -14,6 +14,6 @@ import cn.com.hosp.www.sys.web.form.UserForm;
 
 public interface MedicalCareService extends BaseService<MedicalCare> {
 
-    MedicalCare save(UserForm form);
+    MedicalCare save(MedicalCare medicalCare);
 
 }

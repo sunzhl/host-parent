@@ -2,10 +2,7 @@ package cn.com.hosp.www.dao.entry;
 
 
 import cn.com.hosp.www.dao.mapper.base.annotation.Primary;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -13,6 +10,7 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class SysUsers implements Serializable {
 
     @Primary

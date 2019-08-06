@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <title>左侧菜单</title>
+    <link rel="stylesheet" th:href="@{../../bootstrap/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{../../bootstrap/css/bootstrap-grid.min.css}" />
+    <link rel="stylesheet" th:href="@{../../bootstrap/css/index.css}" />
+    <!--<link rel="stylesheet" th:href="@{../../bootstrap/css/leftmenu.css}" />-->
+    <script type="text/javascript" th:src="@{../../bootstrap/js/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{../../bootstrap/js/bootstrap.min.js}"></script>
+</head>
+<body>
+
+  <div th:fragment="circle_setting_fragment" class="container">
+      <div style="height: 30px; margin-bottom: 10px; margin-top: -5px;">
+          <div class="headerLine"></div>
+          <div class="headerLabel">时间代码</div>
+          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#circle_setting_modal">添加时间代码</button>
+      </div>
+      <table class="table table-bordered table-hover" id="circle_setting_table">
+          <thead>
+          <tr>
+              <th>员工</th>
+              <th>循环时间(分)</th>
+              <th>循环次数</th>
+              <th>空间地点</th>
+              <th>所属项目</th>
+              <th>操作</th>
+          </tr>
+          </thead>
+          <tbody id="circle_setting_tbody">
+
+          </tbody>
+          <tfoot id="circle_setting_tfoot">
+          <tr>
+              <td id="circle_setting_page" colspan="6" style="text-align: right"></td>
+          </tr>
+          </tfoot>
+      </table>
+
+
+
+
+      <!-- 模态框（Modal） -->
+      <div class="modal" id="circle_setting_modal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+          <div class="modal-dialog" style="width: 800px;">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                      <h4 class="modal-title" id="myModalLabel">编辑时间代码</h4>
+                  </div>
+                  <div class="modal-body">
+                      <form id="circle_setting_form" class="form-inline">
+                          <div class="container">
+                              <div class="addTitle">
+                                  <div class="leftImg"></div>
+                                  <span>基本信息</span>
+                              </div>
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="circle_setting_project" class="control-label text-right text-nowrap col-md-4">所属项目<i>*</i></label>
+                                      <select id="circle_setting_project" style="width: 200px;" class="form-control col-md-8">
+                                      </select>
+                                  </div>
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="circle_setting_worker" class="control-label col-md-4 text-nowrap text-right">员工<i>*</i></label>
+                                      <select id="circle_setting_worker" style="width: 200px;" class="form-control col-md-8">
+                                      </select>
+                                  </div>
+                              </div>
+
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="" class="control-label text-right text-nowrap col-md-4">循环方式</label>
+                                      <div class="input-group date col-md-8" id="">
+                                          <input type="radio" checked name="circle_type" class="circle_type" id="circle_time1" />&nbsp;
+                                          <label for="circle_time1">时间</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                                          <input type="radio" name="circle_type" class="circle_type" id="circle_times" />&nbsp;
+                                          <label for="circle_times">次数</label>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6" id="circle_time_call">
+                                      <label for="circle_time" class="control-label text-right text-nowrap col-md-4">循环时间(分)<i>*</i></label>
+                                      <input id="circle_time" type="number" style="width: 200px;" class="form-control col-md-8" />
+                                  </div>
+
+                                  <div class="form-group addTaskForm col-md-6" id="circle_times_call" style="display: none;">
+                                      <label for="circle_count" class="control-label text-right text-nowrap col-md-4">循环次数<i>*</i></label>
+                                      <input type="number" id="circle_count" style="width: 200px;" class="form-control col-md-8"/>
+                                  </div>
+                              </div>
+                              <div class="addTitle">
+                                  <div class="leftImg"></div>
+                                  <span>循环点</span>
+                              </div>
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="circle_points" class="control-label text-right text-nowrap col-md-4">定点空间<i>*</i></label>
+                                      <select id="circle_points" style="width: 200px;" class="form-control col-md-8">
+                                      </select>
+                                  </div>
+
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <button class="btn btn-primary btn-sm" id="add_circle_point">添加</button>
+                                  </div>
+                              </div>
+                              <div class="row" style="margin-top: 10px;">
+                                  <div class="list-group" id="spaces_list" style="height: 200px; width: 100%; overflow: scroll;">
+
+                                  </div>
+                              </div>
+                          </div>
+                      </form>
+                  </div>
+                  <div class="modal-footer align-content-center">
+                      <input type="hidden" id="circle_setting_submit_id"/>
+                      <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                      <button type="button" id="circle_setting_submit" class="btn btn-primary">提交更改</button>
+                  </div>
+              </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+
+       <!--   <div id="myAlert" class="alert alert-success" aria-hidden="true">
+              <a href="#" class="close" data-dismiss="alert">&times;</a>
+              <strong>成功！</strong>保存成功。
+          </div>
+          <div id="myAlert2" class="alert alert-warning" aria-hidden="true">
+              <a href="#" class="close" data-dismiss="alert">&times;</a>
+              <strong>警告！</strong>保存失败。
+          </div>-->
+
+      </div>
+
+      <div style="display: none">
+          <textarea id="circle_setting_temp">
+              {#foreach $T as rec}
+          <tr>
+            <td>{$T.rec.workerName}</td>
+            <td>
+                {#if $T.rec.finishTime != 0}
+                  {$T.rec.finishTime}
+                {#/if}
+            </td>
+            <td >
+                {#if $T.rec.finishCount != 0}
+                  {$T.rec.finishCount}
+                {#/if}
+            </td>
+            <td>{$T.rec.spaces.replace(/,/g, '&nbsp;&nbsp;&nbsp;')}</td>
+            <td >{$T.rec.proName}</td>
+            <td >
+                <button type="button" value="{$T.rec.id}" class="btn btn-primary btn-xs circle_setting_edit">编辑</button>
+                <button type="button" value="{$T.rec.id}" class="btn btn-danger btn-xs circle_setting_delete">删除</button>
+            </td>
+
+        </tr>
+       {#/for}
+          </textarea>
+
+          <textarea id="circle_points_template">
+
+              {#foreach $T as rec}
+                 <div class="list-group-item col-sm-6" style="text-align: center;">
+                     <span style="padding:5px;">{$T.rec.spaceName}</span>
+                     <button style="margin-left: 10px;" id="{$T.rec.id}" type="" txt="{$T.rec.spaceName}" value="{$T.rec.spaceId}"
+                             class="btn btn-danger btn-xs circle_point_delete">删除</button>
+                 </div>
+              {#/for}
+
+          </textarea>
+
+      </div>
+
+      <script type="text/javascript" th:src="@{../../bootstrap/js/circlesetting.js}"></script>
+
+  </div>
+
+</body>
+</html>

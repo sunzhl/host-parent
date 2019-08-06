@@ -163,6 +163,9 @@ public abstract class SqlProviderSupport {
 
     protected Object value(Object bean, Field field) {
         try {
+            if(null == bean){
+                return null;
+            }
             field.setAccessible(true);
             return field.get(bean);
         } catch (IllegalAccessException e) {

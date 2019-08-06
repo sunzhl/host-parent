@@ -24,6 +24,7 @@ public class TaskType implements Serializable {
     private Long  parentId;
 
     private Long defaultDest;
+    private String defaultDestName;
 
     private Long transTimeCodeId;
 
@@ -37,7 +38,15 @@ public class TaskType implements Serializable {
 
     private LocalDateTime createTime;
 
-    private short state;
+    private Short state;
+
+    private Short isDeleted;
+
+    private Long modifyId;
+
+    private String modifyName;
+
+    private LocalDateTime modifyTime;
 
     private static final long serialVersionUID = 1L;
 

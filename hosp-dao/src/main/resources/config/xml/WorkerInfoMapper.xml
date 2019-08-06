@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.hosp.www.dao.mapper.WorkerInfoMapper">
+    <resultMap id="BaseResultMap" type="cn.com.hosp.www.dao.entry.WorkerInfo">
+        <result column="id"              jdbcType="BIGINT"   property="id"/>
+        <result column="user_id"          jdbcType="BIGINT"   property="userId"/>
+        <result column="worker_number"    jdbcType="VARCHAR"   property="workerNumber"/>
+        <result column="worker_name"      jdbcType="VARCHAR"   property="workerName"/>
+        <result column="id_card_no"        jdbcType="VARCHAR"   property="idCardNo" />
+        <result column="birthday"        jdbcType="TIMESTAMP"   property="birthday"/>
+        <result column="sex"             jdbcType="TINYINT"   property="sex"   />
+        <result column="phone"           jdbcType="VARCHAR"   property="phone" />
+        <result column="mobile"          jdbcType="VARCHAR"   property="mobile" />
+        <result column="urgent_name"      jdbcType="VARCHAR"   property="urgentName"  />
+        <result column="urgent_phone"     jdbcType="VARCHAR"   property="urgentPhone"  />
+        <result column="join_time"        jdbcType="TIMESTAMP"   property="joinTime"   />
+        <result column="job"             jdbcType="VARCHAR"   property="job"    />
+        <result column="worker_group"     jdbcType="VARCHAR"   property="workerGroup" />
+        <result column="loop_time"        jdbcType="INTEGER"   property="loopTime"    />
+        <result column="pro_id"           jdbcType="BIGINT"   property="proId"     />
+        <result column="pro_name"         jdbcType="VARCHAR"   property="proName"   />
+        <result column="struct_id"        jdbcType="BIGINT"   property="structId"  />
+        <result column="struct_name"      jdbcType="VARCHAR"   property="structName" />
+        <result column="province"        jdbcType="VARCHAR"   property="province"     />
+        <result column="city"            jdbcType="VARCHAR"   property="city"        />
+        <result column="address"         jdbcType="VARCHAR"   property="address"      />
+        <result column="personnel_number" jdbcType="VARCHAR"   property="personnelNumber"/>
+        <result column="remark"          jdbcType="VARCHAR"   property="remark"         />
+        <result column="state"           jdbcType="TINYINT"   property="state"      />
+        <result column="is_deleted"       jdbcType="TINYINT"   property="isDeleted"   />
+    </resultMap>
+
+    <select id="queryByPage" parameterType="map" resultMap="BaseResultMap">
+        select id, user_id, worker_number, worker_name,
+        id_card_no, birthday, sex,phone, mobile, urgent_name,
+        urgent_phone, join_time, job, worker_group, loop_time,
+        pro_id, pro_name, struct_id, struct_name, province,
+        city,address, personnel_number,remark,state,is_deleted from worker_info
+        <where>
+            is_deleted = 0
+
+            <if test="proId != null">
+                pro_id = #{proId, jdbcType=BIGINT}
+            </if>
+            <if test="states != null and states.size() &gt; 0">
+                and state in
+                <foreach item="item" collection="states" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        limit #{start, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER}
+    </select>
+    
+    <select id="queryCount" parameterType="map" resultType="long">
+        select count(id) from worker_info
+        <where>
+            <if test="proId != null">
+                pro_id = #{proId, jdbcType=BIGINT}
+            </if>
+            <if test="states != null and states.size() &gt; 0">
+                and state in
+                <foreach item="item" collection="states" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+</mapper>

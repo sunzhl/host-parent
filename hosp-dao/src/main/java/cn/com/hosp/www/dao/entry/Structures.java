@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -35,6 +36,14 @@ public class Structures implements Serializable {
     private String structArea;
 
     private Date createTime;
+
+    private Short isDeleted;
+
+    private Long modifyId;
+
+    private String modifyName;
+
+    private LocalDateTime modifyTime;
 
     private static final long serialVersionUID = 1L;
 

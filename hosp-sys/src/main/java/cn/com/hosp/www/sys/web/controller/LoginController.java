@@ -26,6 +26,12 @@ public class LoginController {
         return "/login";
     }
 
+    @GetMapping("/signOut")
+    public String signOut(){
+
+        return "/login";
+    }
+
     @GetMapping("/init")
     public String initialization(HttpServletRequest request, ModelMap model){
         model.put("userInfo", request.getSession().getAttribute("user_info"));

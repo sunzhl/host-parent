@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <title>左侧菜单</title>
+    <link rel="stylesheet" th:href="@{../../bootstrap/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{../../bootstrap/css/bootstrap-grid.min.css}" />
+    <link rel="stylesheet" th:href="@{../../bootstrap/css/index.css}" />
+    <!--<link rel="stylesheet" th:href="@{../../bootstrap/css/leftmenu.css}" />-->
+    <script type="text/javascript" th:src="@{../../bootstrap/js/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{../../bootstrap/js/bootstrap.min.js}"></script>
+</head>
+<body>
+
+  <div th:fragment="trans_tool_fragment" class="container">
+      <div style="height: 30px; margin-bottom: 10px; margin-top: -5px;">
+          <div class="headerLine"></div>
+          <div class="headerLabel">运送工具</div>
+          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#trans_tool_modal">添加运送工具</button>
+      </div>
+      <table class="table table-hover table-bordered">
+          <thead>
+          <tr>
+              <th>编码</th>
+              <th>描述</th>
+              <th>所属项目</th>
+              <th>操作</th>
+          </tr>
+          </thead>
+          <tbody id="trans_tool_tbody">
+
+          </tbody>
+          <tfoot id="trans_tool_tfoot">
+          <tr>
+              <td id="trans_tool_page" colspan="4" style="text-align: right"></td>
+          </tr>
+          </tfoot>
+      </table>
+
+
+
+
+      <!-- 模态框（Modal） -->
+      <div class="modal" id="trans_tool_modal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+          <div class="modal-dialog" style="width: 800px;">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                      <h4 class="modal-title" id="myModalLabel">添加运送工具</h4>
+                  </div>
+                  <div class="modal-body">
+                      <form id="trans_tool_form" role="form" class="form-inline" method="post" th:action="@{/task/add}" onsubmit="">
+                          <div class="container">
+                              <div class="addTitle">
+                                  <div class="leftImg"></div>
+                                  <span>基本信息</span>
+                              </div>
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="trans_tool_project" class="control-label text-right text-nowrap col-md-4">所属项目：</label>
+                                      <select id="trans_tool_project" style="width: 200px;" class="form-control col-md-8">
+                                          <option value="1">空军总医院</option>
+                                      </select>
+                                  </div>
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="trans_tool_remark" class="control-label col-md-4 text-nowrap text-right">描述：</label>
+                                      <input id="trans_tool_remark" type="text" style="width: 200px;" required class="col-md-8 form-control"/>
+                                  </div>
+
+                              </div>
+
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="trans_tool_code" class="control-label text-right text-nowrap col-md-4">编码：</label>
+                                      <input id="trans_tool_code" type="text" style="width: 200px;"  class="col-md-8 form-control"/>
+                                  </div>
+                              </div>
+                          </div>
+                      </form>
+                  </div>
+                  <div class="modal-footer align-content-center">
+                      <input type="hidden" id="trans_tool_id"/>
+                      <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                      <button type="button" id="trans_tool_submit" class="btn btn-primary">提交更改</button>
+                  </div>
+              </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+
+       <!--   <div id="myAlert" class="alert alert-success" aria-hidden="true">
+              <a href="#" class="close" data-dismiss="alert">&times;</a>
+              <strong>成功！</strong>保存成功。
+          </div>
+          <div id="myAlert2" class="alert alert-warning" aria-hidden="true">
+              <a href="#" class="close" data-dismiss="alert">&times;</a>
+              <strong>警告！</strong>保存失败。
+          </div>-->
+
+      </div>
+
+      <script type="text/javascript">
+
+          $(function () {
+
+              queryTransTool();
+              publicQueryProject('trans_tool_project',  $('#current_worker_id').val());
+
+              $('#trans_tool_submit').click(function () {
+                  var  val = $('#trans_tool_id').val();
+                   var postData = {
+                       'toolCode': $('#trans_tool_code').val(),
+                       'toolName': $('#trans_tool_remark').val(),
+                       'proId': $('#trans_tool_project').val(),
+                       'proName': $('#trans_tool_project').opTxt(),
+                       'id': val
+                   };
+
+                  if(val !== ''){
+                     $.put('../../tool/update', postData, function (data, status) {
+                         if(status && data['success']){
+                             alert('修改成功');
+                             $('#trans_tool_form')[0].reset();
+                             $('#trans_tool_modal').modal('hide');
+                             queryTransTool();
+                         }else{
+                             alert('修改失败');
+                         }
+                     })
+                  }else{
+                      $.sendPost(
+                          '../../tool/add',
+                          postData,
+                          function (data, status) {
+                              if(status && data['success']){
+                                  alert('保存成功');
+                                  $('#trans_tool_form')[0].reset();
+                                  $('#trans_tool_modal').modal('hide');
+                                  queryTransTool();
+                              }else{
+                                  alert('保存失败');
+                              }});
+                  }
+
+              });
+
+
+              $('#trans_tool_modal').on('shown.bs.modal', function () {
+                 // publicQuerySpaces([[${userInfo.proId}]], 'type_destination');
+              }).on('hide.bs.modal', function () {
+                  $('#trans_tool_form')[0].reset();
+              })
+
+          });
+
+
+          function queryTransTool(currentPage) {
+              currentPage = currentPage|| 1;
+              $.get('../../tool/queryPage/' + currentPage, function(res, status){
+                  console.log(res + '===' + status);
+                  if(res['success'] === true){
+                      var transType = res['data']['list'];
+                      if(transType != null && transType){
+                          var html = [];
+                          $.each(transType, function (index, type) {
+                              html.push('<tr><td>' + type['toolCode'] + '</td>');
+                              html.push('<td>' + type['toolName'] + '</td>');
+                              html.push('<td>' + type['proName'] + '</td>');
+                              html.push('<td><button type="button" value="' + type['id'] +'" class="btn btn-primary btn-xs trans_tool_edit">编辑</button>' +
+                                  '<button type="button" value="'+ type['id'] +'" style="margin-left: 10px;" class="btn btn-danger btn-xs trans_tool_del">删除</button></td></tr>');
+                          });
+                          $('#trans_tool_tbody').html(html.join(''));
+
+                          getMyMindMapPage(currentPage, res['data']['pageCount'], 'trans_tool_page', queryTransTool);
+
+                          $('.trans_tool_del').click(function (){
+                              if(confirm('是否确定删除')){
+                                  var attr = $(this).attr('value');
+                                  $.delete('../../tool/delete/' + attr, null, function () {
+                                      queryTransTool();
+                                  });
+                              }
+
+                          });
+
+                          editTransTool();
+                      }
+                  }
+              });
+          }
+          
+          
+          
+          function editTransTool() {
+              $('.trans_tool_edit').click(function () {
+                  var attr = $(this).attr('value');
+                  $.get('../../tool/query/' + attr, null, function (res, status) {
+                      if(res['success'] === true){
+                         var data = res['data'];
+                         $('#trans_tool_id').val(data['id']);
+                         $('#trans_tool_remark').val(data['toolName']);
+                         $('#trans_tool_code').val(data['toolCode']);
+                         $('#trans_tool_project').val(data['proId']);
+                         $('#trans_tool_modal').modal('show');
+                      }
+                  })
+              });
+          }
+
+      </script>
+  </div>
+
+</body>
+</html>

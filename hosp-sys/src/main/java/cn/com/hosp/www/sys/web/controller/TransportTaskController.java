@@ -50,6 +50,27 @@ public class TransportTaskController {
         return Result.success();
     }
 
+    @PutMapping("/update")
+    @ResponseBody
+    public Result update(HttpServletRequest request, @RequestBody TaskForm task){
+        Object userInfo = request.getSession().getAttribute("user_info");
+        WorkerInfo workerInfo = (WorkerInfo) userInfo;
+        if(task.getUpdateType() == 2){ //分派任务修改
+            return transportTaskService.assignOrObtain(task.getId(), workerInfo.getId(), task.getWorkerId(), (short) 1);
+        }
+        task.setOperationId(workerInfo.getId());
+        return Result.success().withData(transportTaskService.update(task));
+    }
+
+
+    @GetMapping("/query/{id}")
+    @ResponseBody
+    public Result queryById(@PathVariable("id") Long id){
+
+        return Result.success().withData(transportTaskService.query(id));
+    }
+
+
     /**
      * 修改任务状态
      * @param id 任务编号
@@ -107,7 +128,7 @@ public class TransportTaskController {
     @ResponseBody
     public Result queryByPage(@PathVariable("proId") long proId,
                            @PathVariable("state") int state,
-                           @RequestBody PageForm pageForm,
+                              PageForm pageForm,
                            ModelMap modelMap){
 
         TransportTask task = new TransportTask();
@@ -115,11 +136,7 @@ public class TransportTaskController {
             task.setState((short)state);
         }
         task.setProId(proId);
-        Map<String, Object> resMap = CollectionUtils.newMap();
-        Long aLong = transportTaskService.countByCondition(task);
-        resMap.put("totalRow", aLong);
-        resMap.put("data", transportTaskService.listByCondition(task, pageForm));
-        return Result.success().withData(resMap);
+        return Result.success().withData(transportTaskService.listByCondition(task, pageForm));
     }
 
     @GetMapping("/query")
@@ -131,11 +148,11 @@ public class TransportTaskController {
     }
 
 
-    @GetMapping("/queryByState/{proId}/{states}/{currentPage}/{size}")
+    @GetMapping("/queryByState/{proId}/{states}")
+    @ResponseBody
     public Result queryByPage(@PathVariable("proId") long proId,
                               @PathVariable("states") String states,
-                              @PathVariable("currentPage") int page,
-                              @PathVariable("size") int size){
+                              PageForm pageForm){
 
         List<Integer> list = null;
         if(StringUtils.isNotBlank(states)){
@@ -147,8 +164,9 @@ public class TransportTaskController {
         }
          Map<String, Object> params = CollectionUtils.newMap();
         params.put("states", list != null && list.size() > 0? list: null);
-        params.put("start", (page - 1) * size);
-        params.put("pageSize", size);
+        params.put("start", (pageForm.getPageNum() - 1) * pageForm.getPageSize());
+        params.put("pageSize", pageForm.getPageSize());
+        params.put("currentPage", pageForm.getPageNum());
         params.put("proId", proId);
         return Result.success().withData(transportTaskService.queryByPage(params));
     }

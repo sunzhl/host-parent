@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div th:fragment="worker_list_fragment">
+    <div style="margin-right: 10px;">
+        <ul class="list-group" id="worker_list_ul">
+
+        </ul>
+    </div>
+    <div style="margin: auto; position: relative;">
+        <div style="width: 100%; text-align: center;">共<i id="all_person_count" style="font-weight: bold;">10</i>人</div>
+        <div style="width: 100%; text-align: center;">在线<i id="online_person_count" style="font-weight: bold;">2</i>人</div>
+    </div>
+    <div style="bottom: 0; position: relative; margin: auto; width: 30px; height: 30px;">
+        <!--<div class="circle" style="margin: auto; padding: 5px 0 0 7px;">-->
+            <!--<span class="glyphicon glyphicon-comment" style="color: rgb(255, 255, 255); font-size: 17px;"></span>-->
+        <!--</div>-->
+        <img th:src="@{../msg.jpg}" class="img-circle tooltip-test" style="width: 30px; height: 30px; position: relative; margin: auto;"
+             data-toggle="tooltip" title="群发消息">
+    </div>
+    <input type="hidden" id="worker_list_proid" th:value="${userInfo.proId}" />
+    <script type="text/javascript">
+
+        $(function () {
+            var proId = $('#worker_list_proid').val();
+            $.get('../../worker/queryAll/' + proId, null, function (res, status) {
+
+                if(status && res['success']){
+                    var online = res['data']['onlineList'];
+                    var offLine = res['data']['offlineList'];
+                    var html = [];
+                    $.each(online, function (index, worker) {
+                        html.push('<li class="list-group-item workerListItemOnline popover-show" title="'+ worker['workerName'] +'" data-container="body" \n' +
+                            '\t\t\t data-placement="left" \n' +
+                            '\t\t\tdata-content="左侧的 Popover 中的一些内容 —— show 方法" workerId="'+ worker['id'] +'">' + worker['workerName'] + '</li>');
+                    });
+                    
+                    $.each(offLine, function (index, worker) {
+                        html.push('<li class="list-group-item workerListItemOffline popover-show" title="'+ worker['workerName'] +'" data-container="body" \n' +
+                            '\t\t\t data-placement="left" \n' +
+                            '\t\t\tdata-content="左侧的 Popover 中的一些内容 —— show 方法" workerId="'+ worker['id'] +'">' + worker['workerName'] + '</li>');
+                    });
+
+                    $('#all_person_count').text(res['data']['totalSize']);
+                    $('#online_person_count').text(res['data']['onLineSize']);
+
+                    $('#worker_list_ul').html(html.join(''));
+
+                    $('.popover-show').click(function () {
+                        $('.popover-show').popover('hide');
+                        var ele = $(this);
+                        var workerId = $(this).attr('workerId');
+
+                        $.sendGet('../../worker/queryInfo/' + workerId, null, function (res, status) {
+                            if(status && res['success']){
+                                var data = res['data'] || {currentPosition: '', scanTime: '', totalCount: '0', todayCount: '0',selfCount: '0', todaySelfCount: '0'};
+
+                                var html = [];
+                                html.push('<p>当前位置：' + data['currentPosition'] + '</p>');
+                                html.push('<p>扫描时间：' + data['scanTime'] + '</p>');
+                                html.push('<p>总数：' + data['totalCount'] + '</p>');
+                                html.push('<p>今日任务：' + data['todayCount'] + '</p>');
+                                html.push('<p>自主任务：' + data['selfCount'] + '</p>');
+                                html.push('<p>今日自主任务：' + data['todaySelfCount'] + '</p>');
+                                ele.attr('data-content', html.join(''));
+                                ele.popover({html : true });
+                            }
+                        });
+
+
+                    });
+
+                }
+            });
+        });
+    </script>
+
+</div>
+</body>
+</html>

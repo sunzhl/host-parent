@@ -22,10 +22,13 @@
                      <li role="presentation" id="init_page"><a href="#init" role="tab" aria-controls="init" data-toggle="tab">初始化</a></li>
                      <li role="presentation"><a href="#">设置</a></li>
                  </ul>
-                 <span class="navbar-text navbar-right"><a>注销</a></span>
+                 <span class="navbar-text navbar-right" style="margin-right: 5px;"><a th:href="@{/signOut}">注销</a></span>
                  <span class="navbar-text navbar-right">|</span>
-                 <span class="navbar-text navbar-right"><a>项目经理</a></span>
-                 <span class="navbar-text navbar-right"><a>妇幼医院</a></span>
+                 <span class="navbar-text navbar-right" th:switch="${userInfo.workerGroup}">
+                     <a th:case="1">项目经理(<i th:text="${userInfo.workerName}"></i>)</a>
+                     <a th:case="2">运送员(<i th:text="${userInfo.workerName}"></i>)</a>
+                 </span>
+                 <span class="navbar-text navbar-right"><a th:text="${userInfo.proName}">妇幼医院</a></span>
                  <span class="glyphicon glyphicon-map-marker navbar-text navbar-right " style="color: rgb(255, 140, 60);"></span>
              </div>
          </div>

@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 /**
  * @ClassName WebSecurityConfig
@@ -36,6 +37,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private AuthenticationSuccessHandler authenticationSuccessHandler;
 
+    @Autowired
+    private LogoutSuccessHandler logoutSuccessHandler;
+
     @Override
     public UserDetailsService userDetailsServiceBean() throws Exception {
         return this.userDetailsService;
@@ -53,9 +57,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(authenticationSuccessHandler)
                 .loginProcessingUrl("/login")
                 .and()
+                .logout()
+                .logoutUrl("/signOut")
+                //.logoutSuccessUrl("/login")
+                .deleteCookies("JSESSIONID")
+                .logoutSuccessHandler(logoutSuccessHandler)
+                .and()
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/bootstrap/**").permitAll()
+                .antMatchers("/imgs/**").permitAll()
+               // .antMatchers("/swagger-ui.html").permitAll()
+               // .antMatchers("/null/**").permitAll()
+               // .antMatchers("/webjars/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable();

@@ -72,7 +72,7 @@ public class BaseServiceImpl<M extends BaseMapper<E>, E> implements BaseService<
         List<E> result = listByCondition(e);
         if (result instanceof com.github.pagehelper.Page) {
             com.github.pagehelper.Page<E> pageResult = (com.github.pagehelper.Page<E>)result;
-            return Page.with(pageResult.getTotal(), pageResult.getResult());
+            return Page.with(pageResult.getTotal(), pageResult.getResult(), pageForm.getPageNum(), pageForm.getPageSize());
         }
         return Page.empty();
     }

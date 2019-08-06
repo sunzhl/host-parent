@@ -26,7 +26,7 @@
                         </div>
                         <div class="row">
                             <div class="form-group addTaskForm col-md-6">
-                                <label for="start" class="control-label col-md-4 text-nowrap text-right">出发地：</label>
+                                <label for="start" class="control-label col-md-4 text-nowrap text-right">出发地<i>*</i></label>
                                 <select id="start" style="width: 200px;" class="col-md-8 form-control">
                                     <option value="1">特一</option>
                                     <option value="1">特一</option>
@@ -34,7 +34,7 @@
                                 </select>
                             </div>
                             <div class="form-group addTaskForm col-md-6">
-                                <label for="transType" class="control-label col-md-4 text-nowrap text-right">运送类型：</label>
+                                <label for="transType" class="control-label col-md-4 text-nowrap text-right">运送类型<i>*</i></label>
                                 <select id="transType" style="width: 200px;" class="col-md-8 form-control">
 
                                 </select>
@@ -43,7 +43,7 @@
 
                         <div class="row">
                             <div class="form-group addTaskForm col-md-6">
-                                <label for="destination" class="control-label text-right text-nowrap col-md-4">目的地：</label>
+                                <label for="destination" class="control-label text-right text-nowrap col-md-4">目的地<i>*</i></label>
                                 <select id="destination" style="width: 200px;" class="form-control col-md-8">
                                     <option value="1">特一</option>
                                     <option value="1">特一</option>
@@ -52,7 +52,7 @@
                             </div>
 
                             <div class="form-group addTaskForm col-md-6">
-                                <label for="worker" class="control-label text-right text-nowrap col-md-4">运送员：</label>
+                                <label for="worker" class="control-label text-right text-nowrap col-md-4">运送员</label>
                                 <select id="worker" style="width: 200px;" class="form-control col-md-8">
                                     <option value="1">特一</option>
                                     <option value="1">特一</option>
@@ -64,18 +64,18 @@
                         <div class="row">
                             <div class="form-group addTaskForm col-md-6">
                                 <label for="planStartTime" class="control-label text-right text-nowrap col-md-4"
-                                       style="padding-left: 0px; margin-left: -2px;">预期开始时间：</label>
+                                       style="padding-left: 0px; margin-left: -2px;">预期开始时间<i>*</i></label>
                                 <div class="input-group date col-md-8" id="datetimepicker2">
-                                    <input type='text' class="form-control" id="planStartTime" />
+                                    <input type='text' class="form-control" id="planStartTime" onclick="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss'})"/>
                                     <span class="input-group-addon">
-                                      <span class="glyphicon glyphicon-calendar"></span>
+                                      <span class="glyphicon glyphicon-calendar" onclick="WdatePicker({el:'planStartTime',dateFmt: 'yyyy-MM-dd HH:mm:ss'})"></span>
                                     </span>
                                 </div>
                             </div>
                             <div class="form-group addTaskForm col-md-6">
                                 <label for="finishTime" class="control-label text-right text-nowrap col-md-4"
-                                       style="padding-left: 0px; margin-left: -20px;">预期完成用时(分)：</label>
-                                <input id="finishTime" type="number" style="width: 200px; margin-left: 20px;" required class="col-md-8 form-control"/>
+                                       style="padding-left: 0px; margin-left: -20px;">预期完成用时(分)<i>*</i></label>
+                                <input id="finishTime" type="number" value="0" style="width: 200px; margin-left: 20px;" required class="col-md-8 form-control"/>
                             </div>
                         </div>
 
@@ -83,33 +83,32 @@
 
 
                             <div class="form-group addTaskForm col-md-6">
-                                <label for="planTime" class="control-label text-right text-nowrap col-md-4">预约时间：</label>
-                                <input id="planTime"  type="number" style="width: 200px;" class="form-control col-md-8"/>
+                                <label for="planTime" class="control-label text-right text-nowrap col-md-4">预约时间<i>*</i></label>
+                                <input id="planTime"  type="number" value="10" style="width: 200px;" class="form-control col-md-8"/>
                             </div>
 
                             <div class="form-group addTaskForm col-md-6">
-                                <label for="priority" class="control-label text-right text-nowrap col-md-4">优先级：</label>
+                                <label for="priority" class="control-label text-right text-nowrap col-md-4">优先级<i>*</i></label>
                                 <select id="priority" style="width: 200px;" class="col-md-8 form-control">
-                                    <option value="1">特一</option>
-                                    <option value="1">特一</option>
-                                    <option value="1">特一</option>
+                                    <option value="1">正常</option>
+                                    <option value="2">重要</option>
+                                    <option value="3">紧急</option>
+                                    <option value="4">紧急重要</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="form-group addTaskForm col-md-6">
-                                <label for="transTool" class="control-label text-right text-nowrap col-md-4">运送工具：</label>
+                                <label for="transTool" class="control-label text-right text-nowrap col-md-4">运送工具</label>
                                 <select id="transTool" style="width: 200px;" class="form-control col-md-8">
-                                    <option value="1">特一</option>
-                                    <option value="1">特一</option>
-                                    <option value="1">特一</option>
+
                                 </select>
                             </div>
 
                             <div class="form-group addTaskForm col-md-6">
-                                <label for="realNumber" class="control-label text-right text-nowrap col-md-4">实际数量：</label>
-                                <input type="number" id="realNumber" style="width: 200px;" class="form-control col-md-8"/>
+                                <label for="realNumber" class="control-label text-right text-nowrap col-md-4">实际数量<i>*</i></label>
+                                <input type="number" id="realNumber" value="1" style="width: 200px;" class="form-control col-md-8"/>
                             </div>
                         </div>
 
@@ -120,12 +119,12 @@
 
                         <div class="row">
                             <div class="form-group addTaskForm col-md-6">
-                                <label for="patientName" class="control-label text-right text-nowrap col-md-4">病人姓名：</label>
+                                <label for="patientName" class="control-label text-right text-nowrap col-md-4">病人姓名</label>
                                 <input id="patientName" style="width: 200px;" class="form-control col-md-8"/>
                             </div>
 
                             <div class="form-group addTaskForm col-md-6">
-                                <label for="sex" class="control-label text-right text-nowrap col-md-4">性别：</label>
+                                <label for="sex" class="control-label text-right text-nowrap col-md-4">性别</label>
                                 <select id="sex" style="width: 200px;" class="form-control col-md-8">
                                     <option value="0">未知</option>
                                     <option value="1">男</option>
@@ -136,24 +135,24 @@
 
                         <div class="row">
                             <div class="form-group addTaskForm col-md-6">
-                                <label for="age" class="control-label text-right text-nowrap col-md-4">年龄：</label>
+                                <label for="age" class="control-label text-right text-nowrap col-md-4">年龄</label>
                                 <input id="age" type="number" style="width: 200px;" class="form-control col-md-8" />
                             </div>
 
                             <div class="form-group addTaskForm col-md-6">
-                                <label for="bedNumber" class="control-label text-right text-nowrap col-md-4">床号：</label>
+                                <label for="bedNumber" class="control-label text-right text-nowrap col-md-4">床号</label>
                                 <input type="text" id="bedNumber" style="width: 200px;" class="form-control col-md-8"/>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="form-group addTaskForm col-md-6">
-                                <label for="hospNumber" class="control-label text-right text-nowrap col-md-4">住院号：</label>
+                                <label for="hospNumber" class="control-label text-right text-nowrap col-md-4">住院号</label>
                                 <input id="hospNumber"  style="width: 200px;" class="form-control col-md-8">
                             </div>
 
                             <div class="form-group addTaskForm col-md-6">
-                                <label for="remark" class="control-label text-right text-nowrap col-md-4">描述：</label>
+                                <label for="remark" class="control-label text-right text-nowrap col-md-4">描述</label>
                                 <input type="text" id="remark" style="width: 200px;" class="form-control col-md-8"/>
                             </div>
                         </div>
@@ -161,6 +160,8 @@
                         <input type="hidden" id="createName" th:value="${userInfo.workerName}" />
                         <input type="hidden" id="proId" th:value="${userInfo.proId}">
                         <input type="hidden" id="proName" th:value="${userInfo.proName}">
+                        <input type="hidden" id="taskId" />
+                        <input type="hidden" id="pId" />
                     </div>
                 </form>
             </div>
@@ -173,166 +174,6 @@
 </div>
 
     <script type="text/javascript">
-
-        $(function () {
-            /**
-             * 当模态框显示完成后加载数据字典
-             */
-            $('#myModal').on('shown.bs.modal', function () {
-                var $this = $(this);
-                var dialog = $this.find('.modal-dialog');
-
-                //此种方式，在使用动画第一次显示时有问题
-                //解决方案，去掉动画fade样式
-                var top = ($(window).height() - dialog.height()) / 2;
-                dialog.css({
-                    marginTop: top
-                });
-
-                var proId = [[${userInfo.proId}]];
-                querySpaces(proId);
-                queryTaskType(proId);
-                queryTools(proId);
-                queryWorkers(proId);
-            });
-
-
-            $('#datetimepicker2').datetimepicker({
-                format: 'yyyy-mm-dd HH:mm:ss',
-                language:  'zh-CN'
-            });
-
-            addChangeToSelect();
-
-            $('#add_task_submit').click(submitAddTask);
-
-        });
-
-
-        function submitAddTask() {
-            var data = {
-                createId: $('#createId').val(),                //创建者ID
-                createName: $('#createName').val(),            //创建者姓名
-                taskTypeId: $('#transType').attr('val'),       //运送类型ＩＤ
-                taskTypeName: $('#transType').attr('txt'),   　//运送类型名称
-                setOutPlaceId: $('#start').attr('val'),        //出发地ＩＤ
-                setOutPlaceName: $('#start').attr('txt'),      //出发地名
-                destinationId: $('#destination').attr('val'),  // 目的地ID
-                destinationName: $('#destination').attr('txt'), //目的地
-                planStartTime: $('#planStartTime').val(),       //计划开始时间
-                finishTime: $('#finishTime').val(),             //完成时间
-                bookTime: $('#planTime').val(),                 //预约时间
-                priority: $('#priority').val(),                 //优先级
-                toolId: $('#transTool').attr('val'),            //运送工具ID
-                toolName: $('#transTool').attr('txt'),          //运送工具名
-                workerId: $('#worker').attr('val'),             //运送员
-                workerName: $('#worker').attr('txt'),           //运送员名
-                taskDesc: $('#remark').val(),                   //任务描述
-                proId: $('#proId').val(),                       //所属项目ID
-                proName: $('#proName').val(),                   //所属项目
-                actualCount: $('#realNumber').val(),            //实际数量
-                patientName: $('#patientName').val(),           //病人姓名
-                bedNumber: $('#bedNumber').val(),               //床位
-                sex: $('#sex').val(),                           //性别
-                number: $('#hospNumber').val(),                 //住院号
-                age: $('#age').val()                            //年龄
-            };
-
-            $.sendPost('../../task/add', data, function (data, status) {
-                if(status && data['success']){
-                    alert('添加成功');
-                    $('#addTaskForm')[0].reset();
-                    $('#myModal').modal('hide');
-                }else{
-                    alert('添加失败');
-                }
-            })
-
-        }
-
-
-
-        function queryTools(proId) {
-            $.sendGet('../../tool/query', {'proId': proId}, function (res, status) {
-                if(status && res['success']){
-                    var workTools = res['data'];
-                    if(workTools != null){
-                        var html = ['<option value="">--请选择--</option>'];
-                        $.each(workTools, function(index, tool){
-                            var val = tool['id'] + '-' + tool['toolName'];
-                            html.push('<option value="'+ val +'">' + tool['toolName'] + '</option>');
-                        });
-                        $('#transTool').html(html.join(''));
-                    }
-
-                }
-            });
-        }
-
-        function queryTaskType(proId) {
-
-            $.sendGet('../../type/query', {'proId': proId}, function (res, status) {
-                if(status && res['success']){
-                    var transType = res['data'];
-                    if(transType != null && transType){
-                        var html = ['<option value="">--请选择--</option>'];
-                        $.each(transType, function (index, type) {
-                            var val = type['id'] + '-' + type['typeName'];
-                            html.push('<option value="' + val + '">' + type['typeName'] + '</option>');
-                        });
-                        $('#transType').html(html.join(''));
-                    }
-                }
-            });
-        }
-
-        function querySpaces(proId) {
-            $.sendGet('../../space/query', {proId: proId}, function (res, status) {
-                if(status && res['success']){
-                    var transType = res['data'];
-                    if(transType != null && transType){
-                        var html = ['<option value="">--请选择--</option>'];
-                        $.each(transType, function (index, type) {
-                            var val = type['id'] + '-' + type['spaceName'];
-                            html.push('<option value="' + val + '">' + type['spaceName'] + '</option>');
-                        });
-                        $('#start').html(html.join(''));
-                        $('#destination').html(html.join(''));
-                    }
-                }
-            });
-        }
-
-        function queryWorkers(proId) {
-            $.sendGet('../../user/query', {'proId': proId}, function (res, status) {
-                if (status && res['success']) {
-                    var transType = res['data'];
-                    if (transType != null && transType) {
-                        var html = ['<option value="">--请选择--</option>'];
-                        $.each(transType, function (index, type) {
-                            var val = type['id'] + '-' + type['workerName'];
-                            html.push('<option value="' + val + '">' + type['workerName'] + '</option>');
-                        });
-                        $('#worker').html(html.join(''));
-                    }
-                }
-            });
-        }
-
-
-
-        function addChangeToSelect() {
-            $('select').change(function () {
-                var val = $(this).val();
-                if (val.indexOf('-') > 0){
-                    var split = val.split('-');
-                    $(this).attr({
-                        val: split[0],
-                        txt: split[1]
-                    });
-                }
-            });
-        }
 
     </script>
 

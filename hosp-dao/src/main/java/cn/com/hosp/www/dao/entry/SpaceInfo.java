@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Getter @Setter
 @AllArgsConstructor
@@ -42,6 +43,14 @@ public class SpaceInfo implements Serializable {
     private Short batchJobStart;
 
     private String remark;
+
+    private Short isDeleted;
+
+    private Long modifyId;
+
+    private String modifyName;
+
+    private LocalDateTime modifyTime;
 
     private static final long serialVersionUID = 1L;
 }

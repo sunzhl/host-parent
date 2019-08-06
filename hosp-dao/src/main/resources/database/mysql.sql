@@ -145,14 +145,14 @@ create table if not exists `worker_task`(
 -- 运送员操作日志
 drop table if exists `worker_log`;
 create table if not exists `worker_log`(
-                                         `id` bigint unsigned not null primary key auto_increment comment 'ID，自增',
-                                         `log_number` varchar(32) not null unique comment '日志ID',
-                                         `worker_id` bigint unsigned not null comment '运送员ID',
-                                         `worker_name` varchar(20) not null comment '运送员姓名',
-                                         `task_id` bigint unsigned not null  default 0 comment '任务ID',
-                                         `log_type` tinyint(1) not null comment '日志类型 0-登录, 1-扫码, 2-退出',
-                                         `position` varchar(10) comment '扫码地点',
-                                         `log_time` datetime not null default current_timestamp comment '创建时间'
+  `id` bigint unsigned not null primary key auto_increment comment 'ID，自增',
+  `log_number` varchar(32) not null unique comment '日志ID',
+  `worker_id` bigint unsigned not null comment '运送员ID',
+  `worker_name` varchar(20) not null comment '运送员姓名',
+  `task_id` bigint unsigned not null  default 0 comment '任务ID',
+  `log_type` tinyint(1) not null comment '日志类型 0-登录, 1-扫码, 2-退出',
+  `position` varchar(10) comment '扫码地点',
+  `log_time` datetime not null default current_timestamp comment '创建时间'
 );
 
 

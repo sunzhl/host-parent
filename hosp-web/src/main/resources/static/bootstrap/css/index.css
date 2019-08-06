@@ -36,3 +36,33 @@
     margin-top: 10px;
     padding-left: 10px;
 }
+
+label i{
+    color: #e80c4d;
+    font-family: '宋体';
+    font-style: normal;
+    padding-left: 3px;
+}
+
+.workerListItemOnline{
+    color: #008000;
+    cursor: pointer;
+}
+
+.workerListItemOffline{
+    color: #e80c4d;
+    cursor: pointer;
+}
+
+.circle{
+    width: 30px;
+    height: 30px;
+    background: url("../../msg.jpg") no-repeat;
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+}
+
+.pagination li{
+    cursor: pointer;
+}

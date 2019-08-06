@@ -2,17 +2,10 @@ package cn.com.hosp.www.dao.mapper;
 
 
 import cn.com.hosp.www.dao.entry.DelayReason;
+import cn.com.hosp.www.dao.mapper.base.BaseMapper;
+import org.springframework.stereotype.Component;
 
-public interface DelayReasonMapper {
-    int deleteByPrimaryKey(Long id);
+@Component
+public interface DelayReasonMapper extends BaseMapper<DelayReason> {
 
-    int insert(DelayReason record);
-
-    int insertSelective(DelayReason record);
-
-    DelayReason selectByPrimaryKey(Long id);
-
-    int updateByPrimaryKeySelective(DelayReason record);
-
-    int updateByPrimaryKey(DelayReason record);
 }

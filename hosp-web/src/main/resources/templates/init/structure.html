@@ -20,7 +20,7 @@
           <div class="headerLabel">建筑物</div>
           <button type="button" class="btn btn-success" data-toggle="modal" data-target="#structureModal">添加建筑物</button>
       </div>
-      <table class="table table-striped">
+      <table class="table table-hover table-bordered">
           <thead>
           <tr>
               <th>序号</th>
@@ -34,6 +34,11 @@
           <tbody id="structure_tbody">
 
           </tbody>
+          <tfoot id="structure_tfoot">
+          <tr>
+              <td id="structure_page" colspan="6" style="text-align: right"></td>
+          </tr>
+          </tfoot>
       </table>
 
 
@@ -85,11 +90,12 @@
                                   <div class="form-group addTaskForm col-md-6">
                                       <label for="struct_project" class="control-label text-right text-nowrap col-md-4">所属项目：</label>
                                       <select id="struct_project" style="width: 200px;" class="form-control col-md-8">
-                                          <option value="1-空军总医院">空军总医院</option>
+                                          <!--<option value="1">空军总医院</option>-->
                                       </select>
                                   </div>
                               </div>
                           </div>
+                          <input type="hidden" id="struct_id" />
                       </form>
                   </div>
                   <div class="modal-footer align-content-center">
@@ -113,53 +119,44 @@
       <script type="text/javascript">
 
           $(function () {
-
+              publicQueryProject('struct_project', $('#current_worker_id').val());
                queryStructure();
-
               $('#struct_submit').click(function () {
 
                    var postData = {
                        'structName': $('#structName').val(),
                        'serial': $('#serial').val(),
                        'structArea': $('#structArea').val(),
-                       'remark': $('#remark').val()
+                       'remark': $('#remark').val(),
+                       'id': $('#struct_id').val()
                    };
 
-                  var porject = $('#struct_project').val();
-                  postData['proId'] = porject.split('-')[0];
-                  postData['proName'] = porject.split('-')[1];
+                  postData['proId'] =  $('#struct_project').val();
+                  postData['proName'] = $('#struct_project').opTxt();
 
-                  var sendData = JSON.stringify(postData);
-                  
-                  $.ajax({
-                      type: 'POST',
-                      dataType: 'json',
-                      contentType: "application/json;charset=utf-8",
-                      url: '../../structure/add',
-                      data: sendData,
-                      success: function (data) {
-                          if(data['success'] == true){
-                              alert('保存成功');
-                              $('#structure_form')[0].reset();
-                              $('#structureModal').modal('hide');
-                              queryStructure();
-                          }else{
-                              //$('#myAlert2').alert();
-                              alert('保存失败');
-                          }
-                      },
-                      error: function () {
-                          alert('保存失败');
-                      }
-
-                  });
-
+                  if('' === $('#struct_id').val()){
+                      $.sendPost('../../structure/add', postData, structureSaveOrUpdate);
+                  }else{
+                      $.put('../../structure/update', postData, structureSaveOrUpdate)
+                  }
               });
           });
 
+          function structureSaveOrUpdate(data, status) {
+              if(data['success'] && status){
+                  alert('操作成功');
+                  $('#structure_form')[0].reset();
+                  $('#struct_id').val('');
+                  $('#structureModal').modal('hide');
+                  queryStructure();
+              }else{
+                  alert('操作失败');
+              }
+          }
 
-          function queryStructure() {
-              $.get('../../structure/queryByPage/1', function(res, status){
+          function queryStructure(currentPage) {
+              currentPage = currentPage || 1;
+              $.get('../../structure/queryByPage/' + currentPage, function(res, status){
                   console.log(res + '===' + status);
                   if(res['success'] === true){
                       var transType = res['data']['list'];
@@ -171,11 +168,46 @@
                               html.push('<td>' + type['remark'] + '</td>');
                               html.push('<td>' + type['structArea'] + '</td>');
                               html.push('<td>' + type['proName'] + '</td>');
-                              html.push('<td><button type="button" class="btn btn-default">编辑</button>' +
-                                  '<button type="button" value="'+ type['id'] +'" style="margin-left: 10px;" class="btn btn-default">删除</button></td></tr>');
+                              html.push('<td><button type="button" value="'+ type['id'] +'" class="btn btn-primary btn-xs struct_edit">编辑</button>' +
+                                  '<button type="button" value="'+ type['id'] +'" style="margin-left: 10px;" class="btn btn-danger btn-xs struct_delete">删除</button></td></tr>');
                           });
                           $('#structure_tbody').html(html.join(''));
+                          getMyMindMapPage(currentPage, res['data']['pageCount'], 'structure_page', queryStructure);
+                          $('.struct_edit').unbind('click').click(editStruct);
+                          $('.struct_delete').unbind('click').click(deleteStruct);
                       }
+                  }
+              });
+          }
+
+          function deleteStruct() {
+              if(confirm('确认是否删除')) {
+                  var attr = $(this).attr('value');
+                  $.delete('../../structure/delete/' + attr, null, function (res, status) {
+                      if (res['success'] && status) {
+                          alert('删除成功');
+                          queryStructure(1);
+                      } else {
+                          alert('删除失败');
+                      }
+                  });
+              }
+          }
+
+          function editStruct() {
+
+              var attr = $(this).attr('value');
+
+              $.sendGet('../../structure/query/' + attr, null, function (res, status) {
+
+                  if(res['success'] && status){
+                      $('#structName').val(res['data']['structName']);
+                      $('#serial').val(res['data']['serial']);
+                      $('#structArea').val(res['data']['structArea']);
+                      $('#remark').val(res['data']['remark']);
+                      $('#struct_project').val(res['data']['proId']);
+                      $('#struct_id').val(res['data']['id']);
+                      $('#structureModal').modal('show');
                   }
               });
           }

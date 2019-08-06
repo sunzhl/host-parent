@@ -1,5 +1,10 @@
 package cn.com.hosp.www.sys.web.form;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 /**
  * @ClassName CancelResonForm
  * @Description TODO
@@ -8,6 +13,10 @@ package cn.com.hosp.www.sys.web.form;
  * @Version 1.0
  */
 
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class CancelReasonForm {
 
     private String cancelCode;
@@ -16,27 +25,7 @@ public class CancelReasonForm {
 
     private Long proId;
 
-    public String getCancelCode() {
-        return cancelCode;
-    }
+    private String proName;
 
-    public void setCancelCode(String cancelCode) {
-        this.cancelCode = cancelCode;
-    }
 
-    public String getCancelName() {
-        return cancelName;
-    }
-
-    public void setCancelName(String cancelName) {
-        this.cancelName = cancelName;
-    }
-
-    public Long getProId() {
-        return proId;
-    }
-
-    public void setProId(Long proId) {
-        this.proId = proId;
-    }
 }

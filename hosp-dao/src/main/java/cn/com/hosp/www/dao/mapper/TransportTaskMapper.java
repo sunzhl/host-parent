@@ -26,7 +26,7 @@ public interface TransportTaskMapper extends BaseMapper<TransportTask> {
     List<TransportPatient> queryByPage(Map<String, Object> params);
 
 
-    int queryCount(Map<String, Object> params);
+    long queryCount(Map<String, Object> params);
 
     /**
      * 任务分派

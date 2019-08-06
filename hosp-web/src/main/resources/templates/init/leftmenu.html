@@ -18,7 +18,7 @@
       <div class="panel-group" id="panelContainer">
           <div class="panel panel-default">
               <div id="header1" class="panel-heading" data-toggle="collapse" data-target="#sub1" data-parent="#panelContainer">
-                  <i class="glyphicon glyphicon-user"></i>
+                  <!--<i class="glyphicon glyphicon-user"></i>-->
                   <a href="#">人员设置</a>
                   <span class="glyphicon glyphicon-triangle-right pull-right"></span>
               </div>
@@ -26,13 +26,13 @@
                   <div class="panel-body">
                       <ul class="nav left-menu-nav">
                           <li>
-                              <a href="#"><i class="glyphicon glyphicon-user"></i>医护人员</a>
+                              <a href="#medical_div" aria-controls="init" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-leaf"></i>&nbsp;&nbsp;医护人员</a>
                           </li>
                           <li>
-                              <a href="#"><i class="glyphicon glyphicon-user"></i>运送人员</a>
+                              <a href="#worker_div"><i class="glyphicon glyphicon-user"></i>&nbsp;&nbsp;运送人员</a>
                           </li>
                           <li>
-                              <a href="#">添加栏目3</a>
+                              <a href="#circle_setting_div"><i class="glyphicon glyphicon-repeat"></i>&nbsp;&nbsp;循环设置</a>
                           </li>
                           <li>
                               <a href="#">添加栏目4</a>
@@ -43,33 +43,39 @@
           </div>
           <div class="panel panel-default">
               <div id="header2" class="panel-heading" data-toggle="collapse" data-target="#sub2" data-parent="#panelContainer">
-                  <i class="glyphicon glyphicon-leaf"></i>
+                  <!--<i class="glyphicon glyphicon-leaf"></i>-->
                   <a href="#">参数设置</a>
                   <span class="glyphicon glyphicon-triangle-right pull-right"></span>
               </div>
               <div id="sub2" class="collapse panel-collapse">
                   <div class="panel-body">
                       <ul class="nav left-menu-nav">
-                          <li><a href="#trans_type_div" aria-controls="init" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-plane"></i>运送类型</a></li>
-                          <li><a href="#">运送工具</a></li>
-                          <li><a href="#">时间代码</a></li>
-                          <li><a href="#">取消原因</a></li>
-                          <li><a href="#">延迟原因</a></li>
+                          <li><a href="#trans_type_div" aria-controls="init" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-plane"></i>&nbsp;&nbsp;运送类型</a></li>
+                          <li><a href="#trans_tool_div" aria-controls="init" role="tab" data-toggle="tab">
+                              <i class="glyphicon glyphicon-list-alt"></i>&nbsp;&nbsp;运送工具</a></li>
+                          <li><a href="#trans_code_div" aria-controls="init" role="tab" data-toggle="tab">
+                              <i class="glyphicon glyphicon-time"></i>时间代码</a></li>
+                          <li><a href="#cancel_reason_div" aria-controls="init" role="tab" data-toggle="tab">
+                                 <i class="glyphicon glyphicon-ban-circle"></i>&nbsp;&nbsp;取消原因</a></li>
+                          <li><a href="#delay_reason_div" aria-controls="init" role="tab" data-toggle="tab">
+                              <i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;延迟原因</a></li>
                       </ul>
                   </div>
               </div>
           </div>
           <div class="panel panel-default">
               <div id="header3" class="panel-heading" data-toggle="collapse" data-target="#sub3" data-parent="#panelContainer">
-                  <i class="glyphicon glyphicon-leaf"></i>
+                  <!--<i class="glyphicon glyphicon-leaf"></i>-->
                   <a href="#">空间设置</a>
                   <span class="glyphicon glyphicon-triangle-right pull-right"></span>
               </div>
               <div id="sub3" class="collapse panel-collapse">
                   <div class="panel-body">
                       <ul class="nav left-menu-nav">
-                          <li><a href="#structure_div" aria-controls="init" role="tab" data-toggle="tab">建筑</a></li>
-                          <li><a href="#space_div">空间代码</a></li>
+                          <li><a href="#structure_div" aria-controls="init" role="tab" data-toggle="tab">
+                              <i class="glyphicon glyphicon-home"></i>&nbsp;&nbsp;建筑</a></li>
+                          <li><a href="#space_div">
+                              <i class="glyphicon glyphicon-flag"></i>&nbsp;&nbsp;空间代码</a></li>
                       </ul>
                   </div>
               </div>
@@ -92,10 +98,12 @@
               })
 
               $(".panel-body > .nav > li > a").on("click", function(e) {
-                  //alert(e.currentTarget.textContent);
                   $('.init_content').hide();
-                  //var id = e.currentTarget.href;
                   var id = $(this).attr('href');
+                  var handler = settingFactory(id);
+                  if(handler !== null){
+                      handler.start();
+                  }
                   $(id).show();
               });
           });

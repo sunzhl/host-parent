@@ -1,8 +1,11 @@
 package cn.com.hosp.www.sys.service;
 
+import cn.com.hosp.www.common.result.Page;
 import cn.com.hosp.www.common.result.Result;
+import cn.com.hosp.www.dao.dto.TransportPatient;
 import cn.com.hosp.www.dao.entry.TransportTask;
 import cn.com.hosp.www.sys.service.base.BaseService;
+import cn.com.hosp.www.sys.vo.TransportTaskVo;
 import cn.com.hosp.www.sys.web.form.TaskForm;
 
 import java.util.Map;
@@ -20,7 +23,9 @@ public interface TransportTaskService extends BaseService<TransportTask> {
 
     long save(TaskForm form);
 
-    Map<String, Object> queryByPage(Map<String, Object> param);
+    long update(TaskForm form);
+
+    Page<TransportPatient> queryByPage(Map<String, Object> param);
 
 
     /**
@@ -33,6 +38,8 @@ public interface TransportTaskService extends BaseService<TransportTask> {
      */
     Result assignOrObtain(long id, long uid, long rid, short getType);
 
+
+    TransportTaskVo query(Long id);
 
 
 

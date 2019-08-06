@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <title>左侧菜单</title>
+    <link rel="stylesheet" th:href="@{../../bootstrap/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{../../bootstrap/css/bootstrap-grid.min.css}" />
+    <link rel="stylesheet" th:href="@{../../bootstrap/css/index.css}" />
+    <!--<link rel="stylesheet" th:href="@{../../bootstrap/css/leftmenu.css}" />-->
+    <script type="text/javascript" th:src="@{../../bootstrap/js/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{../../bootstrap/js/bootstrap.min.js}"></script>
+</head>
+<body>
+
+  <div th:fragment="cancel_reason_fragment" class="container">
+      <div style="height: 30px; margin-bottom: 10px; margin-top: -5px;">
+          <div class="headerLine"></div>
+          <div class="headerLabel">取消原因</div>
+          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#cancel_reason_modal">添加取消原因</button>
+      </div>
+      <table class="table table-bordered table-hover">
+          <thead>
+          <tr>
+              <th>编码</th>
+              <th>名称</th>
+              <th>所属项目</th>
+              <th>操作</th>
+          </tr>
+          </thead>
+          <tbody id="cancel_reason_tbody">
+
+          </tbody>
+          <tfoot id="cancel_reason_tfoot">
+            <tr>
+                <td id="cancel_reason_page" colspan="4" style="text-align: right"></td>
+            </tr>
+          </tfoot>
+      </table>
+
+
+
+
+      <!-- 模态框（Modal） -->
+      <div class="modal" id="cancel_reason_modal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+          <div class="modal-dialog" style="width: 800px;">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                      <h4 class="modal-title" id="myModalLabel">添加取消原因</h4>
+                  </div>
+                  <div class="modal-body">
+                      <form id="cancel_reason_form" role="form" class="form-inline" method="post" th:action="@{/task/add}" onsubmit="">
+                          <div class="container">
+                              <div class="addTitle">
+                                  <div class="leftImg"></div>
+                                  <span>基本信息</span>
+                              </div>
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="cancel_reason_project" class="control-label text-right text-nowrap col-md-4">所属项目：</label>
+                                      <select id="cancel_reason_project" style="width: 200px;" class="form-control col-md-8">
+                                          <option value="1">空军总医院</option>
+                                      </select>
+                                  </div>
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="cancel_reason_remark" class="control-label col-md-4 text-nowrap text-right">名称：</label>
+                                      <input id="cancel_reason_remark" type="text" style="width: 200px;" required class="col-md-8 form-control"/>
+                                  </div>
+
+                              </div>
+
+                              <div class="row">
+                                  <div class="form-group addTaskForm col-md-6">
+                                      <label for="cancel_reason_code" class="control-label text-right text-nowrap col-md-4">编码：</label>
+                                      <input id="cancel_reason_code" type="text" style="width: 200px;"  class="col-md-8 form-control"/>
+                                  </div>
+                              </div>
+                          </div>
+                      </form>
+                  </div>
+                  <div class="modal-footer align-content-center">
+                      <input type="hidden" id="cancel_reason_id"/>
+                      <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                      <button type="button" id="cancel_reason_submit" class="btn btn-primary">提交更改</button>
+                  </div>
+              </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+
+       <!--   <div id="myAlert" class="alert alert-success" aria-hidden="true">
+              <a href="#" class="close" data-dismiss="alert">&times;</a>
+              <strong>成功！</strong>保存成功。
+          </div>
+          <div id="myAlert2" class="alert alert-warning" aria-hidden="true">
+              <a href="#" class="close" data-dismiss="alert">&times;</a>
+              <strong>警告！</strong>保存失败。
+          </div>-->
+
+      </div>
+
+      <script type="text/javascript">
+
+//          $(function () {
+//
+//              queryCancelReason();
+//
+//              $('#cancel_reason_submit').click(function () {
+//                  var  val = $('#cancel_reason_id').val();
+//                   var postData = {
+//                       'cancelCode': $('#cancel_reason_code').val(),
+//                       'cancelName': $('#cancel_reason_remark').val(),
+//                       'proId': $('#cancel_reason_project').val(),
+//                       'proName': $('#cancel_reason_project').opTxt(),
+//                       'id': val
+//                   };
+//
+//                  if(val !== ''){
+//                     $.put('../../cancel/update', postData, function (data, status) {
+//                         if(status && data['success']){
+//                             alert('修改成功');
+//                             $('#cancel_reason_form')[0].reset();
+//                             $('#cancel_reason_modal').modal('hide');
+//                             queryCancelReason();
+//                         }else{
+//                             alert('修改失败');
+//                         }
+//                     })
+//                  }else{
+//                      $.sendPost(
+//                          '../../cancel/add',
+//                          postData,
+//                          function (data, status) {
+//                              if(status && data['success']){
+//                                  alert('保存成功');
+//                                  $('#cancel_reason_form')[0].reset();
+//                                  $('#cancel_reason_modal').modal('hide');
+//                                  queryCancelReason();
+//                              }else{
+//                                  alert('保存失败');
+//                              }});
+//                  }
+//
+//              });
+//
+//
+//              $('#cancel_reason_modal').on('shown.bs.modal', function () {
+//                 // publicQuerySpaces([[${userInfo.proId}]], 'type_destination');
+//              }).on('hide.bs.modal', function () {
+//                  $('#cancel_reason_form')[0].reset();
+//              })
+//
+//          });
+//
+//
+//          function queryCancelReason(currentPage, pageSize) {
+//              currentPage = currentPage || 1;
+//              pageSize = pageSize || 20;
+//              $.sendGet('../../cancel/query/' + currentPage + '/' + pageSize, null, function(res, status){
+//                  console.log(res + '===' + status);
+//                  if(res['success'] === true){
+//                      var transType = res['data']['list'];
+//                      if(transType != null && transType){
+//                          var html = [];
+//                          $.each(transType, function (index, type) {
+//                              html.push('<tr><td>' + type['cancelCode'] + '</td>');
+//                              html.push('<td>' + type['cancelName'] + '</td>');
+//                              html.push('<td>' + type['proName'] + '</td>');
+//                              html.push('<td><button type="button" value="' + type['id'] +'" class="btn btn-default cancel_reason_edit">编辑</button>' +
+//                                  '<button type="button" value="'+ type['id'] +'" style="margin-left: 10px;" class="btn btn-default cancel_reason_del">删除</button></td></tr>');
+//                          });
+//                          $('#cancel_reason_tbody').html(html.join(''));
+//
+//                          $('.cancel_reason_del').click(function (){
+//                              if(confirm('是否确定删除')){
+//                                  var attr = $(this).attr('value');
+//                                  $.delete('../../tool/delete/' + attr, null, function () {
+//                                      queryCancelReason();
+//                                  });
+//                              }
+//
+//                          });
+//
+//                          editCancelReason();
+//                      }
+//                  }
+//              });
+//          }
+//
+//
+//
+//          function editCancelReason() {
+//              $('.cancel_reason_edit').click(function () {
+//                  var attr = $(this).attr('value');
+//                  $.get('../../cancel/query/' + attr, null, function (res, status) {
+//                      if(res['success'] === true){
+//                         var data = res['data'];
+//                         $('#cancel_reason_id').val(data['id']);
+//                         $('#cancel_reason_remark').val(data['cancelName']);
+//                         $('#cancel_reason_code').val(data['cancelCode']);
+//                         $('#cancel_reason_project').val(data['proId']);
+//                         $('#cancel_reason_modal').modal('show');
+//                      }
+//                  })
+//              });
+//          }
+
+      </script>
+  </div>
+
+</body>
+</html>

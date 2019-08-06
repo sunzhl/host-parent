@@ -20,6 +20,9 @@
         <result column="pro_number"         jdbcType="VARCHAR" property="proNumber"/>
         <result column="pro_name"           jdbcType="VARCHAR" property="proName"/>
         <result column="tool_name"          jdbcType="VARCHAR" property="toolName"/>
+        <result column="cancel_reason"      jdbcType="VARCHAR" property="cancelReason"/>
+        <result column="delay_reason"       jdbcType="VARCHAR" property="delayReason"/>
+        <result column="task_desc"          jdbcType="VARCHAR" property="taskDesc"/>
         <result column="patient_name"       jdbcType="VARCHAR" property="patientName"/>
         <result column="pid"                jdbcType="BIGINT"  property="pid"/>
         <result column="age"                jdbcType="TINYINT" property="age"/>
@@ -33,6 +36,7 @@
         t.task_type_name, t.set_out_place_name, t.destination_name,
         t.plan_start_time, t.finish_time, t.book_time, t.worker_name, t.worker_id,
         t.priority, t.state, t.pro_id, t.pro_number,t.pro_name, t.tool_name,
+        t.cancel_reason, t.delay_reason, t.task_desc,
         p.patient_name, p.id as pid, p.age, p.bed_number, p.number,p.sex
         from transport_task as t
         left join patient_info as p on t.id = p.task_id
@@ -50,7 +54,7 @@
         limit #{start, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER}
     </select>
     
-    <select id="queryCount" parameterType="map" resultType="int">
+    <select id="queryCount" parameterType="map" resultType="long">
         select count(id) from transport_task
         <where>
             <if test="proId != null">

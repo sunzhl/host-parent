@@ -18,9 +18,9 @@
       <div style="height: 30px; margin-bottom: 10px; margin-top: -5px;">
           <div class="headerLine"></div>
           <div class="headerLabel">运送类型</div>
-          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">添加运送类型</button>
+          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#trans_type_modal">添加运送类型</button>
       </div>
-      <table class="table table-striped">
+      <table class="table table-bordered table-hover">
           <thead>
           <tr>
               <th>类型名称</th>
@@ -50,13 +50,18 @@
               <td >取消|延迟</td>
           </tr>-->
           </tbody>
+          <tfoot id="trans_type_tfoot">
+          <tr>
+              <td id="trans_type_page" colspan="6" style="text-align: right"></td>
+          </tr>
+          </tfoot>
       </table>
 
 
 
 
       <!-- 模态框（Modal） -->
-      <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+      <div class="modal" id="trans_type_modal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
           <div class="modal-dialog" style="width: 800px;">
               <div class="modal-content">
                   <div class="modal-header">
@@ -64,7 +69,7 @@
                       <h4 class="modal-title" id="myModalLabel">添加运送类型</h4>
                   </div>
                   <div class="modal-body">
-                      <form id="addTaskForm" role="form" class="form-inline" method="post" th:action="@{/task/add}" onsubmit="">
+                      <form id="trans_type_form" role="form" class="form-inline" method="post" th:action="@{/task/add}" onsubmit="">
                           <div class="container">
                               <div class="addTitle">
                                   <div class="leftImg"></div>
@@ -85,11 +90,9 @@
 
                               <div class="row">
                                   <div class="form-group addTaskForm col-md-6">
-                                      <label for="destination" class="control-label text-right text-nowrap col-md-4">默认目的地：</label>
-                                      <select id="destination" style="width: 200px;" class="form-control col-md-8">
-                                          <option value="1">特一</option>
-                                          <option value="1">特一</option>
-                                          <option value="1">特一</option>
+                                      <label for="type_destination" class="control-label text-right text-nowrap col-md-4">默认目的地：</label>
+                                      <select id="type_destination" style="width: 200px;" class="form-control col-md-8">
+
                                       </select>
                                   </div>
 
@@ -105,12 +108,10 @@
 
                               <div class="row">
                                   <div class="form-group addTaskForm col-md-6">
-                                      <label for="planStartTime" class="control-label text-right text-nowrap col-md-4"
+                                      <label for="transTimeCodeId" class="control-label text-right text-nowrap col-md-4"
                                              >时间代码：</label>
-                                      <select id="planStartTime" style="width: 200px;" class="form-control col-md-8">
-                                          <option value="1">特一</option>
-                                          <option value="1">特一</option>
-                                          <option value="1">特一</option>
+                                      <select id="transTimeCodeId" style="width: 200px;" class="form-control col-md-8">
+
                                       </select>
                                   </div>
 
@@ -130,11 +131,12 @@
                                   <div class="form-group addTaskForm col-md-6">
                                       <label for="project" class="control-label text-right text-nowrap col-md-4">所属项目：</label>
                                       <select id="project" style="width: 200px;" class="form-control col-md-8">
-                                          <option value="1-空军总医院">空军总医院</option>
+                                          <option value="1">空军总医院</option>
                                       </select>
                                   </div>
                               </div>
                           </div>
+                          <input type="hidden" id="trans_type_id" />
                       </form>
                   </div>
                   <div class="modal-footer align-content-center">
@@ -158,58 +160,60 @@
       <script type="text/javascript">
 
           $(function () {
+              transTypeTransCode();
 
-               queryTransType();
-
+              publicQueryProject('project',  $('#current_worker_id').val());
               $('#submit').click(function () {
 
                    var postData = {
                        'typeName': $('#transType').val(),
-                       'defaultDest': $('#destination').val(),
-                       'transTimeCodeId': $('#planStartTime').val(),
+                       'defaultDest': $('#type_destination').val(),
+                       'defaultDestName': $('#type_destination').opTxt(),
+                       'transTimeCodeId': $('#transTimeCodeId').val(),
                        'grade': $('#grade').val(),
-                       'urgentTime': $('#urgentTime').val()
+                       'urgentTime': $('#urgentTime').val(),
+                       'proId': $('#project').val(),
+                       'proName': $('#project').opTxt(),
+                       'id': $('#trans_type_id').val(),
                    };
 
                   var parentId = $('#parentId').val();
                   if('' !== parentId){
                       postData['parentId'] = parentId;
                   }
-                  var porject = $('#project').val();
-                  postData['proId'] = porject.split('-')[0];
-                  postData['proName'] = porject.split('-')[1];
 
-                  var sendData = JSON.stringify(postData);
-                  
-                  $.ajax({
-                      type: 'POST',
-                      dataType: 'json',
-                      contentType: "application/json;charset=utf-8",
-                      url: '../../type/add',
-                      data: sendData,
-                      success: function (data) {
-                          if(data['success'] == true){
-                              alert('保存成功');
-                              $('#addTaskForm')[0].reset();
-                              $('#myModal').modal('hide');
-                              queryTransType();
-                          }else{
-                              //$('#myAlert2').alert();
-                              alert('保存失败');
-                          }
-                      },
-                      error: function () {
-                          alert('保存失败');
-                      }
-
-                  });
+                  if('' === $('#trans_type_id').val()){
+                      $.sendPost('../../type/add', postData, transTypeSaveOrUpdate);
+                  }else {
+                      $.put('../../type/update', postData, transTypeSaveOrUpdate);
+                  }
 
               });
+
+              publicQuerySpaces([[${userInfo.proId}]], 'type_destination');
+              $('#trans_type_modal').on('shown.bs.modal', function () {
+
+              }).on('hide.bs.modal', function () {
+                  $('#trans_type_form')[0].reset();
+                  $('#trans_type_id').val('');
+              })
+
           });
 
+          function transTypeSaveOrUpdate(data, status) {
+              if(status && data['success']){
+                  alert('操作成功');
+                  $('#trans_type_form')[0].reset();
+                  $('#trans_type_modal').modal('hide');
+                  queryTransType();
+              }else{
+                  alert('操作失败');
+              }
+          };
 
-          function queryTransType() {
-              $.get('../../type/queryPage/1', function(res, status){
+          function queryTransType(currentPage) {
+              currentPage = currentPage || 1;
+              $.get('../../type/queryPage/' + currentPage, function(res, status){
                   console.log(res + '===' + status);
                   if(res['success'] === true){
                       var transType = res['data']['list'];
@@ -218,16 +222,80 @@
                           $.each(transType, function (index, type) {
                               html.push('<tr><td>' + type['typeName'] + '</td>');
                               html.push('<td>' + (type['parentId'] === 0? '': type['parentId'] ) + '</td>');
-                              html.push('<td>' + type['transTimeCodeId'] + '</td>');
-                              html.push('<td>' + type['defaultDest'] + '</td>');
+
+                              var timeCodeId = type['transTimeCodeId'];
+                              var timeCodeTxt = '';
+                              if(0 != timeCodeId){
+                                  timeCodeTxt = $('#transTimeCodeId option[value="'+timeCodeId+'"]').text();
+                              }
+
+                              html.push('<td>' + timeCodeTxt + '</td>');
+                              html.push('<td>' + type['defaultDestName'] + '</td>');
                               html.push('<td>' + type['proName'] + '</td>');
-                              html.push('<td><button type="button" class="btn btn-default">编辑</button>' +
-                                  '<button type="button" value="'+ type['id'] +'" style="margin-left: 10px;" class="btn btn-default">删除</button></td></tr>');
+                              html.push('<td><button type="button" value="'+ type['id'] +'" class="btn btn-primary btn-xs trans_edit">编辑</button>' +
+                                  '<button type="button" value="'+ type['id'] +'" style="margin-left: 10px;" class="trans_delete btn btn-danger btn-xs">删除</button></td></tr>');
                           });
                           $('#trans_type_tbody').html(html.join(''));
+                          getMyMindMapPage(currentPage, res['data']['pageCount'], 'trans_type_page', queryTransType);
+
+                          $('.trans_edit').click(transTypeEdit);
+                          $('.trans_delete').click(transTypeDelete);
+
                       }
                   }
               });
+          }
+
+          
+          function transTypeDelete() {
+              if(confirm('确认是否删除')){
+                  var attr = $(this).attr('value');
+                  $.delete('../../type/delete/' + attr, null, function (res, status) {
+                      if(res['success'] && status){
+                          alert('删除成功');
+                          queryTransType();
+                      }else{
+                          alert('删除失败');
+                      }
+                  } );
+              }
+          }
+          
+          function transTypeEdit() {
+              var attr = $(this).attr('value');
+              $.sendGet('../../type/query/' + attr, null, function (res, status) {
+                  if(res['success'] && status){
+                      var data = res['data'];
+                       $('#transType').val(data['typeName']);
+                       $('#planStartTime').val(data['transTimeCodeId']);
+                       $('#grade').val(data['grade']);
+                       $('#urgentTime').val(data['urgentTime']);
+                       $('#project').val(data['proId']);
+                       $('#trans_type_id').val(data['id']);
+                       $('#parentId').val(data['parentId']);
+                       $('#trans_type_modal').modal('show');
+                       $('#type_destination').val(data['defaultDest']);
+                  }
+              });
+          }
+
+          function transTypeTransCode() {
+              var proId = $('#current_pro_id').val();
+
+              $.sendGet('../../tcode/queryAll', {proId: proId}, function (res, status) {
+                      if(status && res['success']){
+                          var transType = res['data'];
+                          if(transType != null && transType){
+                              var html = ['<option value="0">--请选择--</option>'];
+                              $.each(transType, function (index, type) {
+                                  var val = type['id'];// + '-' + type['codeName'];
+                                  html.push('<option value="' + val + '">' + type['codeName'] + '</option>');
+                              });
+                              $('#transTimeCodeId').html(html.join(''));
+                          }
+                      }
+                  queryTransType();
+              })
           }
 
       </script>

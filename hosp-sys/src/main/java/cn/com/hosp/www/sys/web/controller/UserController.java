@@ -5,6 +5,7 @@ import cn.com.hosp.www.common.result.Result;
 import cn.com.hosp.www.dao.entry.WorkerInfo;
 import cn.com.hosp.www.sys.service.MedicalCareService;
 import cn.com.hosp.www.sys.service.UserService;
+import cn.com.hosp.www.sys.service.WorkerInfoService;
 import cn.com.hosp.www.sys.web.form.UserForm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,21 +19,12 @@ import javax.validation.Valid;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private WorkerInfoService workerInfoService;
 
-    @Autowired
-    private MedicalCareService medicalCareService;
-
-    @PostMapping("/register/{type}")
+    @PostMapping("/register")
     @ResponseBody
-    public Result register(@PathVariable("type") String type, @Valid @RequestBody UserForm userForm){
-         log.info("传入的类型为：{}", type);
-         if("worker".equals(type)){
-            return Result.success().withData(userService.save(userForm));
-         }else if("care".equals(type)){
-             return Result.success().withData(medicalCareService.save(userForm));
-         }
-         return Result.serverError("传入的类型[" + type + "]不正确");
+    public Result register(@Valid @RequestBody UserForm userForm){
+         return Result.success().withData(workerInfoService.save(userForm));
     }
 
 
@@ -51,7 +43,7 @@ public class UserController {
         if(workerInfo == null){
             workerInfo = new WorkerInfo();
         }
-        return Result.success().withData(userService.listByCondition(workerInfo));
+        return Result.success().withData(workerInfoService.listByCondition(workerInfo));
     }
 
 

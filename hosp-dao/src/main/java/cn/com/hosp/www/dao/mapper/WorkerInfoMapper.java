@@ -7,6 +7,9 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.Map;
+
 @Component
 public interface WorkerInfoMapper extends BaseMapper<WorkerInfo> {
 
@@ -16,5 +19,14 @@ public interface WorkerInfoMapper extends BaseMapper<WorkerInfo> {
             "<if test='mobile != null'> mobile = #{mobile, jdbcType=VARCHAR}</if>" +
             "</script>")
     int updateState(WorkerInfo workerInfo);
+
+
+    List<WorkerInfo> queryByPage(Map<String, Object> params);
+
+    long queryCount(Map<String, Object> params);
+
+
+
+
 
 }
